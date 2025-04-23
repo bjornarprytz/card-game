@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://cgrejd4v5ywd3"]
+
+[ext_resource type="PackedScene" uid="uid://brulmd5eo7ye3" path="res://card.tscn" id="1_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://d4dsux2rmfyff" path="res://target.tscn" id="2_h2yge"]
+
+[node name="Main" type="Node2D"]
+
+[node name="Card" parent="." instance=ExtResource("1_0xm2m")]
+position = Vector2(220, 103)
+
+[node name="Target" parent="." groups=["Targets"] instance=ExtResource("2_h2yge")]
+position = Vector2(560, 103)
+
+[node name="Target2" parent="." groups=["Targets"] instance=ExtResource("2_h2yge")]
+position = Vector2(506, 207)

@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://d4dsux2rmfyff"]
+
+[ext_resource type="Script" uid="uid://dwlillh8oxghx" path="res://target.gd" id="1_t2jmu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e1yvt"]
+size = Vector2(44, 42)
+
+[node name="Target" type="Node2D"]
+script = ExtResource("1_t2jmu")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+offset_left = -22.0
+offset_top = -21.0
+offset_right = 22.0
+offset_bottom = 21.0
+
+[node name="InteractiveArea" type="Area2D" parent="."]
+unique_name_in_owner = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractiveArea"]
+shape = SubResource("RectangleShape2D_e1yvt")
+
+[connection signal="mouse_entered" from="InteractiveArea" to="." method="_on_interactive_area_mouse_entered"]
+[connection signal="mouse_exited" from="InteractiveArea" to="." method="_on_interactive_area_mouse_exited"]

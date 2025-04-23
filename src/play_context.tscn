@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://dggbxweliongr"]
+
+[ext_resource type="Script" uid="uid://bwmk1yrjwhvx8" path="res://play_context.gd" id="1_gbekt"]
+[ext_resource type="Theme" uid="uid://bhttketftlysp" path="res://global_theme.tres" id="2_bto18"]
+
+[node name="PlayContext" type="Node2D"]
+script = ExtResource("1_gbekt")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_direction = 2
+offset_left = -59.0
+offset_top = -61.0
+offset_right = 60.0
+offset_bottom = -11.0
+theme = ExtResource("2_bto18")
+
+[node name="Message" type="RichTextLabel" parent="PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Playing"
+fit_content = true
+autowrap_mode = 0
