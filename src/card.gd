@@ -8,8 +8,16 @@ extends Node2D
 var id : String = ["Fork", "Knife"].pick_random()
 
 func _ready() -> void:
-	CardGameAPI.add_card(CardEngine.Card.new(id))
+	CardGameAPI.add_card(CardEngine.Card.new(id, 2, bind_resolver))
 
+# TODO: Also inject the context here as well
+func bind_resolver(targets: Array[Target]) -> Array[Callable]:
+	var resolvers : Array[Callable] = [
+		# TODO: Derive this from some syntax
+		Keywords.add_armor.bind(targets[0], 1),
+		Keywords.deal_damage.bind(targets[1], 1)
+		]
+	return resolvers
 
 func _on_interactive_area_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if (event is InputEventMouseButton and event.is_pressed()):

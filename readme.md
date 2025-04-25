@@ -1,19 +1,17 @@
 # card-game
 
 game on itch.io: [link](https://thewarlock.itch.io/card-game)
-Stipulation: 3 color palette
+
+Stipulation: 3 color palette
  
 
 ## TODO
-
-- Import the project into Godot
 
 - Setup itch.io page for card-game [link](https://itch.io/game/new)
   - Set Project URL to card-game (can be changed later)
   - Set Kind to HTML
   - Hit the Save button
 - Get Butler API key from [itch.io](https://itch.io/user/settings/api-keys)
-- Publish github repo
 - Add key to GitHub repository secrets as BUTLER_API_KEY [link](https://github.com/bjornarprytz/card-game/settings/secrets/actions)
 - Push release with `./push_release.sh`
 - Go [here](https://itch.io/game/new) and edit game:

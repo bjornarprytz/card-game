@@ -8,6 +8,7 @@ var card : CardEngine.Card
 
 var targets: Array[Node] = []
 
+var chosen_targets: Array[Target] = []
 var chosen_target: Target
 
 func _ready() -> void:
@@ -15,7 +16,7 @@ func _ready() -> void:
 	if card == null:
 		message.text = "Could not find card with id %s" % card_id
 	else:
-		message.text = "Playing %s" % card.id
+		message.text = "%s: Choose %d targets" % [card.id, card.nTargets]
 		
 	targets = get_tree().get_nodes_in_group("Targets")
 	
@@ -29,6 +30,8 @@ func _on_hover_target(on: bool, t: Target):
 	if (on):
 		chosen_target = t
 		t.highlight(true)
+		if (!chosen_targets.has(t)):
+			chosen_targets.push_back(t)
 	elif (t == chosen_target):
 		chosen_target = null
 
@@ -38,8 +41,8 @@ func _process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if (event is InputEventMouseButton and !event.is_pressed()):
 		queue_free()
-		if (chosen_target != null):
-			CardGameAPI.play(card, chosen_target)
+		if (chosen_targets.size() == card.nTargets):
+			CardGameAPI.play(card, chosen_targets)
 
 func _exit_tree() -> void:
 	get_tree().call_group("Targets", "highlight", false)
