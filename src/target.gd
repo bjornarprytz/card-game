@@ -2,22 +2,16 @@ class_name Target
 extends Node2D
 
 @onready var interactive_area: Area2D = %InteractiveArea
-@onready var health_label: RichTextLabel = %Health
+@onready var stats_label: RichTextLabel = %Stats
+@onready var atom: Atom
 
 signal hovered(on: bool)
 
-var health: int:
-	set(value):
-		health = value
-		health_label.text = "%s|%s" % [health, armor]
-
-var armor: int:
-	set(value):
-		armor = value
-		health_label.text = "%s|%s" % [health, armor]
-
 func _ready() -> void:
-	health = 5
+	atom = CardGameAPI.add_atom() # This should be done elsewhere, and the target would only need the atom ID to get it.
+	atom.state_changed.connect(_on_atom_state_changed)
+	atom.health = 5
+	atom.armor = 0
 
 func highlight(enable: bool):
 	if (enable):
@@ -30,3 +24,7 @@ func _on_interactive_area_mouse_entered() -> void:
 
 func _on_interactive_area_mouse_exited() -> void:
 	hovered.emit(false)
+
+
+func _on_atom_state_changed(_propertyName: String, _value: Variant) -> void:
+	stats_label.text = "%s|%s" % [atom.health, atom.armor]

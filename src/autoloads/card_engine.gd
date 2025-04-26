@@ -13,6 +13,22 @@ class Card:
 
 var _cards : Dictionary[String, Card] = {}
 
+var _atoms : Dictionary[String, Atom] = {}
+
+func add_atom() -> Atom:
+	var atom = preload("res://atom.tscn").instantiate() as Atom
+	atom.id = OS.get_unique_id()
+	
+	add_child(atom)
+	_atoms[atom.id] = atom
+	
+	return atom
+
+func get_atom(id: String) -> Atom:
+	if (!_atoms.has(id)):
+		return null
+	return _atoms[id]
+
 func add_card(card: Card):
 	_cards[card.id] = card
 

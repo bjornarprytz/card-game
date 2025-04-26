@@ -35,7 +35,7 @@ func _on_hover_target(on: bool, t: Target):
 	elif (t == chosen_target):
 		chosen_target = null
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	global_position = get_global_mouse_position()
 
 func _input(event: InputEvent) -> void:

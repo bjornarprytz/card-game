@@ -17,7 +17,7 @@ offset_bottom = 21.0
 [node name="CenterContainer" type="CenterContainer" parent="PanelContainer"]
 layout_mode = 2
 
-[node name="Health" type="RichTextLabel" parent="PanelContainer/CenterContainer"]
+[node name="Stats" type="RichTextLabel" parent="PanelContainer/CenterContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "4"
