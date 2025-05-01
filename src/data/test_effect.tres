@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="EffectData" load_steps=2 format=3 uid="uid://dpbsxtou7a4pf"]
-
-[ext_resource type="Script" uid="uid://l5fwsa6buo84" path="res://data/effect_data.gd" id="1_n3k8c"]
-
-[resource]
-script = ExtResource("1_n3k8c")
-keyword = &""
-arguments = [null]
-metadata/_custom_type_script = "uid://l5fwsa6buo84"

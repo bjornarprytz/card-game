@@ -3,7 +3,6 @@
 game on itch.io: [link](https://thewarlock.itch.io/card-game)
 
 Stipulation: 3 color palette
- 
 
 ## TODO
 

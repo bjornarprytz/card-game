@@ -1,29 +1,23 @@
 class_name PlayContext
 extends Node2D
 
-var card_id : String
 @onready var message: RichTextLabel = %Message
 
-var card : CardEngine.Card
-
-var targets: Array[Node] = []
+var card: CardData
 
 var chosen_targets: Array[Target] = []
 var chosen_target: Target
 
 func _ready() -> void:
-	card = CardGameAPI.get_card(card_id)
 	if card == null:
-		message.text = "Could not find card with id %s" % card_id
+		message.text = "Could not find card"
 	else:
-		message.text = "%s: Choose %d targets" % [card.id, card.nTargets]
-		
-	targets = get_tree().get_nodes_in_group("Targets")
+		message.text = "%s: Choose %d targets" % [card.name, card.get_target_count(self)]
 	
-	for t in targets:
+	var eligible_targets = get_tree().get_nodes_in_group("Targets")
+	for t in eligible_targets:
 		if (t is Target):
 			t.hovered.connect(_on_hover_target.bind(t))
-	
 	get_tree().call_group("Targets", "highlight", true)
 
 func _on_hover_target(on: bool, t: Target):
@@ -41,9 +35,9 @@ func _process(_delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if (event is InputEventMouseButton and !event.is_pressed()):
 		queue_free()
-		if (chosen_targets.size() == card.nTargets):
-			CardGameAPI.play(card, chosen_targets)
+		if (chosen_targets.size() == card.get_target_count(self)):
+			card.resolve(self)
+			print("resolved %s" % card.name)
 
 func _exit_tree() -> void:
 	get_tree().call_group("Targets", "highlight", false)
-	

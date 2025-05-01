@@ -21,6 +21,7 @@ Utility="*res://autoloads/utility.gd"
 Events="*res://autoloads/event_bus.gd"
 Create="*res://autoloads/factory.gd"
 CardGameAPI="*res://autoloads/card_engine.tscn"
+Cards="*res://autoloads/cards.gd"
 
 [display]
 

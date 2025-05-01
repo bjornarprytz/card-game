@@ -1,24 +1,38 @@
 class_name CardEngine
 extends Node2D
 
-class Card:
-	var id : String
-	var nTargets: int
-	var bind_resolver: Callable
+var _cards: Dictionary[String, CardData] = {}
+
+var _atoms: Dictionary[String, Atom] = {}
+
+func _ready() -> void:
+	for card in Cards.load_card_data():
+		add_card(card)
+
+static func bind_resolver(play_context: PlayContext) -> Array[Callable]:
+	var card = play_context.card
+	var targets = play_context.chosen_targets
 	
-	func _init(id_ : String, nTargets_: int, bind_resolver_: Callable) -> void:
-		id = id_
-		nTargets = nTargets_
-		bind_resolver = bind_resolver_
-
-var _cards : Dictionary[String, Card] = {}
-
-var _atoms : Dictionary[String, Atom] = {}
+	var resolvers: Array[Callable] = []
+	
+	var methods = Keywords.new().get_method_list()
+	
+	resolvers.push_back(Keywords.callv.bind("add_armor", [play_context.targets[0], 2]))
+	
+#   for effect in card_data.effects:
+#       for method in methods:
+#           if effect.keyword == method["name"]:
+#               var arguments: Array[Variant] = []
+#               for param in effect.arguments:
+#                   arguments.push_back(param.get_value(play_context))
+#               resolvers.push_back(Keywords.callv.bind(effect.keyword, arguments))
+		
+	return resolvers
 
 func add_atom() -> Atom:
 	var atom = preload("res://atom.tscn").instantiate() as Atom
 	atom.id = OS.get_unique_id()
-	
+	print(atom.id)
 	add_child(atom)
 	_atoms[atom.id] = atom
 	
@@ -29,18 +43,13 @@ func get_atom(id: String) -> Atom:
 		return null
 	return _atoms[id]
 
-func add_card(card: Card):
-	_cards[card.id] = card
+func add_card(card: CardData):
+	_cards[card.name] = card
 
-func get_card(id: String) -> Card:
+func get_card(id: String) -> CardData:
 	if (!_cards.has(id)):
 		return null
 	return _cards[id]
 
-func play(card: Card, targets: Array[Target]):
-	print("Playing %s on %s targets" % [card.id, card.nTargets])
-	var resolvers = card.bind_resolver.call(targets) as Array[Callable]
-	for r in resolvers:
-		print("Resolving: %s (%s)" % [r.get_method(), r.get_bound_arguments()])
-		r.call()
-	
+func get_cards() -> Array[CardData]:
+	return _cards.values()
