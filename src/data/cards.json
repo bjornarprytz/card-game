@@ -1,0 +1,38 @@
+{
+	"cards": [
+		{
+			"name": "Lightning Bolt",
+			"cost": 2,
+			"type": "spell",
+			"effects": [
+				{
+					"keyword": "damage",
+					"targetIndex": 0,
+					"parameters": [3]
+				}
+			]
+		},
+		{
+			"name": "Shield",
+			"cost": 1,
+			"type": "spell",
+			"effects": [
+				{
+					"keyword": "add_armor",
+					"parameters": [1]
+				}
+			]
+		},
+		{
+			"name": "Bolster",
+			"cost": 1,
+			"type": "spell",
+			"effects": [
+				{
+					"keyword": "add_armor",
+					"parameters": ["<0>.armor"]
+				}
+			]
+		}
+	]
+}
