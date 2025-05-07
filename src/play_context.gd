@@ -3,7 +3,7 @@ extends Node2D
 
 @onready var message: RichTextLabel = %Message
 
-var card: CardData
+var card: Variant
 
 var chosen_targets: Array[Target] = []
 var chosen_target: Target

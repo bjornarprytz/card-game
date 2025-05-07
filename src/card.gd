@@ -4,7 +4,7 @@ extends Node2D
 @onready var context_factory: PackedScene = preload("res://play_context.tscn")
 @onready var interactive_area: Area2D = %InteractiveArea
 
-var card_data: CardData
+var card_data: Variant
 
 func _ready() -> void:
 	card_data = CardGameAPI.get_card("Lightning Bolt")

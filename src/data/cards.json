@@ -7,7 +7,6 @@
 			"effects": [
 				{
 					"keyword": "damage",
-					"targetIndex": 0,
 					"parameters": [3]
 				}
 			]
