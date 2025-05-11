@@ -1,7 +1,7 @@
 class_name CardEngine
 extends Node2D
 
-var _cards: Dictionary[String, Variant] = {}
+var _cards: Dictionary[String, CardProto] = {}
 
 var _atoms: Dictionary[String, Atom] = {}
 
@@ -23,13 +23,13 @@ func get_atom(id: String) -> Atom:
 		return null
 	return _atoms[id]
 
-func add_card(card: Variant):
+func add_card(card: CardProto):
 	_cards[card.name] = card
 
-func get_card(id: String) -> Variant:
+func get_card(id: String) -> CardProto:
 	if (!_cards.has(id)):
 		return null
 	return _cards[id]
 
-func get_cards() -> Array[Variant]:
+func get_cards() -> Array[CardProto]:
 	return _cards.values()

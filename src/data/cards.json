@@ -2,7 +2,7 @@
 	"cards": [
 		{
 			"name": "Lightning Bolt",
-			"cost": 2,
+			"cost": 2.0,
 			"type": "spell",
 			"effects": [
 				{
@@ -13,7 +13,7 @@
 		},
 		{
 			"name": "Shield",
-			"cost": 1,
+			"cost": 1.0,
 			"type": "spell",
 			"effects": [
 				{
@@ -24,12 +24,12 @@
 		},
 		{
 			"name": "Bolster",
-			"cost": 1,
+			"cost": 2.0,
 			"type": "spell",
 			"effects": [
 				{
 					"keyword": "add_armor",
-					"parameters": ["<0>.armor"]
+					"parameters": [3]
 				}
 			]
 		}
