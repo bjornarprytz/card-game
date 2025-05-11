@@ -5,4 +5,10 @@
     <RootNamespace>cardgame</RootNamespace>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="data\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="data\**" />
+  </ItemGroup>
 </Project>
