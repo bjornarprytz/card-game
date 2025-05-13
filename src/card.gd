@@ -7,7 +7,7 @@ extends Node2D
 var card_data: CardProto
 
 func _ready() -> void:
-	card_data = CardGameAPI.get_card("Lightning Bolt")
+	card_data = CardGameAPI.get_cards().pick_random()
 
 func _on_interactive_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if (event is InputEventMouseButton and event.is_pressed()):

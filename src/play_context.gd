@@ -5,8 +5,7 @@ extends Node2D
 
 var card: CardProto
 
-var chosen_targets: Array[Target] = []
-var chosen_target: Target
+var targets: Array[Target] = []
 
 func _ready() -> void:
 	if card == null:
@@ -22,12 +21,9 @@ func _ready() -> void:
 
 func _on_hover_target(on: bool, t: Target):
 	if (on):
-		chosen_target = t
 		t.highlight(true)
-		if (!chosen_targets.has(t)):
-			chosen_targets.push_back(t)
-	elif (t == chosen_target):
-		chosen_target = null
+		if (!targets.has(t)):
+			targets.push_back(t)
 
 func _process(_delta: float) -> void:
 	global_position = get_global_mouse_position()
@@ -35,9 +31,10 @@ func _process(_delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if (event is InputEventMouseButton and !event.is_pressed()):
 		queue_free()
-		if (chosen_targets.size() == card.targets.size()):
+		if (targets.size() == card.targets.size()):
 			Keywords.resolve(self)
 			print("resolved %s" % card.name)
+			
 
 func _exit_tree() -> void:
 	get_tree().call_group("Targets", "highlight", false)

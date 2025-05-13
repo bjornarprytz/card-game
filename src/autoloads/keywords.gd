@@ -2,7 +2,7 @@ extends Node
 
 func resolve(context: PlayContext):
 	for effect in context.card.effects:
-		var target = context.chosen_targets[effect.target].atom
+		var target = context.targets[effect.target].atom
 		var args = [target]
 		args.append_array(effect.parameters)
 		
