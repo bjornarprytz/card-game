@@ -7,6 +7,15 @@
 
 [node name="Card" parent="." instance=ExtResource("1_0xm2m")]
 position = Vector2(220, 103)
+card_name = "Lightning Bolt"
+
+[node name="Card2" parent="." instance=ExtResource("1_0xm2m")]
+position = Vector2(100, 167)
+card_name = "Shield"
+
+[node name="Card3" parent="." instance=ExtResource("1_0xm2m")]
+position = Vector2(175, 300)
+card_name = "Bolster"
 
 [node name="Target" parent="." groups=["Targets"] instance=ExtResource("2_h2yge")]
 position = Vector2(560, 103)

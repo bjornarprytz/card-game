@@ -3,11 +3,15 @@ extends Node2D
 
 @onready var context_factory: PackedScene = preload("res://play_context.tscn")
 @onready var interactive_area: Area2D = %InteractiveArea
+@onready var card_name_label: RichTextLabel = %CardName
+
+@export var card_name: String
 
 var card_data: CardProto
 
 func _ready() -> void:
-	card_data = CardGameAPI.get_cards().pick_random()
+	card_name_label.text = card_name
+	card_data = CardGameAPI.get_card(card_name)
 
 func _on_interactive_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if (event is InputEventMouseButton and event.is_pressed()):

@@ -2,18 +2,18 @@
 	"cards": [
 		{
 			"name": "Lightning Bolt",
-			"cost": 2.0,
+			"cost": 2,
 			"type": "spell",
 			"effects": [
 				{
 					"keyword": "damage",
-					"parameters": [3]
+					"parameters": ["0.health"]
 				}
 			]
 		},
 		{
 			"name": "Shield",
-			"cost": 1.0,
+			"cost": 1,
 			"type": "spell",
 			"effects": [
 				{
@@ -24,7 +24,7 @@
 		},
 		{
 			"name": "Bolster",
-			"cost": 2.0,
+			"cost": 2,
 			"type": "spell",
 			"effects": [
 				{

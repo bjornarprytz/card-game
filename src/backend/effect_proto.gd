@@ -3,7 +3,7 @@ extends Resource
 
 var keyword: String
 var target: int
-var parameters: Array[int] = []
+var parameters: Array[ParameterProto] = []
 
 
 static func parse_effect_data(data: Dictionary) -> EffectProto:
@@ -14,14 +14,7 @@ static func parse_effect_data(data: Dictionary) -> EffectProto:
 	var raw_params = data.get("parameters", [])
 
 	for param in raw_params:
-		if param is int:
-			effect_data.parameters.append(param)
-		if param is float:
-			effect_data.parameters.append(int(param))
-		else:
-			push_error("Invalid parameter type: %s" % param)
-			return null
-	
+		effect_data.parameters.append(ParameterProto.from_variant(param))
 	
 	if not effect_data.keyword:
 		push_error("Error: EffectData keyword is missing")
