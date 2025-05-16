@@ -2,16 +2,17 @@ class_name ParameterProto
 extends Resource
 
 var _immediate: Variant = null
-var _accessor: String = ""
+var _variableName: String = ""
 
 func get_value(context: PlayContext) -> Variant:
 	if (_immediate != null):
 		return _immediate
 	
-	if (_accessor != ""):
-		var value = access_context(context, _accessor)
+	if (_variableName != ""):
+		var value = context.card.variables[_variableName].resolve(context)
+		
 		if value == null:
-			push_error("Error: Accessor %s not found" % _accessor)
+			push_error("Error: Variable %s not found" % _variableName)
 			return null
 		return value
 	
@@ -29,20 +30,6 @@ static func from_variant(param: Variant) -> ParameterProto:
 	elif param is float:
 		parameter._immediate = param
 	elif param is String:
-		parameter._accessor = param
+		parameter._variableName = param
 	
 	return parameter
-
-static func access_context(context: PlayContext, accessor: String) -> Variant:
-	var path = accessor.split(".")
-
-	if (path.size() != 2):
-		push_error("Expected accessor to be of the form 'target.property'")
-		return null
-
-	var target_index = path[0].to_int()
-	var atom_property_name = path[1]
-
-	var value = context.targets[target_index].atom.get(atom_property_name)
-
-	return value

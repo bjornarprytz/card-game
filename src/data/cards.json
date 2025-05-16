@@ -4,10 +4,16 @@
 			"name": "Lightning Bolt",
 			"cost": 2,
 			"type": "spell",
+			"vars": {
+				"x": {
+					"expression": "0.health",
+					"description": "The target's health"
+				}
+			},
 			"effects": [
 				{
 					"keyword": "damage",
-					"parameters": ["0.health"]
+					"parameters": ["x"]
 				}
 			]
 		},
@@ -15,10 +21,16 @@
 			"name": "Shield",
 			"cost": 1,
 			"type": "spell",
+			"vars": {
+				"x": {
+					"expression": "0.health",
+					"description": "The target's health"
+				}
+			},
 			"effects": [
 				{
 					"keyword": "add_armor",
-					"parameters": [1]
+					"parameters": ["x"]
 				}
 			]
 		},
