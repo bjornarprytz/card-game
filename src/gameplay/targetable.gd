@@ -12,7 +12,6 @@ func highlight(on: bool):
 	else:
 		highlight_border.hide()
 
-
 func _on_mouse_entered() -> void:
 	hovered.emit(true, self)
 

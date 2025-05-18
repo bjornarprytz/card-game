@@ -26,3 +26,7 @@ position = Vector2(807, 216)
 
 [node name="Creature2" parent="." instance=ExtResource("2_0xm2m")]
 position = Vector2(551, 88)
+
+[node name="Battlefield" type="Node2D" parent="."]
+
+[node name="DiscardPile" type="Node2D" parent="."]

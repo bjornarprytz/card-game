@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bb7hlbwqt0hpm"]
 
-[ext_resource type="Script" uid="uid://cnkiyubdidgi1" path="res://ui/targetable.gd" id="1_iihtn"]
+[ext_resource type="Script" uid="uid://cnkiyubdidgi1" path="res://gameplay/targetable.gd" id="1_iihtn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iihtn"]
 draw_center = false

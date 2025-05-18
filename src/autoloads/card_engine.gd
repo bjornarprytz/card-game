@@ -6,7 +6,7 @@ var _cards: Dictionary[String, CardProto] = {}
 var _atoms: Dictionary[String, Atom] = {}
 
 func _ready() -> void:
-	for card in Cards.load_card_data():
+	for card in DataLoader.load_game_data().cards:
 		add_card(card)
 
 func add_atom() -> Atom:
