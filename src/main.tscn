@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cgrejd4v5ywd3"]
 
-[ext_resource type="PackedScene" uid="uid://brulmd5eo7ye3" path="res://card.tscn" id="1_0xm2m"]
-[ext_resource type="PackedScene" uid="uid://d4dsux2rmfyff" path="res://target.tscn" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://cbxsxm07f0475" path="res://state/card.tscn" id="1_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://by6w2dtwxcsoq" path="res://state/creature.tscn" id="2_0xm2m"]
 
 [node name="Main" type="Node2D"]
 
@@ -11,14 +11,18 @@ card_name = "Lightning Bolt"
 
 [node name="Card2" parent="." instance=ExtResource("1_0xm2m")]
 position = Vector2(100, 167)
-card_name = "Shield"
+card_name = "Bolster"
 
 [node name="Card3" parent="." instance=ExtResource("1_0xm2m")]
 position = Vector2(175, 300)
-card_name = "Bolster"
+card_name = "Shield"
 
-[node name="Target" parent="." groups=["Targets"] instance=ExtResource("2_h2yge")]
-position = Vector2(560, 103)
+[node name="DrawPile" type="Node2D" parent="."]
 
-[node name="Target2" parent="." groups=["Targets"] instance=ExtResource("2_h2yge")]
-position = Vector2(506, 207)
+[node name="Hand" type="Node2D" parent="."]
+
+[node name="Creature" parent="." instance=ExtResource("2_0xm2m")]
+position = Vector2(807, 216)
+
+[node name="Creature2" parent="." instance=ExtResource("2_0xm2m")]
+position = Vector2(551, 88)

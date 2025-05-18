@@ -9,13 +9,14 @@ func resolve(context: PlayContext):
 			args.append(param.get_value(context))
 		
 		self.callv(effect.keyword, args)
+		print("resolved %s (%s)" % [effect.keyword, args])
 
-func damage(target: Atom, amount: int):
+func damage(target: Creature, amount: int):
 	target.armor -= amount
 	
 	if (target.armor < 0):
 		target.health += target.armor
 		target.armor = 0
 
-func add_armor(target: Atom, amount: int):
+func add_armor(target: Creature, amount: int):
 	target.armor += amount

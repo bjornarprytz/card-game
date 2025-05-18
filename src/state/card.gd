@@ -1,8 +1,7 @@
 class_name Card
-extends Node2D
+extends Atom
 
 @onready var context_factory: PackedScene = preload("res://play_context.tscn")
-@onready var interactive_area: Area2D = %InteractiveArea
 @onready var card_name_label: RichTextLabel = %CardName
 
 @export var card_name: String
@@ -13,7 +12,7 @@ func _ready() -> void:
 	card_name_label.text = card_name
 	card_data = CardGameAPI.get_card(card_name)
 
-func _on_interactive_area_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+func _on_gui_input_event(event: InputEvent) -> void:
 	if (event is InputEventMouseButton and event.is_pressed()):
 		var context = context_factory.instantiate() as PlayContext
 		context.card = card_data

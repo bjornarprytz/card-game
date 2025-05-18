@@ -10,7 +10,7 @@ func _ready() -> void:
 		add_card(card)
 
 func add_atom() -> Atom:
-	var atom = preload("res://atom.tscn").instantiate() as Atom
+	var atom = preload("res://state/atom.tscn").instantiate() as Atom
 	atom.id = OS.get_unique_id()
 	print(atom.id)
 	add_child(atom)

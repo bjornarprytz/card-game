@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://bb7hlbwqt0hpm"]
+
+[ext_resource type="Script" uid="uid://cnkiyubdidgi1" path="res://ui/targetable.gd" id="1_iihtn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iihtn"]
+draw_center = false
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.8, 0, 0.8, 1)
+
+[node name="Control" type="Control" groups=["Targets"]]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_iihtn")
+
+[node name="HighlightBorder" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_iihtn")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

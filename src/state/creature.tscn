@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://by6w2dtwxcsoq"]
+
+[ext_resource type="PackedScene" uid="uid://bombgcyuxff4q" path="res://state/atom.tscn" id="1_hr1to"]
+[ext_resource type="Script" uid="uid://bte3niv5xjsos" path="res://creature.gd" id="2_mae3a"]
+[ext_resource type="Texture2D" uid="uid://85p4vam34uiy" path="res://icon.svg" id="3_mae3a"]
+[ext_resource type="PackedScene" uid="uid://bb7hlbwqt0hpm" path="res://ui/targetable.tscn" id="4_d1x3b"]
+
+[node name="Creature" instance=ExtResource("1_hr1to")]
+script = ExtResource("2_mae3a")
+
+[node name="Icon" type="TextureRect" parent="." index="1"]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("3_mae3a")
+
+[node name="Targetable" parent="Icon" index="0" node_paths=PackedStringArray("atom") instance=ExtResource("4_d1x3b")]
+layout_mode = 1
+atom = NodePath("../..")
+
+[node name="StatsUI" type="RichTextLabel" parent="." index="2"]
+unique_name_in_owner = true
+offset_left = 3.0
+offset_top = 129.0
+offset_right = 126.0
+offset_bottom = 169.0
+fit_content = true
+autowrap_mode = 0

@@ -5,7 +5,7 @@ extends Node2D
 
 var card: CardProto
 
-var targets: Array[Target] = []
+var targets: Array[Targetable] = []
 
 func _ready() -> void:
 	if card == null:
@@ -15,15 +15,17 @@ func _ready() -> void:
 	
 	var eligible_targets = get_tree().get_nodes_in_group("Targets")
 	for t in eligible_targets:
-		if (t is Target):
-			t.hovered.connect(_on_hover_target.bind(t))
-	get_tree().call_group("Targets", "highlight", true)
+		if (t is Targetable):
+			t.hovered.connect(_on_hover_target)
 
-func _on_hover_target(on: bool, t: Target):
+func _on_hover_target(on: bool, t: Targetable):
 	if (on):
+		targets = [t]
 		t.highlight(true)
-		if (!targets.has(t)):
-			targets.push_back(t)
+	else:
+		if (t in targets):
+			targets.remove_at(0)
+		t.highlight(false)
 
 func _process(_delta: float) -> void:
 	global_position = get_global_mouse_position()
@@ -31,7 +33,7 @@ func _process(_delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if (event is InputEventMouseButton and !event.is_pressed()):
 		queue_free()
-		if (targets.size() == card.targets.size()):
+		if (card.targets.size() == targets.size() ):
 			Keywords.resolve(self)
 			print("resolved %s" % card.name)
 			
