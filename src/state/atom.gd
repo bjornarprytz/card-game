@@ -4,12 +4,12 @@ extends Node
 signal state_changed(propertyName: String, value: Variant)
 @onready var state: State = %State
 
+var id : int:
+	get:
+		return self.get_instance_id()
+
 func _ready() -> void:
 	_update_ui()
-
-var id : String = OS.get_unique_id():
-	get:
-		return id
 
 func overwrite_state(new_state: Dictionary):
 	state._properties.clear()

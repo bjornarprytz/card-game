@@ -7,6 +7,7 @@ var gameState: GameState
 func _ready() -> void:
 	gameData = DataLoader.load_game_data()
 	gameState = DataLoader.load_game_state()
+	add_child(gameState)
 
 func get_card(card_name: String) -> CardProto:
 	if not gameData.cards.has(card_name):

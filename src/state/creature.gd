@@ -33,5 +33,4 @@ func _update_ui():
 	stats_ui.text = "H:%d|Ar:%d|At:%d" % [health, armor, attack]
 
 func _to_string() -> String:
-	var short_id = id.split("-")[0].trim_prefix("{")
-	return "Creature(%s)" % short_id
+	return "Creature(%s)" % name
