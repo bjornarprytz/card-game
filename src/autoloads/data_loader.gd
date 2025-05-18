@@ -2,10 +2,22 @@ extends Node
 
 
 func load_game_data() -> GameProto:
-	# read cards.json
-	var file = FileAccess.open("res://data/game_data.json", FileAccess.READ)
+	var json = read_json("res://data/game_data.json")
+	
+	var game_data = GameProto.from_dict(json.data)
+	
+	return game_data
+
+func load_game_state() -> GameState:
+	var json = read_json("res://data/initial_state.json")
+	
+	return GameState.from_dict(json.data)
+
+
+func read_json(file_name: String) -> Variant:
+	var file = FileAccess.open(file_name, FileAccess.READ)
 	if (file == null):
-		push_error("Could not open game_data.json")
+		push_error("Could not open %s" % file_name)
 		return null
 
 	var json_string = file.get_as_text()
@@ -19,7 +31,4 @@ func load_game_data() -> GameProto:
 		push_error("Error parsing JSON: ", json.error_string)
 		return null
 	
-	var game_data = GameProto.from_dict(json.data)
-	
-
-	return game_data
+	return json

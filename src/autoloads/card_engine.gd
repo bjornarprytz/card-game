@@ -1,35 +1,19 @@
 class_name CardEngine
 extends Node2D
 
-var _cards: Dictionary[String, CardProto] = {}
-
-var _atoms: Dictionary[String, Atom] = {}
+var gameData: GameProto
+var gameState: GameState
 
 func _ready() -> void:
-	for card in DataLoader.load_game_data().cards:
-		add_card(card)
+	gameData = DataLoader.load_game_data()
+	gameState = DataLoader.load_game_state()
 
-func add_atom() -> Atom:
-	var atom = preload("res://state/atom.tscn").instantiate() as Atom
-	atom.id = OS.get_unique_id()
-	print(atom.id)
-	add_child(atom)
-	_atoms[atom.id] = atom
-	
-	return atom
+func get_card(card_name: String) -> CardProto:
+	if not gameData.cards.has(card_name):
+		push_error("Card '%s' not found in game data" % card_name)
+	return gameData.cards[card_name]
 
-func get_atom(id: String) -> Atom:
-	if (!_atoms.has(id)):
-		return null
-	return _atoms[id]
-
-func add_card(card: CardProto):
-	_cards[card.name] = card
-
-func get_card(id: String) -> CardProto:
-	if (!_cards.has(id)):
-		return null
-	return _cards[id]
-
-func get_cards() -> Array[CardProto]:
-	return _cards.values()
+func get_creature(creature_name: String) -> CreatureProto:
+	if not gameData.creatures.has(creature_name):
+		push_error("Creature '%s' not found in game data" % creature_name)
+	return gameData.creatures[creature_name]

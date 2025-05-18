@@ -7,6 +7,7 @@
 
 [node name="Creature" instance=ExtResource("1_hr1to")]
 script = ExtResource("2_mae3a")
+creature_name = ""
 
 [node name="Icon" type="TextureRect" parent="." index="1"]
 offset_right = 40.0

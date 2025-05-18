@@ -1,13 +1,42 @@
 {
+	"creatures": [
+		{
+			"name": "Goblin",
+			"state": {
+				"health": 2,
+				"armor": 0,
+				"attack": 1
+			}
+		},
+		{
+			"name": "Orc",
+			"state": {
+				"health": 4,
+				"armor": 0,
+				"attack": 2
+			}
+		}
+	],
 	"cards": [
 		{
-			"name": "Lightning Bolt",
-			"cost": 2,
+			"name": "Strike",
+			"cost": 1,
+			"type": "spell",
+			"effects": [
+				{
+					"keyword": "damage",
+					"parameters": [2]
+				}
+			]
+		},
+		{
+			"name": "Self-Destruct",
+			"cost": 1,
 			"type": "spell",
 			"vars": {
 				"x": {
-					"expression": "0.health",
-					"description": "The target's health"
+					"expression": "0.attack",
+					"description": "The target's attack"
 				}
 			},
 			"effects": [

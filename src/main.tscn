@@ -7,15 +7,19 @@
 
 [node name="Card" parent="." instance=ExtResource("1_0xm2m")]
 position = Vector2(220, 103)
-card_name = "Lightning Bolt"
+card_name = "Strike"
 
 [node name="Card2" parent="." instance=ExtResource("1_0xm2m")]
-position = Vector2(100, 167)
+position = Vector2(71, 103)
 card_name = "Bolster"
 
 [node name="Card3" parent="." instance=ExtResource("1_0xm2m")]
-position = Vector2(175, 300)
+position = Vector2(70, 321)
 card_name = "Shield"
+
+[node name="Card4" parent="." instance=ExtResource("1_0xm2m")]
+position = Vector2(225, 327)
+card_name = "Self-Destruct"
 
 [node name="DrawPile" type="Node2D" parent="."]
 
@@ -23,9 +27,11 @@ card_name = "Shield"
 
 [node name="Creature" parent="." instance=ExtResource("2_0xm2m")]
 position = Vector2(807, 216)
+creature_name = "Orc"
 
 [node name="Creature2" parent="." instance=ExtResource("2_0xm2m")]
 position = Vector2(551, 88)
+creature_name = "Goblin"
 
 [node name="Battlefield" type="Node2D" parent="."]
 

@@ -7,6 +7,7 @@ var type: String
 var variables: Dictionary[String, VariableProto] = {}
 var targets: Array[TargetProto] = []
 var effects: Array[EffectProto] = []
+var state: Dictionary = {}
 
 
 static func from_dict(data: Dictionary) -> CardProto:
