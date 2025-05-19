@@ -17,4 +17,5 @@ func get_card(card_name: String) -> CardProto:
 func get_creature(creature_name: String) -> CreatureProto:
 	if not gameData.creatures.has(creature_name):
 		push_error("Creature '%s' not found in game data" % creature_name)
+		return null
 	return gameData.creatures[creature_name]

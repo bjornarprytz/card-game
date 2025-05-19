@@ -1,38 +1,63 @@
 [gd_scene load_steps=3 format=3 uid="uid://cgrejd4v5ywd3"]
 
-[ext_resource type="PackedScene" uid="uid://cbxsxm07f0475" path="res://state/card.tscn" id="1_0xm2m"]
+[ext_resource type="Script" uid="uid://ppenn7oxl8wb" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://by6w2dtwxcsoq" path="res://state/creature.tscn" id="2_0xm2m"]
 
 [node name="Main" type="Node2D"]
+script = ExtResource("1_ig7tw")
 
-[node name="Card" parent="." instance=ExtResource("1_0xm2m")]
-position = Vector2(220, 103)
-card_name = "Strike"
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Card2" parent="." instance=ExtResource("1_0xm2m")]
-position = Vector2(71, 103)
-card_name = "Bolster"
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -221.0
+grow_horizontal = 2
+grow_vertical = 0
 
-[node name="Card3" parent="." instance=ExtResource("1_0xm2m")]
-position = Vector2(70, 321)
-card_name = "Shield"
+[node name="DrawPile" type="PanelContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 134.0
+grow_vertical = 2
 
-[node name="Card4" parent="." instance=ExtResource("1_0xm2m")]
-position = Vector2(225, 327)
-card_name = "Self-Destruct"
+[node name="VB" type="VBoxContainer" parent="CanvasLayer/Control/DrawPile"]
+layout_mode = 2
 
-[node name="DrawPile" type="Node2D" parent="."]
+[node name="Name" type="RichTextLabel" parent="CanvasLayer/Control/DrawPile/VB"]
+layout_mode = 2
+text = "DrawPile"
+fit_content = true
 
-[node name="Hand" type="Node2D" parent="."]
+[node name="CardCount" type="RichTextLabel" parent="CanvasLayer/Control/DrawPile/VB"]
+layout_mode = 2
+fit_content = true
 
-[node name="Creature" parent="." instance=ExtResource("2_0xm2m")]
-position = Vector2(807, 216)
+[node name="Hand" type="HBoxContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -38.0
+offset_right = 38.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Icon" parent="." instance=ExtResource("2_0xm2m")]
+offset_left = 568.0
+offset_top = 91.0
+offset_right = 608.0
+offset_bottom = 131.0
 creature_name = "Orc"
 
-[node name="Creature2" parent="." instance=ExtResource("2_0xm2m")]
-position = Vector2(551, 88)
+[node name="Icon2" parent="." instance=ExtResource("2_0xm2m")]
+offset_left = 855.0
+offset_top = 208.0
+offset_right = 895.0
+offset_bottom = 248.0
 creature_name = "Goblin"
-
-[node name="Battlefield" type="Node2D" parent="."]
-
-[node name="DiscardPile" type="Node2D" parent="."]

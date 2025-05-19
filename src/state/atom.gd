@@ -2,7 +2,8 @@ class_name Atom
 extends Node
 
 signal state_changed(propertyName: String, value: Variant)
-@onready var state: State = %State
+
+var _state: Dictionary[String, Variant] = {}
 
 var id : int:
 	get:
@@ -11,10 +12,10 @@ var id : int:
 func _ready() -> void:
 	_update_ui()
 
-func overwrite_state(new_state: Dictionary):
-	state._properties.clear()
+func _overwrite_state(new_state: Dictionary):
+	_state.clear()
 	for prop in new_state.keys():
-		state.set_property(prop, new_state[prop])
+		_set_property(prop, new_state[prop])
 
 func _on_state_changed(property: String, value: Variant) -> void:
 	state_changed.emit(property, value)
@@ -22,3 +23,47 @@ func _on_state_changed(property: String, value: Variant) -> void:
 
 func _update_ui():
 	pass
+
+func clear():
+	for prop in _state.keys():
+		_remove_property(prop)
+
+func _get_property(key: String, default_value: Variant=null) -> Variant:
+	key = key.to_lower()
+	if (_state.has(key)):
+		return _state[key]
+	
+	push_warning("Trying to get non-existent property <%s>. Returning default value: %s" % [key, default_value])
+	return default_value
+
+func _remove_property(key: String) -> bool:
+	key = key.to_lower()
+	if (!_state.has(key)):
+		push_warning("Trying to remove non-existent property <%s>" % key)
+		return false
+	
+	_state.erase(key)
+	_on_state_changed(key, null)
+	return true
+
+func _set_property(key: String, value: Variant) -> bool:
+	key = key.to_lower()
+	if (value == null):
+		push_warning("Trying to set property <%s> to null" % key)
+		return false
+	
+	if (value is float):
+		value = int(value)
+		push_warning("Changing type of (%s) from float to int" % key)
+	
+	if _state.has(key):
+		var currentValue = _state[key] as Variant
+		if currentValue == value:
+			return false
+		if typeof(currentValue) != typeof(value):
+			push_error("Trying to change the type of %s. %s->%s" % [key, currentValue, value])
+			return false
+	
+	_state[key] = value
+	_on_state_changed(key, value)
+	return true

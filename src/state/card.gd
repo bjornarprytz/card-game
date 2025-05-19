@@ -11,9 +11,10 @@ var card_data: CardProto
 func _ready() -> void:
 	card_name_label.text = card_name
 	card_data = CardGameAPI.get_card(card_name)
-	self.overwrite_state(card_data.state)
+	_overwrite_state(card_data.state)
 
-func _on_gui_input_event(event: InputEvent) -> void:
+
+func _on_gui_input(event: InputEvent) -> void:
 	if (event is InputEventMouseButton and event.is_pressed()):
 		var context = context_factory.instantiate() as PlayContext
 		context.card = card_data

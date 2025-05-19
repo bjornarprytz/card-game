@@ -1,13 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://bombgcyuxff4q"]
+[gd_scene load_steps=2 format=3 uid="uid://d0yfrnyvdnqx6"]
 
 [ext_resource type="Script" uid="uid://kpsb54gg2e0v" path="res://state/atom.gd" id="1_hat3h"]
-[ext_resource type="Script" uid="uid://c42s7ek5fsw1b" path="res://state/state.gd" id="2_sv7i8"]
 
 [node name="Atom" type="Node2D"]
 script = ExtResource("1_hat3h")
-
-[node name="State" type="Node" parent="."]
-unique_name_in_owner = true
-script = ExtResource("2_sv7i8")
-
-[connection signal="changed" from="State" to="." method="_on_state_changed"]
