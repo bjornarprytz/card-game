@@ -1,15 +1,12 @@
 class_name GameState
 extends Node2D
 
-## TODO: Remove all this nonsense and instanitate nodes for everything
-## Keep get_atom, but atoms should be reparented when they change zone
+var draw_pile: Array[Card] = []
 
-var draw_pile: Array[int] = []
+var discard_pile: Array[Card] = []
+var hand: Array[Card] = []
 
-var discard_pile: Array[int] = []
-var hand: Array[int] = []
-
-var battlefield: Array[int] = []
+var battlefield: Array[Creature] = []
 
 var _atoms: Dictionary[int, Atom] = {}
 
@@ -26,25 +23,21 @@ static func from_dict(dict: Dictionary) -> GameState:
 	for card_name in dict["deck"]:
 		var atom = Create.card(card_name)
 		game_state._atoms[atom.id] = atom
-		game_state.draw_pile.append(atom.id)
-		game_state.add_child(atom)
+		game_state.draw_pile.append(atom)
 
 	for card_name in dict["discard_pile"]:
 		var atom = Create.card(card_name)
 		game_state._atoms[atom.id] = atom
-		game_state.discard_pile.append(atom.id)
-		game_state.add_child(atom)
+		game_state.discard_pile.append(atom)
 
 	for card_name in dict["hand"]:
 		var atom = Create.card(card_name)
 		game_state._atoms[atom.id] = atom
-		game_state.hand.append(atom.id)
-		game_state.add_child(atom)
+		game_state.hand.append(atom)
 
 	for creature_name in dict["battlefield"]:
 		var atom = Create.creature(creature_name)
 		game_state._atoms[atom.id] = atom
-		game_state.battlefield.append(atom.id)
-		game_state.add_child(atom)
+		game_state.battlefield.append(atom)
 
 	return game_state
