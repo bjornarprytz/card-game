@@ -5,12 +5,17 @@ signal state_changed(propertyName: String, value: Variant)
 
 var _state: Dictionary[String, Variant] = {}
 
-var id : int:
+var id: int:
 	get:
 		return self.get_instance_id()
 
 func _ready() -> void:
 	_update_ui()
+
+func _update_ui():
+	# Override this method in subclasses to update the UI
+	push_warning("Update UI method not implemented in %s" % self.name)
+
 
 func _overwrite_state(new_state: Dictionary):
 	_state.clear()
@@ -21,14 +26,7 @@ func _on_state_changed(property: String, value: Variant) -> void:
 	state_changed.emit(property, value)
 	_update_ui()
 
-func _update_ui():
-	pass
-
-func clear():
-	for prop in _state.keys():
-		_remove_property(prop)
-
-func _get_property(key: String, default_value: Variant=null) -> Variant:
+func _get_property(key: String, default_value: Variant = null) -> Variant:
 	key = key.to_lower()
 	if (_state.has(key)):
 		return _state[key]
