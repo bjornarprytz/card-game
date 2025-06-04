@@ -1,11 +1,11 @@
 extends Node
 
-func play_card(context: PlayContext) -> bool:
-	print("Resolving card <%s>" % context.card.name)
-	
-	var chosen_targets = context.targets
-	var required_targets = context.card.targets
-	var effects = context.card.effects
+signal action_resolved(context: Context)
+
+func play_card(context: PlayCardContext) -> bool:   
+	var chosen_targets = context.chosen_targets
+	var required_targets = context.card.card_data.targets
+	var effects = context.card.card_data.effects
 	
 	if (chosen_targets.size() != required_targets.size()):
 		return false
@@ -18,6 +18,22 @@ func play_card(context: PlayContext) -> bool:
 			args.append(param.get_value(context))
 		
 		Keywords.callv(effect.keyword, args)
-		print("resolved %s (%s)" % [effect.keyword, args])
 	
 	return true
+
+
+func _resolve_context(context: Context) -> bool:
+	if (context.card == null):
+		print("No card to resolve")
+		return false
+	
+	if (context.targets.size() == 0):
+		print("No targets selected")
+		return false
+	
+	if (play_card(context)):
+		print("Card <%s> played successfully" % context.card.name)
+		return true
+	else:
+		print("Failed to play card <%s>" % context.card.name)
+		return false

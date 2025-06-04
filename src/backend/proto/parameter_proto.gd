@@ -4,12 +4,12 @@ extends Resource
 var _immediate: Variant = null
 var _variableName: String = ""
 
-func get_value(context: PlayContext) -> Variant:
+func get_value(context: Context) -> Variant:
 	if (_immediate != null):
 		return _immediate
 	
 	if (_variableName != ""):
-		var value = context.card.variables[_variableName].resolve(context)
+		var value = context.vars[_variableName].resolve(context)
 		
 		if value == null:
 			push_error("Error: Variable %s not found" % _variableName)

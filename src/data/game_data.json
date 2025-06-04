@@ -1,78 +1,78 @@
 {
-    "creatures": [
-        {
-            "name": "Goblin",
-            "state": {
-                "health": 2,
-                "armor": 0,
-                "attack": 1
-            }
-        },
-        {
-            "name": "Orc",
-            "state": {
-                "health": 4,
-                "armor": 0,
-                "attack": 2
-            }
-        }
-    ],
-    "cards": [
-        {
-            "name": "Strike",
-            "cost": 1,
-            "type": "spell",
-            "effects": [
-                {
-                    "keyword": "damage",
-                    "parameters": [2]
-                }
-            ]
-        },
-        {
-            "name": "Self-Destruct",
-            "cost": 1,
-            "type": "spell",
-            "vars": {
-                "x": {
-                    "expression": "0.attack",
-                    "description": "The target's attack"
-                }
-            },
-            "effects": [
-                {
-                    "keyword": "damage",
-                    "parameters": ["x"]
-                }
-            ]
-        },
-        {
-            "name": "Shield",
-            "cost": 1,
-            "type": "spell",
-            "vars": {
-                "x": {
-                    "expression": "0.health",
-                    "description": "The target's health"
-                }
-            },
-            "effects": [
-                {
-                    "keyword": "add_armor",
-                    "parameters": ["x"]
-                }
-            ]
-        },
-        {
-            "name": "Bolster",
-            "cost": 2,
-            "type": "spell",
-            "effects": [
-                {
-                    "keyword": "add_armor",
-                    "parameters": [3]
-                }
-            ]
-        }
-    ]
+	"creatures": [
+		{
+			"name": "Goblin",
+			"state": {
+				"health": 2,
+				"armor": 0,
+				"attack": 1
+			}
+		},
+		{
+			"name": "Orc",
+			"state": {
+				"health": 4,
+				"armor": 0,
+				"attack": 2
+			}
+		}
+	],
+	"cards": [
+		{
+			"name": "Strike",
+			"cost": 1,
+			"type": "spell",
+			"effects": [
+				{
+					"keyword": "damage",
+					"parameters": [2]
+				}
+			]
+		},
+		{
+			"name": "Self-Destruct",
+			"cost": 1,
+			"type": "spell",
+			"vars": {
+				"x": {
+					"expression": "0.attack",
+					"description": "The target's attack"
+				}
+			},
+			"effects": [
+				{
+					"keyword": "damage",
+					"parameters": ["x"]
+				}
+			]
+		},
+		{
+			"name": "Shield",
+			"cost": 1,
+			"type": "spell",
+			"vars": {
+				"x": {
+					"expression": "0.health",
+					"description": "The target's health"
+				}
+			},
+			"effects": [
+				{
+					"keyword": "add_armor",
+					"parameters": ["x"]
+				}
+			]
+		},
+		{
+			"name": "Bolster",
+			"cost": 2,
+			"type": "spell",
+			"effects": [
+				{
+					"keyword": "add_armor",
+					"parameters": [3]
+				}
+			]
+		}
+	]
 }

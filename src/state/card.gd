@@ -1,7 +1,7 @@
 class_name Card
 extends Atom
 
-@onready var context_factory: PackedScene = preload("res://gameplay/play_context.tscn")
+@onready var context_factory: PackedScene = preload("res://gameplay/play_card_ui.tscn")
 @onready var card_name_label: RichTextLabel = %CardName
 
 @export var card_name: String
@@ -16,6 +16,6 @@ func _ready() -> void:
 
 func _on_gui_input(event: InputEvent) -> void:
 	if (event is InputEventMouseButton and event.is_pressed()):
-		var context = context_factory.instantiate() as PlayContext
-		context.card = card_data
+		var context = context_factory.instantiate() as PlayCardUI
+		context.card = self
 		get_tree().root.add_child(context)

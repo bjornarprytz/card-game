@@ -5,25 +5,25 @@ var name: String
 var expression: String
 var description: String
 
-func resolve(context: PlayContext) -> Variant:
+func resolve(context: Context) -> Variant:
 	var parts = expression.split(".")
 
 	if (parts.is_empty()):
 		push_error("Error: Variable expression is empty")
 		return null
 
-	var root = parts[0]
+	var root_expression = parts[0]
 	var path = parts.slice(1)
 	
-	match root:
+	match root_expression:
 		"state":
 			return _resolve_path(context.state, path)
 
-	if (root.is_valid_int()):
-		var target_index = root.to_int()
-		return _resolve_path(context.targets[target_index], path)
+	if (root_expression.is_valid_int()):
+		var target_index = root_expression.to_int()
+		return _resolve_path(context.chosen_targets[target_index], path)
 	
-	push_error("Error: Invalid root '%s' in expression: '%s'" % [root, expression])
+	push_error("Error: Invalid root '%s' in expression: '%s'" % [root_expression, expression])
 	return null
 
 func _resolve_path(root: Variant, path: Array[String]) -> Variant:

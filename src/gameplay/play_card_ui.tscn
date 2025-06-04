@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dggbxweliongr"]
 
-[ext_resource type="Script" uid="uid://bwmk1yrjwhvx8" path="res://gameplay/play_context.gd" id="1_gbekt"]
+[ext_resource type="Script" uid="uid://bwmk1yrjwhvx8" path="res://gameplay/play_card_ui.gd" id="1_gbekt"]
 [ext_resource type="Theme" uid="uid://bhttketftlysp" path="res://global_theme.tres" id="2_bto18"]
 
 [node name="PlayContext" type="Node2D"]

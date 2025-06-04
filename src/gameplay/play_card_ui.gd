@@ -1,26 +1,18 @@
-class_name PlayContext
+class_name PlayCardUI
 extends Node2D
 
 @export var state: GameState
+@export var card: Card
 
 @onready var message: RichTextLabel = %Message
 
-var card: CardProto
-
 var _targets: Array[Targetable] = []
-
-var targets: Array[Atom]:
-	get:
-		var atoms: Array[Atom] = []
-		for t in _targets:
-			atoms.append(t.atom)
-		return atoms
 
 func _ready() -> void:
 	if card == null:
 		message.text = "Could not find card"
 	else:
-		message.text = "%s: Choose %d targets" % [card.name, card.targets.size()]
+		message.text = "%s: Choose %d targets" % [card.card_data.name, card.card_data.targets.size()]
 	
 	var eligible_targets = get_tree().get_nodes_in_group("Targets")
 	for t in eligible_targets:
@@ -42,8 +34,11 @@ func _process(_delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	if (event is InputEventMouseButton and !event.is_pressed()):
 		queue_free()
-		if (card.targets.size() == _targets.size()):
-			Actions.play_card(self)
+		if (card.card_data.targets.size() == _targets.size()):
+			var targets: Array[Atom] = []
+			for t in _targets:
+				targets.append(t.atom)
+			Actions.play_card(PlayCardContext.create(state, card, targets))
 			print("resolved %s" % card.name)
 			
 
