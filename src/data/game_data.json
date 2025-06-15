@@ -44,7 +44,7 @@
 				}
 			],
 			"vars": {
-				"damage_amount": {
+				"x": {
 					"value": "t0.attack",
 					"description": "The target's attack value"
 				}
@@ -52,7 +52,7 @@
 			"effects": [
 				{
 					"keyword": "damage",
-					"parameters": ["t0", "damage_amount"]
+					"parameters": ["t0", "x"]
 				}
 			]
 		},
@@ -66,15 +66,15 @@
 				}
 			],
 			"vars": {
-				"armor_amount": {
+				"x": {
 					"value": "t0.health",
-					"description": "Armor equal to the target's health"
+					"description": "The target's current health"
 				}
 			},
 			"effects": [
 				{
 					"keyword": "add_armor",
-					"parameters": ["t0", "armor_amount"]
+					"parameters": ["t0", "x"]
 				}
 			]
 		},
@@ -104,11 +104,7 @@
 				}
 			],
 			"vars": {
-				"base_damage": {
-					"value": 2,
-					"description": "Base damage amount"
-				},
-				"bonus_damage": {
+				"x": {
 					"value": "t0.armor > 0 ? 2 : 0",
 					"description": "Bonus damage against armored targets"
 				}
@@ -116,7 +112,7 @@
 			"effects": [
 				{
 					"keyword": "damage",
-					"parameters": ["t0", "base_damage + bonus_damage"]
+					"parameters": ["t0", "2 + x"]
 				}
 			]
 		},
