@@ -2,20 +2,16 @@ class_name ParameterProto
 extends Resource
 
 var _immediate: Variant = null
-var _variableName: String = ""
 var _targetIndex: int = -1
+var _expression: ContextExpression = null
 
 func get_value(context: Context) -> Variant:
+	# If we have an expression, evaluate it
+	if (_expression != null):
+		return _expression.evaluate(context)
+	
 	if (_immediate != null):
 		return _immediate
-	
-	if (_variableName != ""):
-		var value = context.vars[_variableName].resolve(context)
-		
-		if value == null:
-			push_error("Error: Variable %s not found" % _variableName)
-			return null
-		return value
 	
 	if (_targetIndex >= 0):
 		if context.chosen_targets.size() <= _targetIndex:
@@ -33,6 +29,11 @@ static func from_target_index(target_index: int) -> ParameterProto:
 	parameter._targetIndex = target_index
 	return parameter
 
+static func from_expression(expr_string: String) -> ParameterProto:
+	var parameter = ParameterProto.new()
+	parameter._expression = ContextExpression.from_string(expr_string)
+	return parameter
+
 static func from_variant(param: Variant) -> ParameterProto:
 	var parameter = ParameterProto.new()
 
@@ -43,6 +44,12 @@ static func from_variant(param: Variant) -> ParameterProto:
 	elif param is float:
 		parameter._immediate = param
 	elif param is String:
-		parameter._variableName = param
+		# If the string is quoted, treat it as an immediate string value
+		if param.begins_with("\"") and param.ends_with("\"") and param.length() >= 2:
+			# Remove the quotes and treat as immediate string
+			parameter._immediate = param.substr(1, param.length() - 2)
+		else:
+			# Otherwise, treat it as an expression
+			parameter._expression = ContextExpression.from_string(param)
 	
 	return parameter

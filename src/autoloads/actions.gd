@@ -11,9 +11,11 @@ func play_card(context: PlayCardContext) -> bool:
 		return false
 	
 	for effect in effects:
-		var args = effect.resolve_args(context)
-		
-		Keywords.callv(effect.keyword, args)
-		keyword_resolved.emit(effect.keyword, args)
+		# Only execute the effect if its condition is satisfied
+		if effect.evaluate_condition(context):
+			var args = effect.resolve_args(context)
+			
+			Keywords.callv(effect.keyword, args)
+			keyword_resolved.emit(effect.keyword, args)
 	
 	return true

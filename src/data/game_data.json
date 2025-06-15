@@ -22,10 +22,15 @@
 			"name": "Strike",
 			"cost": 1,
 			"type": "spell",
+			"targets": [
+				{
+					"type": "creature"
+				}
+			],
 			"effects": [
 				{
 					"keyword": "damage",
-					"parameters": [2]
+					"parameters": ["t0", 2]
 				}
 			]
 		},
@@ -33,16 +38,21 @@
 			"name": "Self-Destruct",
 			"cost": 1,
 			"type": "spell",
+			"targets": [
+				{
+					"type": "creature"
+				}
+			],
 			"vars": {
-				"x": {
-					"expression": "0.attack",
-					"description": "The target's attack"
+				"damage_amount": {
+					"value": "t0.attack",
+					"description": "The target's attack value"
 				}
 			},
 			"effects": [
 				{
 					"keyword": "damage",
-					"parameters": ["x"]
+					"parameters": ["t0", "damage_amount"]
 				}
 			]
 		},
@@ -50,16 +60,21 @@
 			"name": "Shield",
 			"cost": 1,
 			"type": "spell",
+			"targets": [
+				{
+					"type": "creature"
+				}
+			],
 			"vars": {
-				"x": {
-					"expression": "0.health",
-					"description": "The target's health"
+				"armor_amount": {
+					"value": "t0.health",
+					"description": "Armor equal to the target's health"
 				}
 			},
 			"effects": [
 				{
 					"keyword": "add_armor",
-					"parameters": ["x"]
+					"parameters": ["t0", "armor_amount"]
 				}
 			]
 		},
@@ -67,10 +82,64 @@
 			"name": "Bolster",
 			"cost": 2,
 			"type": "spell",
+			"targets": [
+				{
+					"type": "creature"
+				}
+			],
 			"effects": [
 				{
 					"keyword": "add_armor",
-					"parameters": [3]
+					"parameters": ["t0", 3]
+				}
+			]
+		},
+		{
+			"name": "Precision Strike",
+			"cost": 2,
+			"type": "spell",
+			"targets": [
+				{
+					"type": "creature"
+				}
+			],
+			"vars": {
+				"base_damage": {
+					"value": 2,
+					"description": "Base damage amount"
+				},
+				"bonus_damage": {
+					"value": "t0.armor > 0 ? 2 : 0",
+					"description": "Bonus damage against armored targets"
+				}
+			},
+			"effects": [
+				{
+					"keyword": "damage",
+					"parameters": ["t0", "base_damage + bonus_damage"]
+				}
+			]
+		},
+		{
+			"name": "Cleave",
+			"cost": 3,
+			"type": "spell",
+			"targets": [
+				{
+					"type": "creature"
+				},
+				{
+					"type": "creature"
+				}
+			],
+			"effects": [
+				{
+					"keyword": "damage",
+					"parameters": ["t0", 3]
+				},
+				{
+					"keyword": "damage",
+					"parameters": ["t1", 1]
 				}
 			]
 		}

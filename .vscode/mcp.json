@@ -1,0 +1,11 @@
+{
+	"servers": {
+		"godot": {
+			"command": "node",
+			"args": ["E:/source/repos/godot-mcp/build/index.js"],
+			"env": {
+				"DEBUG": "true"
+			}
+		}
+	}
+}
