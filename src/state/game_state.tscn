@@ -1,6 +1,32 @@
-[gd_scene load_steps=2 format=3 uid="uid://chjrroykox3ka"]
+[gd_scene load_steps=3 format=3 uid="uid://chjrroykox3ka"]
 
 [ext_resource type="Script" uid="uid://bnm43qhxw8565" path="res://state/game_state.gd" id="1_all3l"]
+[ext_resource type="Script" uid="uid://dpvsbtg3p7ehh" path="res://state/zone.gd" id="2_dr6u1"]
 
 [node name="GameState" type="Node2D"]
 script = ExtResource("1_all3l")
+
+[node name="DrawPile" type="Node" parent="." node_paths=PackedStringArray("game_state")]
+script = ExtResource("2_dr6u1")
+game_state = NodePath("..")
+metadata/_custom_type_script = "uid://dpvsbtg3p7ehh"
+
+[node name="DiscardPile" type="Node" parent="." node_paths=PackedStringArray("game_state")]
+script = ExtResource("2_dr6u1")
+game_state = NodePath("..")
+metadata/_custom_type_script = "uid://dpvsbtg3p7ehh"
+
+[node name="Hand" type="Node" parent="." node_paths=PackedStringArray("game_state")]
+script = ExtResource("2_dr6u1")
+game_state = NodePath("..")
+metadata/_custom_type_script = "uid://dpvsbtg3p7ehh"
+
+[node name="Battlefield" type="Node" parent="." node_paths=PackedStringArray("game_state")]
+script = ExtResource("2_dr6u1")
+game_state = NodePath("..")
+metadata/_custom_type_script = "uid://dpvsbtg3p7ehh"
+
+[node name="Exile" type="Node" parent="." node_paths=PackedStringArray("game_state")]
+script = ExtResource("2_dr6u1")
+game_state = NodePath("..")
+metadata/_custom_type_script = "uid://dpvsbtg3p7ehh"
