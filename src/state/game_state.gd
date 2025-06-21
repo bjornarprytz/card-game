@@ -34,25 +34,3 @@ func get_atom(id: int) -> Atom:
 		return null
 	
 	return _atoms[id]
-
-# TODO: This needs to happen in a game action instead of here.
-static func from_dict(dict: Dictionary) -> GameState:
-	var game_state = GameState.new()
-	
-	for card_name in dict["deck"]:
-		var atom = Create.card(card_name)
-		game_state.draw_pile.add_atom(atom)
-
-	for card_name in dict["discard_pile"]:
-		var atom = Create.card(card_name)
-		game_state.discard_pile.add_atom(atom)
-
-	for card_name in dict["hand"]:
-		var atom = Create.card(card_name)
-		game_state.hand.add_atom(atom)
-
-	for creature_name in dict["battlefield"]:
-		var atom = Create.creature(creature_name)
-		game_state.battlefield.add_atom(atom)
-
-	return game_state
