@@ -2,20 +2,20 @@ class_name CreatureProto
 extends Resource
 
 var name: String
-var state: Dictionary = {}
+var properties: Dictionary = {}
 
 static func from_dict(data: Dictionary) -> CreatureProto:
-	var creature_data = CreatureProto.new()
+    var creature_data = CreatureProto.new()
 
-	creature_data.name = data.get("name", null)
-	creature_data.state = data.get("state", {})
+    creature_data.name = data.get("name", null)
+    creature_data.properties = data.get("properties", {})
 
-	if not creature_data.name:
-		push_error("Error: Creature name is missing")
-		return null
+    if not creature_data.name:
+        push_error("Error: Creature name is missing")
+        return null
 
-	if not creature_data.state:
-		push_error("Error: Creature state is missing")
-		return null
+    if not creature_data.properties:
+        push_error("Error: Creature properties are missing")
+        return null
 
-	return creature_data
+    return creature_data

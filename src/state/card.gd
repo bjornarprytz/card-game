@@ -11,7 +11,6 @@ var card_data: CardProto
 func _ready() -> void:
 	card_name_label.text = card_name
 	card_data = CardGameAPI.get_card(card_name)
-	_overwrite_state(card_data.state)
 
 
 func _on_gui_input(event: InputEvent) -> void:
