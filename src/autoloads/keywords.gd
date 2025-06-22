@@ -1,27 +1,51 @@
 extends Node
 
-func damage(target: Creature, amount: int):
-    target.armor -= amount
-    
-    if (target.armor < 0):
-        target.health += target.armor
-        target.armor = 0
+func deal_damage(target: Creature, amount: int) -> KeywordNode:
+	if amount <= 0:
+		push_warning("Damage amount must be greater than 0. Returning noop.")
+		return KeywordNode.noop("deal_damage", [target, amount])
+	var operations: Array[Operation] = []
 
-func add_armor(target: Creature, amount: int):
-    target.armor += amount
+	var current_armor = target.armor
+	var remaining_damage = amount
+	if current_armor > 0:
+		var remaining_armor = max(current_armor - remaining_damage, 0)
+		operations.append(SetState.new(target, "armor", remaining_armor))
+		remaining_damage -= current_armor
 
-func create_atom(atom_name: String, atom_type: String, zone: Zone):
-    var atom = Create.atom(atom_name, atom_type)
+	if remaining_damage > 0:
+		var current_damage_taken = target.get_state("damage_taken", 0)
+		var total_damage_taken = current_damage_taken + remaining_damage
+		operations.append(SetState.new(target, "damage_taken", total_damage_taken))
 
-    change_zone(atom, zone)
+	return KeywordNode.terminal("deal_damage", [target, amount], operations)
 
-func change_zone(atom: Atom, new_zone: Zone):
-    if atom.current_zone != null:
-        atom.current_zone.remove_atom(atom)
+func add_armor(target: Creature, amount: int) -> KeywordNode:
+	if amount <= 0:
+		push_warning("Armor amount must be greater than 0. Returning noop.")
+		return KeywordNode.noop("add_armor", [target, amount])
 
-    new_zone.add_atom(atom)
-    atom.current_zone = new_zone
+	var new_total_armor = target.armor + amount
 
-## TODO: Tackle the concept of Composite Keywords. They will not resolve directly, but unwrap to a list of atomic keywords that will be executed in order.
-## TODO: Calls to atomic keywords should be wrapped in a result builder, 
-## TODO: The result builder can keep track of the GameState as well in order to catch atom creation
+	return KeywordNode.terminal("add_armor", [target, amount], [SetState.new(target, "armor", new_total_armor)])
+
+func create_creature(game_state: GameState, creature_name: String, zone: Zone) -> KeywordNode:
+	return KeywordNode.composite(
+		"create_creature", 
+		[game_state, creature_name, zone], 
+		[create_atom(game_state, creature_name, "creature", zone)]
+		)
+
+func create_card(game_state: GameState, card_name: String, zone: Zone) -> KeywordNode:
+	return KeywordNode.composite(
+		"create_card", 
+		[game_state, card_name, zone], 
+		[create_atom(game_state, card_name, "card", zone)]
+		)
+
+func create_atom(game_state: GameState, atom_name: String, atom_type: String, zone: Zone) -> KeywordNode:
+	return KeywordNode.terminal(
+		"create_atom", 
+		[game_state, atom_name, atom_type, zone], 
+		[CreateAtom.new(game_state, atom_name, atom_type, zone)]
+		)

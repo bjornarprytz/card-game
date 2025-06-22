@@ -1,143 +1,143 @@
 {
-    "creatures": [
-        {
-            "name": "Goblin",
-            "properties": {
-                "health": 2,
-                "armor": 0,
-                "attack": 1
-            }
-        },
-        {
-            "name": "Orc",
-            "properties": {
-                "health": 4,
-                "armor": 0,
-                "attack": 2
-            }
-        }
-    ],
-    "cards": [
-        {
-            "name": "Strike",
-            "cost": 1,
-            "type": "spell",
-            "targets": [
-                {
-                    "type": "creature"
-                }
-            ],
-            "effects": [
-                {
-                    "keyword": "damage",
-                    "parameters": ["t0", 2]
-                }
-            ]
-        },
-        {
-            "name": "Self-Destruct",
-            "cost": 1,
-            "type": "spell",
-            "targets": [
-                {
-                    "type": "creature"
-                }
-            ],
-            "vars": {
-                "x": {
-                    "value": "t0.attack",
-                    "description": "The target's attack value"
-                }
-            },
-            "effects": [
-                {
-                    "keyword": "damage",
-                    "parameters": ["t0", "x"]
-                }
-            ]
-        },
-        {
-            "name": "Shield",
-            "cost": 1,
-            "type": "spell",
-            "targets": [
-                {
-                    "type": "creature"
-                }
-            ],
-            "vars": {
-                "x": {
-                    "value": "t0.health",
-                    "description": "The target's current health"
-                }
-            },
-            "effects": [
-                {
-                    "keyword": "add_armor",
-                    "parameters": ["t0", "x"]
-                }
-            ]
-        },
-        {
-            "name": "Bolster",
-            "cost": 2,
-            "type": "spell",
-            "targets": [
-                {
-                    "type": "creature"
-                }
-            ],
-            "effects": [
-                {
-                    "keyword": "add_armor",
-                    "parameters": ["t0", 3]
-                }
-            ]
-        },
-        {
-            "name": "Precision Strike",
-            "cost": 2,
-            "type": "spell",
-            "targets": [
-                {
-                    "type": "creature"
-                }
-            ],
-            "vars": {
-                "x": {
-                    "value": "t0.armor > 0 ? 2 : 0",
-                    "description": "Bonus damage against armored targets"
-                }
-            },
-            "effects": [
-                {
-                    "keyword": "damage",
-                    "parameters": ["t0", "2 + x"]
-                }
-            ]
-        },
-        {
-            "name": "Cleave",
-            "cost": 3,
-            "type": "spell",
-            "targets": [
-                {
-                    "type": "creature"
-                },
-                {
-                    "type": "creature"
-                }
-            ],
-            "effects": [
-                {
-                    "keyword": "damage",
-                    "parameters": ["t0", 3]
-                },
-                {
-                    "keyword": "damage",
-                    "parameters": ["t1", 1]
-                }
-            ]
-        }
-    ]
+	"creatures": [
+		{
+			"name": "Goblin",
+			"properties": {
+				"health": 2,
+				"armor": 0,
+				"attack": 1
+			}
+		},
+		{
+			"name": "Orc",
+			"properties": {
+				"health": 4,
+				"armor": 0,
+				"attack": 2
+			}
+		}
+	],
+	"cards": [
+		{
+			"name": "Strike",
+			"cost": 1,
+			"type": "spell",
+			"targets": [
+				{
+					"type": "creature"
+				}
+			],
+			"effects": [
+				{
+					"keyword": "damage",
+					"parameters": ["t0", 2]
+				}
+			]
+		},
+		{
+			"name": "Self-Destruct",
+			"cost": 1,
+			"type": "spell",
+			"targets": [
+				{
+					"type": "creature"
+				}
+			],
+			"vars": {
+				"x": {
+					"value": "t0.attack",
+					"description": "The target's attack value"
+				}
+			},
+			"effects": [
+				{
+					"keyword": "damage",
+					"parameters": ["t0", "x"]
+				}
+			]
+		},
+		{
+			"name": "Shield",
+			"cost": 1,
+			"type": "spell",
+			"targets": [
+				{
+					"type": "creature"
+				}
+			],
+			"vars": {
+				"x": {
+					"value": "t0.health",
+					"description": "The target's current health"
+				}
+			},
+			"effects": [
+				{
+					"keyword": "add_armor",
+					"parameters": ["t0", "x"]
+				}
+			]
+		},
+		{
+			"name": "Bolster",
+			"cost": 2,
+			"type": "spell",
+			"targets": [
+				{
+					"type": "creature"
+				}
+			],
+			"effects": [
+				{
+					"keyword": "add_armor",
+					"parameters": ["t0", 3]
+				}
+			]
+		},
+		{
+			"name": "Precision Strike",
+			"cost": 2,
+			"type": "spell",
+			"targets": [
+				{
+					"type": "creature"
+				}
+			],
+			"vars": {
+				"x": {
+					"value": "t0.armor > 0 ? 2 : 0",
+					"description": "Bonus damage against armored targets"
+				}
+			},
+			"effects": [
+				{
+					"keyword": "damage",
+					"parameters": ["t0", "2 + x"]
+				}
+			]
+		},
+		{
+			"name": "Cleave",
+			"cost": 3,
+			"type": "spell",
+			"targets": [
+				{
+					"type": "creature"
+				},
+				{
+					"type": "creature"
+				}
+			],
+			"effects": [
+				{
+					"keyword": "damage",
+					"parameters": ["t0", 3]
+				},
+				{
+					"keyword": "damage",
+					"parameters": ["t1", 1]
+				}
+			]
+		}
+	]
 }

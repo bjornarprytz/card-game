@@ -7,23 +7,20 @@ extends Atom
 var _atoms: Dictionary[int, Atom] = {}
 
 func _ready() -> void:
-    assert(game_state != null, "Zone must have a valid GameState reference")
+	assert(game_state != null, "Zone must have a valid GameState reference")
 
 # Add an atom to the zone
 func add_atom(atom: Atom):
-    if _atoms.has(atom.id):
-        push_error("Atom with id <%d> already exists in this zone" % atom.id)
-        return
-    
-    game_state.ensure_atom_is_registered(atom)
-    _atoms[atom.id] = atom
-    _set_state("atoms", _atoms.values())
+	if _atoms.has(atom.id):
+		push_error("Atom with id <%d> already exists in this zone" % atom.id)
+		return
+	
+	_atoms[atom.id] = atom
 
 # Remove an atom from the zone
 func remove_atom(atom: Atom):
-    _atoms.erase(atom.id)
-    _set_state("atoms", _atoms.values())
+	_atoms.erase(atom.id)
 
 var atoms: Array[Atom]:
-    get:
-        return _get_state("atoms", [])
+	get:
+		return get_state("atoms", [] as Array[Atom])
