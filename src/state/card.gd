@@ -4,13 +4,11 @@ extends Atom
 @onready var context_factory: PackedScene = preload("res://gameplay/play_card_ui.tscn")
 @onready var card_name_label: RichTextLabel = %CardName
 
-@export var card_name: String
-
 var card_data: CardProto
 
 func _ready() -> void:
-	card_name_label.text = card_name
-	card_data = CardGameAPI.get_card(card_name)
+	card_name_label.text = atom_name
+	card_data = CardGameAPI.get_card(atom_name)
 
 
 func _on_gui_input(event: InputEvent) -> void:

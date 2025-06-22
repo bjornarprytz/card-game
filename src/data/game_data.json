@@ -29,7 +29,7 @@
 			],
 			"effects": [
 				{
-					"keyword": "damage",
+					"keyword": "deal_damage",
 					"parameters": ["t0", 2]
 				}
 			]
@@ -51,7 +51,7 @@
 			},
 			"effects": [
 				{
-					"keyword": "damage",
+					"keyword": "deal_damage",
 					"parameters": ["t0", "x"]
 				}
 			]
@@ -111,7 +111,7 @@
 			},
 			"effects": [
 				{
-					"keyword": "damage",
+					"keyword": "deal_damage",
 					"parameters": ["t0", "2 + x"]
 				}
 			]
@@ -130,11 +130,11 @@
 			],
 			"effects": [
 				{
-					"keyword": "damage",
+					"keyword": "deal_damage",
 					"parameters": ["t0", 3]
 				},
 				{
-					"keyword": "damage",
+					"keyword": "deal_damage",
 					"parameters": ["t1", 1]
 				}
 			]

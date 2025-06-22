@@ -6,27 +6,22 @@
 [node name="GameState" type="Node2D"]
 script = ExtResource("1_all3l")
 
-[node name="DrawPile" type="Node" parent="." node_paths=PackedStringArray("game_state")]
+[node name="DrawPile" type="Node" parent="."]
 script = ExtResource("2_dr6u1")
-game_state = NodePath("..")
 metadata/_custom_type_script = "uid://dpvsbtg3p7ehh"
 
-[node name="DiscardPile" type="Node" parent="." node_paths=PackedStringArray("game_state")]
+[node name="DiscardPile" type="Node" parent="."]
 script = ExtResource("2_dr6u1")
-game_state = NodePath("..")
 metadata/_custom_type_script = "uid://dpvsbtg3p7ehh"
 
-[node name="Hand" type="Node" parent="." node_paths=PackedStringArray("game_state")]
+[node name="Hand" type="Node" parent="."]
 script = ExtResource("2_dr6u1")
-game_state = NodePath("..")
 metadata/_custom_type_script = "uid://dpvsbtg3p7ehh"
 
-[node name="Battlefield" type="Node" parent="." node_paths=PackedStringArray("game_state")]
+[node name="Battlefield" type="Node" parent="."]
 script = ExtResource("2_dr6u1")
-game_state = NodePath("..")
 metadata/_custom_type_script = "uid://dpvsbtg3p7ehh"
 
-[node name="Exile" type="Node" parent="." node_paths=PackedStringArray("game_state")]
+[node name="Exile" type="Node" parent="."]
 script = ExtResource("2_dr6u1")
-game_state = NodePath("..")
 metadata/_custom_type_script = "uid://dpvsbtg3p7ehh"

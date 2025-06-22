@@ -12,7 +12,7 @@ func _ready() -> void:
 
 var health: int:
 	get:
-		return get_state("health", 0)
+		return get_property("health", 0)
 
 var armor: int:
 	get:
@@ -20,11 +20,8 @@ var armor: int:
 
 var attack: int:
 	get:
-		return get_state("attack", 0)
+		return get_property("attack", 0)
 
 func _update_ui():
 	stats_ui.text = "H:%d|Ar:%d|At:%d" % [health, armor, attack]
 	name_ui.text = atom_name
-
-func _to_string() -> String:
-	return "Creature(%s)" % name

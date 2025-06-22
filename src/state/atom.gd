@@ -34,7 +34,7 @@ func get_state_diff(other_state: Dictionary[String, Variant]) -> Dictionary[Stri
 	return diff
 
 func get_state(key: String, default_value: Variant = null) -> Variant:
-	key = key.to_lower()
+	key = _clean_key(key)
 	if (_state.has(key)):
 		return _state[key]
 	
@@ -42,7 +42,7 @@ func get_state(key: String, default_value: Variant = null) -> Variant:
 	return default_value
 
 func remove_state(key: String) -> bool:
-	key = key.to_lower()
+	key = _clean_key(key)
 	if (!_state.has(key)):
 		push_warning("Trying to remove non-existent state_key <%s>" % key)
 		return false
@@ -62,6 +62,14 @@ func set_state(key: String, value: Variant) -> bool:
 	_on_state_changed(key, value)
 	return true
 
+func get_property(key: String, default_value: Variant = null) -> Variant:
+	key = _clean_key(key)
+	if (_properties.has(key)):
+		return _properties[key]
+	
+	push_warning("Trying to get non-existent property_key <%s>. Returning default value: %s" % [key, default_value])
+	return default_value
+
 func _init_properties(properties: Dictionary[String, Variant]) -> void:
 	if !_properties.is_empty():
 		push_error("Properties already initialized. Cannot reinitialize.")
@@ -69,19 +77,14 @@ func _init_properties(properties: Dictionary[String, Variant]) -> void:
 	for prop in properties.keys():
 		_set_property(prop, properties[prop])
 
-func _ready() -> void:
-	assert(id != 0, "Atom ID must be set before using the atom.")
-	assert(atom_name != null and atom_name != "", "Atom name must be set before using the atom.")
-	assert(atom_type != null and atom_type != "", "Atom type must be set before using the atom.")
-	_update_ui()
-
 func _update_ui():
 	# Override this method in subclasses to update the UI
 	push_warning("Update UI method not implemented in %s" % self.name)
 
 func _on_state_changed(key: String, value: Variant) -> void:
 	state_changed.emit(key, value)
-	_update_ui()
+	if self.is_node_ready():
+		_update_ui()
 
 func _set_property(key: String, value: Variant) -> bool:
 	key = _clean_key(key)
@@ -115,3 +118,6 @@ func _are_equal(a: Variant = null, b: Variant = null) -> bool:
 		return false
 	
 	return false
+
+func _to_string() -> String:
+	return "[%s:%s:%s]" % [id, atom_type, atom_name]
