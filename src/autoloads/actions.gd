@@ -39,9 +39,8 @@ func play_card(context: PlayCardContext) -> bool:
 
 func _resolve_keyword(keyword: String, args: Array[Variant]):
 	# Take before snapshots for all Atom arguments
-	
 	# Call the keyword
-	var operation_tree = Keywords.callv(keyword, args)
+	var operation_tree = Keywords.create_operation_tree(keyword, args)
 
 	var result = operation_tree.resolve()
 

@@ -1,6 +1,6 @@
 {
 	"deck": ["Strike", "Strike", "Shield", "Shield", "Bolster", "Self-Destruct"],
-	"hand": ["Strike", "Shield", "Bolster", "Self-Destruct"],
+	"hand": ["Strike", "Shield", "Bolster", "Steel Strike"],
 	"discard_pile": [],
 	"battlefield": ["Orc", "Goblin", "Goblin"]
 }

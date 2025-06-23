@@ -138,6 +138,22 @@
 					"parameters": ["t1", 1]
 				}
 			]
+		},
+		{
+			"name": "Steel Strike",
+			"cost": 2,
+			"type": "spell",
+			"targets": [
+				{
+					"type": "creature"
+				}
+			],
+			"effects": [
+				{
+					"keyword": "steel_attack",
+					"parameters": ["t0", "t0", 3]
+				}
+			]
 		}
 	]
 }

@@ -39,7 +39,7 @@ func _input(event: InputEvent) -> void:
 			for t in _targets:
 				targets.append(t.atom)
 			Actions.play_card(PlayCardContext.create(state, card, targets))
-			print("resolved %s" % card.name)
+			print("resolved %s" % card)
 			
 
 func _exit_tree() -> void:

@@ -4,6 +4,15 @@ game on itch.io: [link](https://thewarlock.itch.io/card-game)
 
 Stipulation: 3 color palette
 
+Card game TODO:
+
+- Multiple targets
+- Cost
+- Event History
+- Game Loop
+  - Phases
+  - State based effects
+
 ## TODO
 
 - Setup itch.io page for card-game [link](https://itch.io/game/new)
