@@ -26,8 +26,8 @@ func initialize_game_state():
 
 func _on_keyword_resolved(result: KeywordResult):
 	for change in result.get_state_changes():
+		var atom = game_state.get_atom(change.atom_id)
 		if (change.atom_created):
-			var atom = game_state.get_atom(change.atom_id)
 			print("Atom created: %s" % atom)
 		else:
-			print("%s: %s->%s" % [change.state_key, change.value_before, change.value_after])
+			print("%s.%s: %s->%s" % [atom, change.state_key, change.value_before, change.value_after])

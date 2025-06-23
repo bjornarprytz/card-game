@@ -117,7 +117,15 @@ func _are_equal(a: Variant = null, b: Variant = null) -> bool:
 		push_error("Type mismatch: %s vs %s" % [typeof(a), typeof(b)])
 		return false
 	
+	if a is Array and b is Array:
+		if a.size() != b.size():
+			return false
+		for i in range(a.size()):
+			if not _are_equal(a[i], b[i]):
+				return false
+		return true
+	
 	return false
 
 func _to_string() -> String:
-	return "[%s:%s:%s]" % [id, atom_type, atom_name]
+	return "(%s)%s" % [id, atom_name]
