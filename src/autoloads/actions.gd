@@ -11,6 +11,11 @@ func snapshot_atom(atom: Atom) -> Dictionary[String, Variant]:
 
 func initialize_game_state(game_state: GameState, initial_conditions: Variant) -> void:
 	# TODO: Create type for initial_conditions
+	# Initialize player state
+	game_state.player.starting_lives = int(initial_conditions["player"]["starting_lives"])
+	game_state.player.starting_resources = int(initial_conditions["player"]["starting_resources"])
+	game_state.player.starting_hand_size = int(initial_conditions["player"]["starting_hand_size"])
+
 	for card_name in initial_conditions["deck"]:
 		_resolve_keyword("create_card", [game_state, card_name, game_state.draw_pile])
 	for card_name in initial_conditions["discard_pile"]:

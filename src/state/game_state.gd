@@ -1,6 +1,7 @@
 class_name GameState
 extends Node2D
 
+@onready var player: Player = $Player
 @onready var draw_pile: Zone = $DrawPile
 @onready var discard_pile: Zone = $DiscardPile
 @onready var hand: Zone = $Hand
@@ -11,8 +12,8 @@ var _atoms: Array[Atom] = []
 
 func _ready() -> void:
 	# Ensure all zones are registered with the game state
-	for zone in [draw_pile, discard_pile, hand, battlefield, exile]:
-		register_atom(zone)
+	for atom in [player, draw_pile, discard_pile, hand, battlefield, exile]:
+		register_atom(atom)
 
 func atom_count() -> int:
 	return _atoms.size()
