@@ -146,12 +146,15 @@
 			"targets": [
 				{
 					"type": "creature"
+				},
+				{
+					"type": "creature"
 				}
 			],
 			"effects": [
 				{
 					"keyword": "steel_attack",
-					"parameters": ["t0", "t0", 3]
+					"parameters": ["t0", "t1", 3]
 				}
 			]
 		}

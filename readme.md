@@ -6,9 +6,10 @@ Stipulation: 3 color palette
 
 Card game TODO:
 
-- Multiple targets
+- Player
 - Cost
 - Event History
+- Triggered effects
 - Game Loop
   - Phases
   - State based effects

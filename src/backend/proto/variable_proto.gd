@@ -22,7 +22,7 @@ static func from_dict(data: Dictionary) -> VariableProto:
 	var variable_data = VariableProto.new()
 
 	variable_data.name = data.get("name", null)
-	variable_data.description = data.get("description", "")
+	variable_data.description = data.get("description", "MISSING DESCRIPTION")
 
 	if not variable_data.name:
 		push_error("Error: Variable name is missing")
@@ -41,11 +41,8 @@ static func from_dict(data: Dictionary) -> VariableProto:
 				variable_data.value = val.substr(1, val.length() - 2)
 			else:
 				variable_data.value = val
-	elif data.has("expression"):
-		# Legacy support for old expression format
-		variable_data.value_expression = ContextExpression.from_string(data.get("expression"))
 	else:
-		push_error("Error: Variable '%s' has no value or expression defined" % variable_data.name)
+		push_error("Error: Variable '%s' has no value defined" % variable_data.name)
 		return null
 
 	return variable_data

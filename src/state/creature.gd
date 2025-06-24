@@ -7,21 +7,22 @@ extends Atom
 var creature_data: CreatureProto
 
 func _ready() -> void:
-	creature_data = CardGameAPI.get_creature(atom_name)
-	_init_properties(creature_data.properties)
+    creature_data = CardGameAPI.get_creature(atom_name)
+    _init_properties(creature_data.properties)
+    _update_ui()
 
 var health: int:
-	get:
-		return get_property("health", 0)
+    get:
+        return get_property("health", 0)
 
 var armor: int:
-	get:
-		return get_state("armor", 0)
+    get:
+        return get_state("armor", 0)
 
 var attack: int:
-	get:
-		return get_property("attack", 0)
+    get:
+        return get_property("attack", 0)
 
 func _update_ui():
-	stats_ui.text = "H:%d|Ar:%d|At:%d" % [health, armor, attack]
-	name_ui.text = atom_name
+    stats_ui.text = "H:%d|Ar:%d|At:%d" % [health, armor, attack]
+    name_ui.text = self.to_string()

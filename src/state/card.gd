@@ -12,7 +12,7 @@ func _ready() -> void:
 
 
 func _on_gui_input(event: InputEvent) -> void:
-	if (event is InputEventMouseButton and event.is_pressed()):
+	if (event is InputEventMouseButton and !event.is_pressed()):
 		var context = context_factory.instantiate() as PlayCardUI
 		context.card = self
 		get_tree().root.add_child(context)
