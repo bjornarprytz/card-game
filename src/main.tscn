@@ -1,10 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://cgrejd4v5ywd3"]
+[gd_scene load_steps=4 format=3 uid="uid://cgrejd4v5ywd3"]
 
 [ext_resource type="Script" uid="uid://ppenn7oxl8wb" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://chjrroykox3ka" path="res://state/game_state.tscn" id="2_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://c0qlqiepcfaf4" path="res://game_loop/game_loop.tscn" id="2_h2yge"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_ig7tw")
+
+[node name="GameLoop" parent="." node_paths=PackedStringArray("game_state") instance=ExtResource("2_h2yge")]
+game_state = NodePath("../GameState")
 
 [node name="GameState" parent="." instance=ExtResource("2_0xm2m")]
 

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0qlqiepcfaf4"]
+
+[ext_resource type="Script" uid="uid://cp7uf1ao77iwm" path="res://game_loop/game_loop.gd" id="1_mbpio"]
+
+[node name="GameLoop" type="Node"]
+script = ExtResource("1_mbpio")

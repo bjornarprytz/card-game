@@ -1,5 +1,5 @@
 class_name GameState
-extends Node2D
+extends Node
 
 @onready var player: Player = $Player
 @onready var draw_pile: Zone = $DrawPile
