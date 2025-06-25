@@ -10,6 +10,7 @@ Card game TODO:
   - Phases
   - State based effects
 - Cost
+- Track source of effects
 - Event History
 - Triggered effects
 
