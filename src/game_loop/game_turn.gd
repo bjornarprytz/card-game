@@ -9,7 +9,9 @@ var action_history: Array[ActionResult] = []
 func _init(turn_number_: int) -> void:
     turn_number = turn_number_
     _remaining_phases = [
-        ## TODO: Add the actual phases of the turn here
+        GamePhase.new(["upkeep"]),
+        GamePhase.new(["main"]),
+        GamePhase.new(["end"]),
     ]
 
 func get_next_phase() -> GamePhase:
