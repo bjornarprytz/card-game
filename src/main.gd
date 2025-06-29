@@ -5,10 +5,12 @@ extends Node2D
 @onready var hand: HBoxContainer = %Hand
 
 @onready var game_state: GameState = $GameState
+@onready var game_loop: GameLoop = $GameLoop
 
 func _ready() -> void:
 	Actions.keyword_resolved.connect(_on_keyword_resolved)
 	initialize_game_state()
+	game_loop.setup()
 	
 	for creature in game_state.battlefield.atoms:
 		battlefield.add_child(creature)
@@ -17,6 +19,7 @@ func _ready() -> void:
 		hand.add_child(card)
 
 	draw_pile_count.text = "%d" % game_state.draw_pile.atoms.size()
+
 
 func initialize_game_state():
 	# Initialize the game state with the loaded data

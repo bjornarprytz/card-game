@@ -18,6 +18,13 @@ func initialize_game_state(game_state: GameState, initial_conditions: Variant) -
 	for creature_name in initial_conditions["battlefield"]:
 		_resolve_keyword("create_creature", [game_state, creature_name, game_state.battlefield])
 
+func resolve_step(step: GameStepProto, context: Context) -> void:
+	# Resolve all effects in the step
+	for effect in step.effects:
+		if effect.evaluate_condition(context):
+			var args = effect.resolve_args(context)
+			_resolve_keyword(effect.keyword, args)
+
 func play_card(context: PlayCardContext) -> bool:
 	var chosen_targets = context.chosen_targets
 	var required_targets = context.card.card_data.targets

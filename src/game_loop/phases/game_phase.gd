@@ -6,7 +6,7 @@ var _steps: Array[String] = []
 func _init(steps_: Array[String]) -> void:
     _steps = steps_
 
-func get_next_step() -> GameStep:
+func get_next_step() -> GameStepProto:
     if _steps.is_empty():
         return null
 
