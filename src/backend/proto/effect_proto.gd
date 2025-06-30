@@ -43,32 +43,3 @@ static func parse_effect_data(data: Dictionary) -> EffectProto:
 		push_warning("Warning: EffectData has no parameters")
 	
 	return effect_data
-
-
-class Builder:
-	var _effect: EffectProto = null
-
-	func _init(keyword: String = "") -> void:
-		_effect = EffectProto.new()
-		_effect.keyword = keyword
-
-	func add_game_state_parameter() -> Builder:
-		_effect.parameters.append(ParameterProto.from_callable(func(context: Context) -> Variant:
-			return context.state
-		))
-		return self
-
-	func add_parameter_lambda(accessor: Callable) -> Builder:
-		_effect.parameters.append(ParameterProto.from_callable(accessor))
-		return self
-	
-	func add_parameter(param: Variant) -> Builder:
-		_effect.parameters.append(ParameterProto.from_variant(param))
-		return self
-
-	func build() -> EffectProto:
-		if not _effect.keyword:
-			push_error("Error: Effect keyword is missing")
-			return null
-		
-		return _effect

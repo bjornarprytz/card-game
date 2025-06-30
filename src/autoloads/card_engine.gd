@@ -16,9 +16,3 @@ func get_creature(creature_name: String) -> CreatureProto:
 		push_error("Creature '%s' not found in game data" % creature_name)
 		return null
 	return gameData.creatures[creature_name]
-
-func get_step(step_name: String) -> GameStepProto:
-	if not gameData.steps.has(step_name):
-		push_error("Step '%s' not found in game data" % step_name)
-		return null
-	return gameData.steps[step_name]

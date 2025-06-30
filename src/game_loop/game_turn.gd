@@ -10,13 +10,14 @@ func _init(turn_number_: int) -> void:
     turn_number = turn_number_
     _remaining_phases = [
         GamePhase.new(["upkeep"]),
-        GamePhase.new(["main"]),
+        GamePhase.new([], true),
         GamePhase.new(["end"]),
     ]
 
+func is_finished() -> bool:
+    return _remaining_phases.is_empty()
+
 func get_next_phase() -> GamePhase:
-    if _remaining_phases.is_empty():
-        return null
     return _remaining_phases.pop_front()
 
 func add_event(event: ActionResult) -> void:

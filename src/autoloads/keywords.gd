@@ -72,19 +72,3 @@ func discard_hand(game_state: GameState) -> Array[Operation]:
 		operations.append(ChangeZone.new(card, game_state.discard_pile))
 
 	return operations
-
-func setup_step(game_state: GameState) -> Array[Operation]:
-	var operations: Array[Operation] = []
-	operations.append(SetState.new(game_state.player, "lives", game_state.player.starting_lives, 0))
-	operations.append(SetState.new(game_state.player, "resources", game_state.player.starting_resources, 0))
-	return operations
-
-func upkeep_step(game_state: GameState) -> Array[Operation]:
-	var operations: Array[Operation] = []
-	operations.append_array(draw_cards(game_state, game_state.player.starting_hand_size))
-	return operations
-
-func end_step(game_state: GameState) -> Array[Operation]:
-	var operations: Array[Operation] = []
-	operations.append(discard_hand(game_state))
-	return operations

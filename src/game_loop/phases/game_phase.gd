@@ -3,26 +3,40 @@ extends Resource
 
 var _steps: Array[String] = []
 
-func _init(steps_: Array[String]) -> void:
-    _steps = steps_
+var step_results: Array[KeywordResult] = []
+var action_results: Array[ActionResult] = []
 
-func get_next_step() -> GameStepProto:
-    if _steps.is_empty():
-        return null
+var _resolved_steps: bool = false
+var _allow_actions: bool = false
 
-    var step_name = _steps.pop_front()
-    var step = CardGameAPI.get_step(step_name)
-    if step == null:
-        push_error("Error: Step '%s' not found in CardGameAPI" % step_name)
-        return null
-    
-    return step
+func _init(steps: Array[String], allow_actions: bool = false) -> void:
+	_steps = steps
+	_allow_actions = allow_actions
+
+func resolve_steps(_game_state: GameState) -> Array[KeywordResult]:
+	assert(_game_state != null, "GamePhase requires a valid GameState")
+	assert(not _resolved_steps, "Steps have already been resolved for this phase")
+
+	var keyword_results: Array[KeywordResult] = []
+	
+	for step in _steps:
+		var operation_tree = Steps.create_operation_tree(step, _game_state)
+		
+		if operation_tree:
+			var result = operation_tree.resolve()
+			keyword_results.append(result)
+			step_results.append(result)
+	
+	_resolved_steps = true
+
+	return keyword_results
+
+func append_action_result(action_result: ActionResult) -> void:
+	assert(action_result != null, "ActionResult cannot be null")
+	action_results.append(action_result)
 
 func is_valid_action(_action: GameAction, _game_state: GameState) -> bool:
-    return true
+	return _allow_actions
 
-func is_finished(_game_state: GameState) -> bool:
-    return false
-
-func on_enter_phase(_game_state: GameState) -> void:
-    pass
+func is_finished() -> bool:
+	return _resolved_steps && !_allow_actions
