@@ -1,8 +1,17 @@
 extends Node
 
 func create_operation_tree(step: String, game_state: GameState) -> KeywordNode:
+	if !self.has_method(step):
+		push_error("Step <%s> does not exist in Steps" % step)
+		return null
+
 	var args: Array[Variant] = [game_state]
 	var tree = self.callv(step, args)
+
+	if tree == null:
+		push_error("Method <%s> returned null in Steps" % step)
+		return null
+
 	return KeywordNode.create(step, args, tree)
 
 func setup(game_state: GameState) -> Array[Operation]:

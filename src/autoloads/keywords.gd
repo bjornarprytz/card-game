@@ -1,7 +1,20 @@
 extends Node
 
 func create_operation_tree(keyword: String, args: Array[Variant]) -> KeywordNode:
+	if (!self.has_method(keyword)):
+		push_error("Method '%s' does not exist in %s" % [keyword, self.name])
+		return null
+
+	if (!self.get_method_argument_count(keyword) == args.size()):
+		push_error("Method '%s' called with incorrect number of arguments in %s" % [keyword, self.name])
+		return null
+	
 	var tree = self.callv(keyword, args)
+
+	if tree == null:
+		push_error("Method '%s' returned null in %s" % [keyword, self.name])
+		return null
+
 	return KeywordNode.create(keyword, args, tree)
 
 func steel_attack(source: Creature, target: Creature, amount: int) -> Array[KeywordNode]:
