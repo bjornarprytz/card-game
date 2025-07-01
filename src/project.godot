@@ -22,7 +22,6 @@ Events="*res://autoloads/event_bus.gd"
 Create="*res://autoloads/factory.gd"
 CardGameAPI="*res://autoloads/card_engine.tscn"
 DataLoader="*res://autoloads/data_loader.gd"
-Actions="*res://autoloads/actions.gd"
 Steps="*res://autoloads/steps.gd"
 Keywords="*res://autoloads/keywords.gd"
 

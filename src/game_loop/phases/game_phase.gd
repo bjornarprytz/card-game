@@ -13,6 +13,18 @@ func _init(steps: Array[String], allow_actions: bool = false) -> void:
 	_steps = steps
 	_allow_actions = allow_actions
 
+static func setup(game_state: GameState) -> GamePhase:
+	## TODO: This might be temporary because it's not following the same pattern as other phases.
+	var phase = GamePhase.new([], false)
+	var operation_tree = Steps.create_operation_tree("setup", game_state, [CardGameAPI.get_initial_game_state()])
+	
+	if operation_tree:
+		var result = operation_tree.resolve()
+		phase.step_results.append(result)
+	
+	phase._resolved_steps = true
+	return phase
+
 func resolve_steps(_game_state: GameState) -> Array[KeywordResult]:
 	assert(_game_state != null, "GamePhase requires a valid GameState")
 	assert(not _resolved_steps, "Steps have already been resolved for this phase")

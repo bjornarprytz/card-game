@@ -158,5 +158,21 @@
 				}
 			]
 		}
-	]
+	],
+	"initial_game_state": {
+		"deck": [
+			"Strike",
+			"Shield",
+			"Bolster",
+			"Cleave",
+			"Steel Strike",
+			"Self-Destruct",
+			"Strike",
+			"Strike",
+			"Strike",
+			"Strike"
+		],
+		"enemies": ["Goblin", "Orc", "Goblin"],
+		"starting_lives": 20
+	}
 }

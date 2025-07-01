@@ -2,6 +2,7 @@ class_name PlayCardUI
 extends Node2D
 
 @export var state: GameState
+@export var game_loop: GameLoop
 @export var card: Card
 
 @onready var message: RichTextLabel = %Message
@@ -37,7 +38,15 @@ func _toggle_target(target: Targetable):
 		var target_atoms: Array[Atom] = []
 		for t in _targets:
 			target_atoms.append(t.atom)
-		Actions.play_card(PlayCardContext.create(state, card, target_atoms))
+		
+		var action = PlayCardAction.new(PlayCardContext.create(state, card, target_atoms))
+		
+		if (game_loop.try_take_action(action)):
+			print("Action taken: %s" % action)
+		else:
+			print("Action failed: %s" % action)
+			return
+
 		print("resolved %s" % card)
 		queue_free()
 

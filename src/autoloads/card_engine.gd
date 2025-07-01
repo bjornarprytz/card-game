@@ -16,3 +16,9 @@ func get_creature(creature_name: String) -> CreatureProto:
 		push_error("Creature '%s' not found in game data" % creature_name)
 		return null
 	return gameData.creatures[creature_name]
+
+func get_initial_game_state() -> InitialGameState:
+	if gameData.initial_game_state == null:
+		push_error("Initial game state not found in game data")
+		return null
+	return gameData.initial_game_state

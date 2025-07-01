@@ -12,7 +12,7 @@ func get_value(context: Context) -> Variant:
 	if (_immediate != null):
 		return _immediate
 	
-	push_error("Error: No immediate value or accessor found")
+	push_error("Error: No immediate value or context expression found")
 	return null
 
 static func from_variant(param: Variant) -> ParameterProto:

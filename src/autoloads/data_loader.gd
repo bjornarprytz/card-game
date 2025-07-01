@@ -8,11 +8,6 @@ func load_game_data() -> GameProto:
 	
 	return game_data
 
-func load_game_state() -> Variant:
-	var g = read_json("res://data/initial_state.json")
-
-	return g.data
-
 
 func read_json(file_name: String) -> Variant:
 	var file = FileAccess.open(file_name, FileAccess.READ)
