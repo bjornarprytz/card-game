@@ -1,6 +1,8 @@
 class_name GamePhase
 extends Resource
 
+signal phase_ended()
+
 var _steps: Array[String] = []
 
 var step_results: Array[KeywordResult] = []
@@ -8,6 +10,7 @@ var action_results: Array[ActionResult] = []
 
 var _resolved_steps: bool = false
 var _allow_actions: bool = false
+var _ended: bool = false
 
 func _init(steps: Array[String], allow_actions: bool = false) -> void:
 	_steps = steps
@@ -47,8 +50,13 @@ func append_action_result(action_result: ActionResult) -> void:
 	assert(action_result != null, "ActionResult cannot be null")
 	action_results.append(action_result)
 
+func end_phase() -> void:
+	assert(not _ended, "Phase has already ended")
+	_ended = true
+	phase_ended.emit()
+
 func is_valid_action(_action: GameAction, _game_state: GameState) -> bool:
-	return _allow_actions
+	return !_ended && _resolved_steps && _allow_actions
 
 func is_finished() -> bool:
-	return _resolved_steps && !_allow_actions
+	return _ended || (_resolved_steps && !_allow_actions)

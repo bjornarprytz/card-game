@@ -6,9 +6,11 @@ Stipulation: 3 color palette
 
 Card game TODO:
 
-- Game Loop
-  - Phases
-  - State based effects
+- Clean Up
+  - Game loop state machine
+  - Phase state machine
+  - State based effects (after each action)
+- Prompts (and AnswerPromptAction)
 - Cost
 - Track source of effects
 - Event History

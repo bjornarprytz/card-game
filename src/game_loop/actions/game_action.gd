@@ -1,7 +1,7 @@
 class_name GameAction
 extends Resource
 
-func pop_next_operation_tree(_game_state: GameState) -> KeywordNode:
+func pop_next_operation_tree() -> KeywordNode:
 	# This method should be overridden by subclasses
 	push_error("Error: pop_next_operation_tree() not implemented in GameAction subclass")
 	return null

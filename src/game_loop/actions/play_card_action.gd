@@ -9,8 +9,7 @@ func _init(play_card_context: PlayCardContext) -> void:
 	assert(play_card_context != null, "PlayCardContext cannot be null")
 	_context = play_card_context
 
-func pop_next_operation_tree(game_state: GameState) -> KeywordNode:
-	assert(game_state != null, "GameState cannot be null")
+func pop_next_operation_tree() -> KeywordNode:
 	assert(!is_finished(), "PlayCardAction is already finished")
 	
 	var card = _context.card.card_data
