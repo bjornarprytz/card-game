@@ -26,94 +26,96 @@ var current_phase: GamePhase:
 var current_action: ActionResult = null
 var turn_history: Array[GameTurn] = []
 
+# Effect block queue and current effect block
+var effect_block_queue: Array = []
+var current_effect_block: EffectBlock = null
+
 # Prompt state
 var pending_prompt: Prompt = null
 
 func _ready() -> void:
     assert(game_state != null, "The game loop needs a reference to the game state")
 
+    var setup_context = GameSetupContext.create(game_state, CardGameAPI.get_initial_game_state())
+    var block = GameSetup.new(setup_context)
+    effect_block_queue.append(block)
+
+    # Start the game loop
+    advance_loop()
+
 func _process(_delta: float) -> void:
-    if pending_prompt == null and (current_phase == null or !current_phase._allow_actions):
-        _advance_loop()
+    if pending_prompt == null:
+        advance_loop()
 
-func setup():
-    current_phase = GamePhase.setup(game_state)
-    print("setup phase started")
-
-func start_turn(turn: GameTurn):
-    current_turn = turn
-    start_phase(current_turn.get_next_phase())
-
-func start_phase(phase: GamePhase):
-    current_phase = phase
-
-func _advance_loop():
-    if _advance_action():
+func advance_loop():
+    # 1. If a prompt is pending, wait for player input
+    if pending_prompt != null:
+        push_warning("A prompt is pending, waiting for player response.")
         return
-    
-    if current_phase == null or current_phase.is_finished():
-        if current_turn == null or current_turn.is_finished():
+
+    # 2. If there is a current effect block, resolve its next keyword/effect
+    if current_effect_block and current_effect_block.has_next_keyword():
+        var keyword_node = current_effect_block.next_keyword()
+        var result = _resolve_operation_tree(keyword_node)
+        if result is Prompt: ## TODO: figure out how to actually start a prompt in an effect block
+            if (pending_prompt != null):
+                push_error("A prompt is already pending, ignoring new prompt request.")
+            pending_prompt = result
+            prompt_requested.emit(pending_prompt)
+            return
+        if result != null:
+            keyword_resolved.emit(result)
+            return # Wait for next _process to continue
+        # If block is finished, clear it and continue
+        if !current_effect_block.has_next_keyword():
+            current_effect_block = null
+            advance_loop()
+            return
+
+    # 3. If there are more effect blocks in the queue, start the next one
+    if effect_block_queue.size() > 0:
+        current_effect_block = effect_block_queue.pop_front()
+        advance_loop()
+        return
+
+    # 4. If phase is finished, advance to next phase or turn
+    if current_phase.is_finished():
+        if current_turn.is_finished():
             var next_turn_index = turn_history.size()
             current_turn = GameTurn.new(next_turn_index)
         current_phase = current_turn.get_next_phase()
-    
-    _resolve_phase(current_phase)
+        
+    if (current_phase.has_next_effect_block()):
+        effect_block_queue.push_back(current_phase.next_effect_block())
+    else:
+        push_warning("No effect blocks available in phase <%s>, waiting for player actions." % current_phase.name)
+    advance_loop()
 
 func validate_action(action: GameAction) -> bool:
     # Check if the action is valid in the current phase
-    if current_phase and not current_phase.is_valid_action(action, game_state):
-        push_warning("Action <%s> is not valid in phase <%s>" % [action.name, current_phase.name])
+    if current_phase and not current_phase.is_valid_action(action):
+        push_warning("Action <%s> is not valid in phase <%s>" % [action.action_type, current_phase.name])
         return false
     return true
 
 func try_take_action(action: GameAction) -> bool:
     if not validate_action(action):
         return false
-    current_action = ActionResult.new(action)
-    _advance_action() ## TODO: Resolve action completely unless interaction is required
+    effect_block_queue.append(action)
     return true
-
-func _resolve_phase(phase: GamePhase) -> void:
-    assert(phase != null, "GamePhase cannot be null")
-    assert(game_state != null, "GameLoop requires a valid GameState")
-
-    var results = phase.resolve_steps(game_state)
-    for result in results:
-        if result is Prompt:
-            pending_prompt = result
-            emit_signal("prompt_requested", result)
-            return
-        keyword_resolved.emit(result)
-    if phase.is_finished():
-        _advance_loop()
-
-func _advance_action() -> bool:
-    if current_action and not current_action.action.is_finished():
-        var operation_tree = current_action.action.pop_next_operation_tree()
-        var result = _resolve_operation_tree(operation_tree)
-        current_action.append_result(result)
-        if result is Prompt:
-            pending_prompt = result
-            emit_signal("prompt_requested", result)
-            return true
-        if current_action.action.is_finished():
-            action_taken.emit(current_action)
-            current_phase.append_action_result(current_action)
-            current_action = null
-        return true
-    return false
-
-func _resolve_operation_tree(operation_tree: KeywordNode) -> KeywordResult:
-    var result = operation_tree.resolve()
-    keyword_resolved.emit(result)
-    return result
 
 # Called by UI when the player responds to a prompt
 func submit_prompt_response(prompt, response):
     if pending_prompt != prompt:
         push_warning("Received response for a prompt that is not pending!")
         return
-    # Use the response to construct a new context or effect block as needed
-    # (You may want to call a callback or process the response here)
+    ## TODO: Handle the response. Probably enqueue/push an effect block
     pending_prompt = null
-    _advance_loop()
+    advance_loop()
+
+func _resolve_operation_tree(operation_tree: KeywordNode) -> KeywordResult:
+    var result = operation_tree.resolve()
+    keyword_resolved.emit(result)
+    return result
+
+

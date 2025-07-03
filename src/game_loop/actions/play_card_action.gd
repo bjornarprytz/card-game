@@ -1,5 +1,5 @@
 class_name PlayCardAction
-extends EffectBlock
+extends GameAction
 
 var _context: PlayCardContext
 
@@ -8,6 +8,7 @@ var _effects: Array[EffectProto]
 var _effect_index: int = 0
 
 func _init(play_card_context: PlayCardContext) -> void:
+    action_type = "play_card"
     assert(play_card_context != null, "PlayCardContext cannot be null")
     _context = play_card_context
     _effects = _context.card.card_data.effects

@@ -1,62 +1,36 @@
 class_name GamePhase
 extends Resource
 
-signal phase_ended()
+var _steps: Array[GameStep] = []
 
-var _steps: Array[String] = []
+var _current_step_index: int = 0
 
-var step_results: Array[KeywordResult] = []
-var action_results: Array[ActionResult] = []
+var _allowed_actions: Array[String] = []
 
-var _resolved_steps: bool = false
-var _allow_actions: bool = false
-var _ended: bool = false
+func _init(steps: Array[String], game_state: GameState, allowed_game_actions: Array[String] = []) -> void:
+    for step_name in steps:
+        var step = GameStep.new(step_name, game_state)
+        _steps.append(step)
+    _allowed_actions = allowed_game_actions
 
-func _init(steps: Array[String], allow_actions: bool = false) -> void:
-    _steps = steps
-    _allow_actions = allow_actions
+func allows_actions() -> bool:
+    return _allowed_actions.size() > 0
 
-static func setup(game_state: GameState) -> GamePhase:
-    ## TODO: This might be temporary because it's not following the same pattern as other phases.
-    var phase = GamePhase.new([], false)
-    var operation_tree = Steps.create_operation_tree("setup", game_state, [CardGameAPI.get_initial_game_state()])
+func is_valid_action(_action: GameAction) -> bool:
+    return _allowed_actions.has(_action.action_type)
+
+func has_next_effect_block() -> bool:
+    return _current_step_index < _steps.size()
+
+func next_effect_block() -> EffectBlock:
+    if not has_next_effect_block():
+        push_error("No more effect blocks in phase <%s>" % _steps)
+        return null
     
-    if operation_tree:
-        var result = operation_tree.resolve()
-        phase.step_results.append(result)
-    
-    phase._resolved_steps = true
-    return phase
+    var step = _steps[_current_step_index]
+    _current_step_index += 1
 
-func resolve_steps(_game_state: GameState) -> Array[KeywordResult]:
-    assert(_game_state != null, "GamePhase requires a valid GameState")
-    assert(not _resolved_steps, "Steps have already been resolved for this phase")
-
-    var keyword_results: Array[KeywordResult] = []
-    
-    for step in _steps:
-        var operation_tree = Steps.create_operation_tree(step, _game_state)
-        
-        if operation_tree:
-            var result = operation_tree.resolve()
-            keyword_results.append(result)
-            step_results.append(result)
-    
-    _resolved_steps = true
-
-    return keyword_results
-
-func append_action_result(action_result: ActionResult) -> void:
-    assert(action_result != null, "ActionResult cannot be null")
-    action_results.append(action_result)
-
-func end_phase() -> void:
-    assert(not _ended, "Phase has already ended")
-    _ended = true
-    phase_ended.emit()
-
-func is_valid_action(_action: GameAction, _game_state: GameState) -> bool:
-    return !_ended && _resolved_steps && _allow_actions
+    return step
 
 func is_finished() -> bool:
-    return _ended || (_resolved_steps && !_allow_actions)
+    return !has_next_effect_block() and !allows_actions()
