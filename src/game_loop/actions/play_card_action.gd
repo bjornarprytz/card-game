@@ -1,30 +1,30 @@
 class_name PlayCardAction
-extends GameAction
+extends EffectBlock
 
 var _context: PlayCardContext
+
+var _effects: Array[EffectProto]
 
 var _effect_index: int = 0
 
 func _init(play_card_context: PlayCardContext) -> void:
-	assert(play_card_context != null, "PlayCardContext cannot be null")
-	_context = play_card_context
+    assert(play_card_context != null, "PlayCardContext cannot be null")
+    _context = play_card_context
+    _effects = _context.card.card_data.effects
 
-func pop_next_operation_tree() -> KeywordNode:
-	assert(!is_finished(), "PlayCardAction is already finished")
-	
-	var card = _context.card.card_data
-	var effect = card.effects[_effect_index]
-	_effect_index += 1
+func has_next_keyword() -> bool: # Check if there are more keywords to process
+    return _effect_index < _effects.size()
 
-	var args = effect.resolve_args(_context)
-
-	var operation_tree = Keywords.create_operation_tree(effect.keyword, args)
-	
-	return operation_tree
-
-func is_finished() -> bool:
-	return _effect_index >= _context.card.card_data.effects.size()
+func next_keyword() -> KeywordNode:
+    var effect_proto = _effects[_effect_index]
+    _effect_index += 1
+    
+    if not effect_proto.evaluate_condition(_context):
+        return KeywordNode.noop(effect_proto.keyword)
+    
+    var args = effect_proto.resolve_args(_context)
+    return Keywords.create_operation_tree(effect_proto.keyword, args)
 
 func _to_string() -> String:
-	# Returns a string representation of the action
-	return "PlayCardAction: %s" % _context.card.card_data.name
+    # Returns a string representation of the action
+    return "PlayCardAction: %s" % _context.card.card_data.name
