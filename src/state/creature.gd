@@ -7,6 +7,7 @@ extends Atom
 var creature_data: CreatureProto
 
 func _ready() -> void:
+	atom_type = "creature"
 	creature_data = CardGameAPI.get_creature(atom_name)
 	_init_properties(creature_data.properties)
 	_update_ui()

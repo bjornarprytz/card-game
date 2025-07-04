@@ -1,6 +1,10 @@
 class_name Player
 extends Atom
 
+func _ready() -> void:
+	atom_name = "Player"
+	atom_type = "player"
+
 var resources: int:
 	get:
 		return get_state("resources", 0)

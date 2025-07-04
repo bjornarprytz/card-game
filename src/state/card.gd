@@ -10,6 +10,7 @@ var card_data: CardProto
 var game_loop: GameLoop
 
 func _ready() -> void:
+	atom_type = "card"
 	card_name_label.text = atom_name
 	card_data = CardGameAPI.get_card(atom_name)
 

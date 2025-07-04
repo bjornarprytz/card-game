@@ -19,12 +19,10 @@ func atom(atom_name: String, atom_type: String) -> Atom:
 func card(card_name: String) -> Card:
 	var node = card_scene.instantiate() as Card
 	node.atom_name = card_name
-	node.atom_type = "card"
 	return node
 	
 
 func creature(creature_name: String) -> Creature:
 	var node = creature_scene.instantiate() as Creature
 	node.atom_name = creature_name
-	node.atom_type = "creature"
 	return node

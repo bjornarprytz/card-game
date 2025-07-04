@@ -47,7 +47,6 @@ func _toggle_target(target: Targetable):
 			print("Action failed: %s" % action)
 			return
 
-		print("resolved %s" % card)
 		queue_free()
 
 func _update_ui():
