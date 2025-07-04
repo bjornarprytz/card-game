@@ -8,4 +8,3 @@ func _init(allowed_action_types_: Array[String]):
     
     prompt_type = "game_action"
     allowed_action_types = allowed_action_types_
-    message = "Take a game action"

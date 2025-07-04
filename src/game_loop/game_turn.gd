@@ -1,17 +1,13 @@
 class_name GameTurn
 extends Resource
 
-var turn_number: int = 0
 var _remaining_phases: Array[GamePhase] = []
 
-var action_history: Array[ActionResult] = []
-
-func _init(turn_number_: int) -> void:
-    turn_number = turn_number_
+func _init(game_state: GameState) -> void:
     _remaining_phases = [
-        GamePhase.new(["upkeep"]),
-        GamePhase.new([], true),
-        GamePhase.new(["end"]),
+        GamePhase.new(["upkeep"], game_state),
+        GamePhase.new([], game_state, ["play_card", "end_turn"]),
+        GamePhase.new(["end"], game_state),
     ]
 
 func is_finished() -> bool:
@@ -19,6 +15,3 @@ func is_finished() -> bool:
 
 func get_next_phase() -> GamePhase:
     return _remaining_phases.pop_front()
-
-func add_event(event: ActionResult) -> void:
-    action_history.append(event)
