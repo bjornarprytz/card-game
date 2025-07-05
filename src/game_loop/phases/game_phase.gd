@@ -23,11 +23,11 @@ func next_effect_block() -> EffectBlock:
 	
 	return _remaining_steps.pop_front()
 
-func get_action_prompt() -> GameActionPrompt:
+func get_action_prompt() -> Prompt:
 	if not allows_actions():
 		push_error("No actions allowed in this phase.")
 		return null
-	
+
 	return GameActionPrompt.new(_allowed_actions)
 
 func is_finished() -> bool:

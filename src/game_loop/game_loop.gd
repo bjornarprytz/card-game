@@ -14,7 +14,7 @@ var effect_block_queue: Array = []
 var current_effect_block: EffectBlock = null
 
 # Prompt state
-var pending_prompt: Prompt = null
+var pending_action_prompt: Prompt = null
 
 func _ready() -> void:
 	assert(game_state != null, "The game loop needs a reference to the game state")
@@ -26,36 +26,35 @@ func _ready() -> void:
 	advance_loop()
 
 func _process(_delta: float) -> void:
-	if pending_prompt == null:
+	if pending_action_prompt == null:
 		advance_loop()
 
 func advance_loop():
 	# 1. If a prompt is pending, wait for player input
-	if pending_prompt != null:
+	if pending_action_prompt != null:
 		push_warning("A prompt is pending, waiting for player response.")
 		return []
 
 	# 2. Resolve the next keyword in the current effect block
-	resolve_next_keyword()
+	_resolve_next_keyword()
 
 func validate_action(action: GameAction) -> bool:
-	## TODO: Figure out how to unify prompts. Maybe the only way to answer a prompt is through game action
-	## TODO: When I thought of prompt, I thought of it as a special thing requiring a response, but thatg goes for all actions
-	if pending_prompt != null and pending_prompt is GameActionPrompt:
-		var action_prompt = pending_prompt as GameActionPrompt
-		return action_prompt.allows_action(action)
-	return false
+	if pending_action_prompt == null:
+		push_warning("No pending prompt to validate action against.")
+		return false
+
+	return pending_action_prompt.validate_action(action)
 
 func try_take_action(action: GameAction) -> bool:
 	if not validate_action(action):
 		return false
 	_enqueue_effect_block(action)
-	pending_prompt = null
+	pending_action_prompt = null
 	return true
 
-func resolve_next_keyword():
+func _resolve_next_keyword():
 	if (current_effect_block == null || !current_effect_block.has_next_keyword()):
-		pop_next_effect_block()
+		_pop_next_effect_block()
 		return
 	
 	if not current_effect_block.has_next_keyword():
@@ -73,25 +72,27 @@ func resolve_next_keyword():
 	if (!current_effect_block.has_next_keyword()):
 		print("Resolved: %s" % current_effect_block)
 
-func pop_next_effect_block() -> void:
+func _pop_next_effect_block() -> void:
 	if current_effect_block != null and current_effect_block.has_next_keyword():
 		push_error("Cannot pop a new effect block while resolving the current one.")
 		return
 	
 	if effect_block_queue.is_empty():
-		queue_next_phase()
+		_queue_next_phase()
 		return
 	
 	current_effect_block = effect_block_queue.pop_front()
 
-func queue_next_phase():
+func _queue_next_phase():
 	if current_phase != null and current_phase.allows_actions():
-		pending_prompt = current_phase.get_action_prompt()
-		prompt_requested.emit(pending_prompt)
+		if (pending_action_prompt != null):
+			push_error("A prompt is already pending, cannot queue another phase.")
+		pending_action_prompt = current_phase.get_action_prompt()
+		prompt_requested.emit(pending_action_prompt)
 		return
 	
 	if current_turn == null || current_turn.is_finished():
-		start_next_turn()
+		_start_next_turn()
 		return
 	
 	current_phase = current_turn.get_next_phase()
@@ -99,12 +100,12 @@ func queue_next_phase():
 	while (current_phase.has_next_effect_block()):
 		_enqueue_effect_block(current_phase.next_effect_block())
 
-func start_next_turn():
+func _start_next_turn():
 	if (current_turn != null && !current_turn.is_finished()) || (current_phase != null && !current_phase.is_finished()):
 		push_error("Cannot start next turn, current turn or phase is not finished.")
 		return
 	current_turn = GameTurn.new(game_state)
-	queue_next_phase()
+	_queue_next_phase()
 
 func _resolve_operation_tree(operation_tree: KeywordNode) -> KeywordResult:
 	var result = operation_tree.resolve()

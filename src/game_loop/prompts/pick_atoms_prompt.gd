@@ -12,7 +12,24 @@ func _init(candidate_atoms_: Array[Atom], min_choices_: int = 1, max_choices_: i
     assert(max_choices_ >= min_choices_, "Maximum choices must be at least as large as minimum choices")
     assert(min_choices_ <= candidate_atoms_.size(), "Minimum choices cannot exceed the number of candidate atoms")
     
-    prompt_type = "pick_atoms"
     candidate_atoms = candidate_atoms_
     min_choices = min_choices_
     max_choices = max_choices_
+
+
+func validate_action(action: GameAction) -> bool:
+    if (action is not PickAtomsAction):
+        return false
+
+    var selected_atoms = (action as PickAtomsAction).selected_atoms
+
+    # Check if the number of selected atoms is within the allowed range
+    if selected_atoms.size() < min_choices or selected_atoms.size() > max_choices:
+        return false
+    
+    # Check if all selected atoms are in the candidate atoms
+    for atom in selected_atoms:
+        if not atom in candidate_atoms:
+            return false
+    
+    return true
