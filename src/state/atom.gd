@@ -37,8 +37,7 @@ func get_state(key: String, default_value: Variant = null) -> Variant:
 	key = _clean_key(key)
 	if (_state.has(key)):
 		return _state[key]
-	
-	push_warning("Trying to get non-existent state_key <%s>. Returning default value: %s" % [key, default_value])
+
 	return default_value
 
 func remove_state(key: String) -> bool:
