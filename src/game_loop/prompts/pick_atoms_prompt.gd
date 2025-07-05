@@ -6,6 +6,8 @@ var candidate_atoms: Array[Atom] = []
 var min_choices: int = 1
 var max_choices: int = 1
 
+## TODO: This needs to pass along the effects that are applied when the prompt is answered.
+
 func _init(candidate_atoms_: Array[Atom], min_choices_: int = 1, max_choices_: int = 1):
     assert(candidate_atoms_.size() > 0, "Candidate atoms cannot be empty")
     assert(min_choices_ >= 1, "Minimum choices must be at least 1")
@@ -21,7 +23,7 @@ func validate_action(action: GameAction) -> bool:
     if (action is not PickAtomsAction):
         return false
 
-    var selected_atoms = (action as PickAtomsAction).selected_atoms
+    var selected_atoms = (action as PickAtomsAction).get_selected_atoms()
 
     # Check if the number of selected atoms is within the allowed range
     if selected_atoms.size() < min_choices or selected_atoms.size() > max_choices:

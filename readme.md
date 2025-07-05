@@ -6,14 +6,11 @@ Stipulation: 3 color palette
 
 Card game TODO:
 
-- Clean Up
-  - Game loop state machine
-  - Phase state machine
-  - State based effects (after each action)
-- Prompts (and AnswerPromptAction)
+- Prompt: Choose atoms
 - Cost
 - Track source of effects
 - Event History
+  - And scope
 - Triggered effects
 
 ## TODO
