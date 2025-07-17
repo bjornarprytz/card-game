@@ -78,13 +78,12 @@ func draw_cards(game_state: GameState, count: int) -> Array[Operation]:
         
     return operations
 
-func discard_hand(game_state: GameState) -> Array[Operation]:
-    var operations: Array[Operation] = []
+func discard_hand(game_state: GameState) -> Array[KeywordNode]:
+    var sub_nodes: Array[KeywordNode] = []
 
-    for card in game_state.hand.atoms:
-        operations.append(ChangeZone.new(card, game_state.discard_pile))
+    sub_nodes.append(create_operation_tree("discard_cards", [game_state, game_state.hand]))
 
-    return operations
+    return sub_nodes
 
 func discard_card(game_state: GameState, card: Atom) -> Array[Operation]:
     var operations: Array[Operation] = []
