@@ -49,7 +49,7 @@ func validate_action(action: GameAction) -> bool:
 func try_take_action(action: GameAction) -> bool:
 	if not validate_action(action):
 		return false
-	_enqueue_effect_block(action)
+	_enqueue_effect_block(action.create_effect_block())
 	if (prompt_queue.size() > 0):
 		pending_prompt = prompt_queue.pop_front()
 	else:
