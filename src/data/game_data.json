@@ -30,7 +30,7 @@
 			"effects": [
 				{
 					"keyword": "deal_damage",
-					"parameters": ["t0", 2]
+					"args": ["t0", 2]
 				}
 			]
 		},
@@ -52,7 +52,7 @@
 			"effects": [
 				{
 					"keyword": "deal_damage",
-					"parameters": ["t0", "x"]
+					"args": ["t0", "x"]
 				}
 			]
 		},
@@ -74,7 +74,7 @@
 			"effects": [
 				{
 					"keyword": "add_armor",
-					"parameters": ["t0", "x"]
+					"args": ["t0", "x"]
 				}
 			]
 		},
@@ -90,7 +90,7 @@
 			"effects": [
 				{
 					"keyword": "add_armor",
-					"parameters": ["t0", 3]
+					"args": ["t0", 3]
 				}
 			]
 		},
@@ -112,7 +112,7 @@
 			"effects": [
 				{
 					"keyword": "deal_damage",
-					"parameters": ["t0", "2 + x"]
+					"args": ["t0", "2 + x"]
 				}
 			]
 		},
@@ -131,11 +131,11 @@
 			"effects": [
 				{
 					"keyword": "deal_damage",
-					"parameters": ["t0", 3]
+					"args": ["t0", 3]
 				},
 				{
 					"keyword": "deal_damage",
-					"parameters": ["t1", 1]
+					"args": ["t1", 1]
 				}
 			]
 		},
@@ -154,7 +154,7 @@
 			"effects": [
 				{
 					"keyword": "steel_attack",
-					"parameters": ["t0", "t1", 3]
+					"args": ["t0", "t1", 3]
 				}
 			]
 		}
