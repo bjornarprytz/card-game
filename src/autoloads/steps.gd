@@ -44,7 +44,7 @@ func end(game_state: GameState) -> Array[Operation]:
 	operations.append(Keywords.discard_hand(game_state))
 	return operations
 
-func cleanup(game_state: GameState) -> Array[Operation]:
-	var operations: Array[Operation] = []
+func cleanup(_game_state: GameState) -> Array[Operation]:
+	var operations: Array[Operation] = [NoopOperation.new()]
 	push_warning("Cleanup step is not implemented yet, returning empty operations. This should run after each action to reset the game state. Remove dead creatures, reset resources, etc.")
 	return operations

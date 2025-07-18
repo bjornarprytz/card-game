@@ -20,14 +20,43 @@ func _init(binding_key_: String, binding_type_: String, min_choices_: int = 0, m
     min_choices = min_choices_
     max_choices = max_choices_
 
+func _check_type(value: Variant) -> bool:
+    if (binding_type == "atom"):
+        if value is Atom:
+            return true
+        else:
+            push_error("Value %s is not an Atom" % value)
+            return false
+    elif binding_type == "int":
+        if typeof(value) == TYPE_INT:
+            return true
+        else:
+            push_error("Value %s is not an int" % value)
+            return false
+    else:
+        push_error("Value %s is not of type %s" % [value, binding_type])
+        return false
+
+func validate_response(response: Array) -> bool:
+    if (response.size() < min_choices or response.size() > max_choices):
+        push_error("Response size is out of bounds: %d (min: %d, max: %d)" % [response.size(), min_choices, max_choices])
+        return false
+    
+    for item in response:
+        if not _check_type(item):
+            return false
+    
+    return true
+
+
 static func from_variant(variant: Variant) -> PromptBindingProto:
     if not variant is Dictionary:
         push_error("Variant must be a Dictionary for PromptBindingProto.")
         return null
     
-    var binding_key = variant.get("key", "")
-    var binding_type = variant.get("type", "")
-    var min_choices = variant.get("min_choices", 0)
-    var max_choices = variant.get("max_choices", 1)
-    
-    return PromptBindingProto.new(binding_key, binding_type, min_choices, max_choices)
+    var binding_key_ = variant.get("key", "")
+    var binding_type_ = variant.get("type", "")
+    var min_choices_ = variant.get("min_choices", 0)
+    var max_choices_ = variant.get("max_choices", 1)
+
+    return PromptBindingProto.new(binding_key_, binding_type_, min_choices_, max_choices_)

@@ -24,7 +24,6 @@ func get_state_changes() -> Array[StateChange]:
 
 	return total_state_changes
 
-
 func _init(keyword_: String, args_: Array[Variant]) -> void:
 	keyword = keyword_
 	args = args_

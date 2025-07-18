@@ -3,24 +3,24 @@
 		{
 			"name": "Goblin",
 			"properties": {
-				"health": 2,
-				"armor": 0,
-				"attack": 1
+				"health": 2.0,
+				"armor": 0.0,
+				"attack": 1.0
 			}
 		},
 		{
 			"name": "Orc",
 			"properties": {
-				"health": 4,
-				"armor": 0,
-				"attack": 2
+				"health": 4.0,
+				"armor": 0.0,
+				"attack": 2.0
 			}
 		}
 	],
 	"cards": [
 		{
 			"name": "Strike",
-			"cost": 1,
+			"cost": 1.0,
 			"type": "spell",
 			"targets": [
 				{
@@ -30,13 +30,16 @@
 			"effects": [
 				{
 					"keyword": "deal_damage",
-					"args": ["t0", 2]
+					"args": [
+						"t0",
+						2.0
+					]
 				}
 			]
 		},
 		{
 			"name": "Self-Destruct",
-			"cost": 1,
+			"cost": 1.0,
 			"type": "spell",
 			"targets": [
 				{
@@ -52,13 +55,16 @@
 			"effects": [
 				{
 					"keyword": "deal_damage",
-					"args": ["t0", "x"]
+					"args": [
+						"t0",
+						"x"
+					]
 				}
 			]
 		},
 		{
 			"name": "Shield",
-			"cost": 1,
+			"cost": 1.0,
 			"type": "spell",
 			"targets": [
 				{
@@ -74,13 +80,16 @@
 			"effects": [
 				{
 					"keyword": "add_armor",
-					"args": ["t0", "x"]
+					"args": [
+						"t0",
+						"x"
+					]
 				}
 			]
 		},
 		{
 			"name": "Bolster",
-			"cost": 2,
+			"cost": 2.0,
 			"type": "spell",
 			"targets": [
 				{
@@ -90,13 +99,16 @@
 			"effects": [
 				{
 					"keyword": "add_armor",
-					"args": ["t0", 3]
+					"args": [
+						"t0",
+						3.0
+					]
 				}
 			]
 		},
 		{
 			"name": "Precision Strike",
-			"cost": 2,
+			"cost": 2.0,
 			"type": "spell",
 			"targets": [
 				{
@@ -112,13 +124,16 @@
 			"effects": [
 				{
 					"keyword": "deal_damage",
-					"args": ["t0", "2 + x"]
+					"args": [
+						"t0",
+						"2 + x"
+					]
 				}
 			]
 		},
 		{
 			"name": "Cleave",
-			"cost": 3,
+			"cost": 3.0,
 			"type": "spell",
 			"targets": [
 				{
@@ -131,17 +146,23 @@
 			"effects": [
 				{
 					"keyword": "deal_damage",
-					"args": ["t0", 3]
+					"args": [
+						"t0",
+						3.0
+					]
 				},
 				{
 					"keyword": "deal_damage",
-					"args": ["t1", 1]
+					"args": [
+						"t1",
+						1.0
+					]
 				}
 			]
 		},
 		{
 			"name": "Steel Strike",
-			"cost": 2,
+			"cost": 2.0,
 			"type": "spell",
 			"targets": [
 				{
@@ -154,7 +175,11 @@
 			"effects": [
 				{
 					"keyword": "steel_attack",
-					"args": ["t0", "t1", 3]
+					"args": [
+						"t0",
+						"t1",
+						3.0
+					]
 				}
 			]
 		}
@@ -172,7 +197,11 @@
 			"Strike",
 			"Strike"
 		],
-		"enemies": ["Goblin", "Orc", "Goblin"],
-		"starting_lives": 20
+		"enemies": [
+			"Goblin",
+			"Orc",
+			"Goblin"
+		],
+		"starting_lives": 20.0
 	}
 }
