@@ -110,7 +110,7 @@ static func from_string(raw_expression: String) -> ContextExpression:
 		var var_name = regex_match.get_string(1)
 		processed_expression = processed_expression.replace(
 			regex_match.get_string(),
-			"context.vars.%s" % var_name
+			"v(\"%s\")" % var_name
 		)
 
 	# Replace #prompt_binding with context.prompt.prompt_binding

@@ -140,21 +140,24 @@
 			]
 		},
 		{
-			"name": "Steel Strike",
+			"name": "Hand Slap",
 			"cost": 2.0,
 			"type": "spell",
 			"targets": [
 				{
 					"type": "creature"
-				},
-				{
-					"type": "creature"
 				}
 			],
+			"vars": {
+				"hand_size": {
+					"value": ":hand.atoms.size()",
+					"description": "Hand size"
+				}
+			},
 			"effects": [
 				{
-					"keyword": "steel_attack",
-					"args": ["t0", "t1", 3.0]
+					"keyword": "deal_damage",
+					"args": ["t0", "$hand_size"]
 				}
 			]
 		},
@@ -191,10 +194,10 @@
 		"deck": [
 			"Mind Rot",
 			"Strike",
+			"Hand Slap",
 			"Shield",
 			"Bolster",
 			"Cleave",
-			"Steel Strike",
 			"Self-Destruct",
 			"Strike",
 			"Strike"
