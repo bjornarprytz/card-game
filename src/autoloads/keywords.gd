@@ -17,6 +17,9 @@ func create_operation_tree(keyword: String, args: Array[Variant]) -> KeywordNode
 
 	return KeywordNode.create(keyword, args, tree)
 
+func prompt(_prompt_data: Variant) -> Array[Operation]:
+	return [NoopOperation.new()]
+
 func steel_attack(source: Creature, target: Creature, amount: int) -> Array[KeywordNode]:
 	var sub_nodes: Array[KeywordNode] = []
 	if amount <= 0:

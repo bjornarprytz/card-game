@@ -3,7 +3,7 @@ extends Resource
 
 var state: GameState
 var vars: Dictionary[String, VariableProto] = {}
-var player_choices: Dictionary[String, Variant] = {}
+var prompt: Dictionary[String, Variant] = {}
 
 func _init(state_: GameState) -> void:
 	state = state_

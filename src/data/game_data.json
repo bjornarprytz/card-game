@@ -3,24 +3,24 @@
 		{
 			"name": "Goblin",
 			"properties": {
-				"health": 2,
-				"armor": 0,
-				"attack": 1
+				"health": 2.0,
+				"armor": 0.0,
+				"attack": 1.0
 			}
 		},
 		{
 			"name": "Orc",
 			"properties": {
-				"health": 4,
-				"armor": 0,
-				"attack": 2
+				"health": 4.0,
+				"armor": 0.0,
+				"attack": 2.0
 			}
 		}
 	],
 	"cards": [
 		{
 			"name": "Strike",
-			"cost": 1,
+			"cost": 1.0,
 			"type": "spell",
 			"targets": [
 				{
@@ -36,7 +36,7 @@
 		},
 		{
 			"name": "Self-Destruct",
-			"cost": 1,
+			"cost": 1.0,
 			"type": "spell",
 			"targets": [
 				{
@@ -58,7 +58,7 @@
 		},
 		{
 			"name": "Shield",
-			"cost": 1,
+			"cost": 1.0,
 			"type": "spell",
 			"targets": [
 				{
@@ -80,7 +80,7 @@
 		},
 		{
 			"name": "Bolster",
-			"cost": 2,
+			"cost": 2.0,
 			"type": "spell",
 			"targets": [
 				{
@@ -96,7 +96,7 @@
 		},
 		{
 			"name": "Precision Strike",
-			"cost": 2,
+			"cost": 2.0,
 			"type": "spell",
 			"targets": [
 				{
@@ -118,7 +118,7 @@
 		},
 		{
 			"name": "Cleave",
-			"cost": 3,
+			"cost": 3.0,
 			"type": "spell",
 			"targets": [
 				{
@@ -131,17 +131,17 @@
 			"effects": [
 				{
 					"keyword": "deal_damage",
-					"args": ["t0", 3]
+					"args": ["t0", 3.0]
 				},
 				{
 					"keyword": "deal_damage",
-					"args": ["t1", 1]
+					"args": ["t1", 1.0]
 				}
 			]
 		},
 		{
 			"name": "Steel Strike",
-			"cost": 2,
+			"cost": 2.0,
 			"type": "spell",
 			"targets": [
 				{
@@ -154,13 +154,13 @@
 			"effects": [
 				{
 					"keyword": "steel_attack",
-					"args": ["t0", "t1", 3]
+					"args": ["t0", "t1", 3.0]
 				}
 			]
 		},
 		{
 			"name": "Mind Rot",
-			"cost": 2,
+			"cost": 2.0,
 			"type": "spell",
 			"targets": [],
 			"effects": [
@@ -173,8 +173,8 @@
 								"cards_to_discard": {
 									"type": "card",
 									"description": "Select cards to discard",
-									"max_count": 2,
-									"min_count": 2
+									"max_count": 2.0,
+									"min_count": 2.0
 								}
 							}
 						}
@@ -200,6 +200,6 @@
 			"Strike"
 		],
 		"enemies": ["Goblin", "Orc", "Goblin"],
-		"starting_lives": 20
+		"starting_lives": 20.0
 	}
 }

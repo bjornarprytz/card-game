@@ -69,3 +69,4 @@ grow_vertical = 2
 alignment = 1
 
 [connection signal="keyword_resolved" from="GameLoop" to="." method="_on_keyword_resolved"]
+[connection signal="prompt_requested" from="GameLoop" to="." method="_on_prompt_requested"]

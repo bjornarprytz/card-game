@@ -6,11 +6,10 @@ Stipulation: 3 color palette
 
 Card game TODO:
 
-- Prompt: Choose atoms
-  - How to pipe the payload through the system?
-    - Approach 1:
-      - KeywordNode produces a Prompt which the GameLoop will "unpack" and enqueue. When the player answers the prompt, its payload(EffectBlock) will be enqueued, resolving the consequences of the player's choices.
-      - In this approach, it could make sense for the prompt to be the producer of the effect block, instead of the GameAction being one.
+- ContextExpressions:
+  - Bind to other things than variables:
+    - prompt
+    - state
 - Cost
 - Track source of effects
 - Event History

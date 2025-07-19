@@ -6,7 +6,7 @@ extends Resource
 ## SYNTAX GUIDE:
 ## -------------
 ## 1. TARGET ACCESS:
-##    - t0, t1, t2, etc.: Access targets by index from the context's player_choices["targets"] array
+##    - t0, t1, t2, etc.: Access targets by index from the context's prompt["targets"] array
 ##    - t0.health, t1.armor, etc.: Access properties of targets
 ##
 ## 2. VARIABLE ACCESS:
@@ -150,7 +150,7 @@ static func from_string(raw_expression: String) -> ContextExpression:
 
 # Helper functions that will be available in the expression context
 static func t(context: Context, index: int) -> Variant:
-	var chosen_targets = context.player_choices.get("targets", [])
+	var chosen_targets = context.prompt.get("targets", [])
 
 	if index >= 0 and index < chosen_targets.size():
 		return chosen_targets[index]

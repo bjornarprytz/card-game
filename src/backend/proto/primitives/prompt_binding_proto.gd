@@ -6,21 +6,22 @@ var binding_key: String
 ## Atom, number, etc
 var binding_type: String
 
-var min_choices: int = 0
-var max_choices: int = 1
+var min_count: int = 0
+var max_count: int = 1
 
-func _init(binding_key_: String, binding_type_: String, min_choices_: int = 0, max_choices_: int = 1) -> void:
+func _init(binding_key_: String, binding_type_: String, min_count_: int = 0, max_count_: int = 1) -> void:
 	assert(binding_key_ != "", "Binding key cannot be empty")
 	assert(binding_type_ != "", "Binding type cannot be empty")
-	assert(min_choices_ >= 0, "Minimum choices must be at least 0")
-	assert(max_choices_ >= min_choices_, "Maximum choices must be at least as large as minimum choices")
+	assert(min_count_ >= 0, "Minimum choices must be at least 0")
+	assert(max_count_ >= min_count_, "Maximum choices must be at least as large as minimum choices")
 	
 	binding_key = binding_key_
 	binding_type = binding_type_
-	min_choices = min_choices_
-	max_choices = max_choices_
+	min_count = min_count_
+	max_count = max_count_
 
 func _check_type(value: Variant) -> bool:
+	## TODO: This might need to be expanded to support more types
 	if (binding_type == "card"):
 		if value is Card:
 			return true
@@ -38,8 +39,8 @@ func _check_type(value: Variant) -> bool:
 		return false
 
 func validate_response(response: Array) -> bool:
-	if (response.size() < min_choices or response.size() > max_choices):
-		push_error("Response size is out of bounds: %d (min: %d, max: %d)" % [response.size(), min_choices, max_choices])
+	if (response.size() < min_count or response.size() > max_count):
+		push_error("Response size is out of bounds: %d (min: %d, max: %d)" % [response.size(), min_count, max_count])
 		return false
 	
 	for item in response:
@@ -56,7 +57,10 @@ static func from_variant(key: String, variant: Variant) -> PromptBindingProto:
 	
 	var binding_key_ = key
 	var binding_type_ = variant.get("type", "")
-	var min_choices_ = variant.get("min_choices", 0)
-	var max_choices_ = variant.get("max_choices", 1)
+	var min_count_ = variant.get("min_count", 0)
+	var max_count_ = variant.get("max_count", 1)
 
-	return PromptBindingProto.new(binding_key_, binding_type_, min_choices_, max_choices_)
+	return PromptBindingProto.new(binding_key_, binding_type_, min_count_, max_count_)
+
+func _to_string() -> String:
+	return "%s: %s (%d-%d)" % [binding_key, binding_type, min_count, max_count]
