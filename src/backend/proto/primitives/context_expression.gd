@@ -121,7 +121,7 @@ static func from_string(raw_expression: String) -> ContextExpression:
 		var prompt_name = regex_match.get_string(1)
 		processed_expression = processed_expression.replace(
 			regex_match.get_string(),
-			"context.prompt.%s" % prompt_name
+			"p(\"%s\")" % prompt_name
 		)
 
 	# Replace :state_path with context.state.state_path
@@ -190,7 +190,11 @@ static func from_string(raw_expression: String) -> ContextExpression:
 
 # Helper functions that will be available in the expression context
 static func t(context: Context, index: int) -> Variant:
-	var chosen_targets = context.prompt.get("targets", [])
+	var chosen_targets = p(context, "targets")
+
+	if (chosen_targets is not Array):
+		push_error("Expected context.prompt.targets to be an array, got: %s" % typeof(chosen_targets))
+		return null
 
 	if index >= 0 and index < chosen_targets.size():
 		return chosen_targets[index]
@@ -201,6 +205,12 @@ static func v(context: Context, var_name: String) -> Variant:
 	if context.vars.has(var_name):
 		return context.vars[var_name].resolve(context)
 	push_error("Variable not found: %s" % var_name)
+	return null
+
+static func p(context: Context, binding_key: String) -> Variant:
+	if context.prompt.has(binding_key):
+		return context.prompt[binding_key]
+	push_error("Prompt binding not found: %s" % binding_key)
 	return null
 	
 # Helper function to implement ternary operator behavior
@@ -222,6 +232,9 @@ class ContextExpressionHelper extends RefCounted:
 	
 	func v(var_name: String) -> Variant:
 		return ContextExpression.v(_context, var_name)
-	
+
+	func p(binding_key: String) -> Variant:
+		return ContextExpression.p(_context, binding_key)
+
 	func select(condition: bool, true_value: Variant, false_value: Variant) -> Variant:
 		return ContextExpression.select(condition, true_value, false_value)
