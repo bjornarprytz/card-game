@@ -49,8 +49,8 @@ func validate_response(response: PromptResponse) -> bool:
     if response == null:
         push_error("Prompt response cannot be null.")
         return false
-    for binding_key in _prompt_proto.prompt_bindings.keys():
-        var binding = _prompt_proto.prompt_bindings[binding_key]
+    for binding_key in _prompt_proto.bindings.keys():
+        var binding = _prompt_proto.bindings[binding_key]
         if not binding.validate_response(response.payload.get(binding_key, [])):
             push_error("Response validation failed for binding: %s" % binding_key)
             return false

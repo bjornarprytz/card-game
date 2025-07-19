@@ -3,24 +3,24 @@
 		{
 			"name": "Goblin",
 			"properties": {
-				"health": 2.0,
-				"armor": 0.0,
-				"attack": 1.0
+				"health": 2,
+				"armor": 0,
+				"attack": 1
 			}
 		},
 		{
 			"name": "Orc",
 			"properties": {
-				"health": 4.0,
-				"armor": 0.0,
-				"attack": 2.0
+				"health": 4,
+				"armor": 0,
+				"attack": 2
 			}
 		}
 	],
 	"cards": [
 		{
 			"name": "Strike",
-			"cost": 1.0,
+			"cost": 1,
 			"type": "spell",
 			"targets": [
 				{
@@ -30,16 +30,13 @@
 			"effects": [
 				{
 					"keyword": "deal_damage",
-					"args": [
-						"t0",
-						2.0
-					]
+					"args": ["t0", 2.0]
 				}
 			]
 		},
 		{
 			"name": "Self-Destruct",
-			"cost": 1.0,
+			"cost": 1,
 			"type": "spell",
 			"targets": [
 				{
@@ -55,16 +52,13 @@
 			"effects": [
 				{
 					"keyword": "deal_damage",
-					"args": [
-						"t0",
-						"x"
-					]
+					"args": ["t0", "x"]
 				}
 			]
 		},
 		{
 			"name": "Shield",
-			"cost": 1.0,
+			"cost": 1,
 			"type": "spell",
 			"targets": [
 				{
@@ -80,16 +74,13 @@
 			"effects": [
 				{
 					"keyword": "add_armor",
-					"args": [
-						"t0",
-						"x"
-					]
+					"args": ["t0", "x"]
 				}
 			]
 		},
 		{
 			"name": "Bolster",
-			"cost": 2.0,
+			"cost": 2,
 			"type": "spell",
 			"targets": [
 				{
@@ -99,16 +90,13 @@
 			"effects": [
 				{
 					"keyword": "add_armor",
-					"args": [
-						"t0",
-						3.0
-					]
+					"args": ["t0", 3.0]
 				}
 			]
 		},
 		{
 			"name": "Precision Strike",
-			"cost": 2.0,
+			"cost": 2,
 			"type": "spell",
 			"targets": [
 				{
@@ -124,16 +112,13 @@
 			"effects": [
 				{
 					"keyword": "deal_damage",
-					"args": [
-						"t0",
-						"2 + x"
-					]
+					"args": ["t0", "2 + x"]
 				}
 			]
 		},
 		{
 			"name": "Cleave",
-			"cost": 3.0,
+			"cost": 3,
 			"type": "spell",
 			"targets": [
 				{
@@ -146,23 +131,17 @@
 			"effects": [
 				{
 					"keyword": "deal_damage",
-					"args": [
-						"t0",
-						3.0
-					]
+					"args": ["t0", 3]
 				},
 				{
 					"keyword": "deal_damage",
-					"args": [
-						"t1",
-						1.0
-					]
+					"args": ["t1", 1]
 				}
 			]
 		},
 		{
 			"name": "Steel Strike",
-			"cost": 2.0,
+			"cost": 2,
 			"type": "spell",
 			"targets": [
 				{
@@ -175,17 +154,42 @@
 			"effects": [
 				{
 					"keyword": "steel_attack",
+					"args": ["t0", "t1", 3]
+				}
+			]
+		},
+		{
+			"name": "Mind Rot",
+			"cost": 2,
+			"type": "spell",
+			"targets": [],
+			"effects": [
+				{
+					"keyword": "prompt",
 					"args": [
-						"t0",
-						"t1",
-						3.0
+						{
+							"type": "pick_atoms",
+							"bindings": {
+								"cards_to_discard": {
+									"type": "card",
+									"description": "Select cards to discard",
+									"max_count": 2,
+									"min_count": 2
+								}
+							}
+						}
 					]
+				},
+				{
+					"keyword": "discard",
+					"args": ["state", "prompt.cards_to_discard"]
 				}
 			]
 		}
 	],
 	"initial_game_state": {
 		"deck": [
+			"Mind Rot",
 			"Strike",
 			"Shield",
 			"Bolster",
@@ -193,15 +197,9 @@
 			"Steel Strike",
 			"Self-Destruct",
 			"Strike",
-			"Strike",
-			"Strike",
 			"Strike"
 		],
-		"enemies": [
-			"Goblin",
-			"Orc",
-			"Goblin"
-		],
-		"starting_lives": 20.0
+		"enemies": ["Goblin", "Orc", "Goblin"],
+		"starting_lives": 20
 	}
 }

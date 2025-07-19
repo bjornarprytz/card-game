@@ -10,7 +10,10 @@ extends Node2D
 var _targets: Array[Targetable] = []
 var _hovered: Targetable = null
 
+var required_number_of_targets: int
+
 func _ready() -> void:
+	required_number_of_targets = card.card_data.targets.size()
 	_update_ui()
 	var eligible_targets = get_tree().get_nodes_in_group("Targets")
 	for t in eligible_targets:
@@ -34,26 +37,33 @@ func _toggle_target(target: Targetable):
 
 	_update_ui()
 	
-	if (card.card_data.targets.size() == _targets.size()):
-		var target_atoms: Array[Atom] = []
-		for t in _targets:
-			target_atoms.append(t.atom)
-		
-		var action = PlayCardAction.new(PlayCardContext.create(state, card, target_atoms))
-		
-		if (game_loop.try_take_action(action)):
-			print("Action taken: %s" % action)
-		else:
-			print("Action failed: %s" % action)
-			return
+	if (required_number_of_targets == _targets.size()):
+		_resolve()
 
-		queue_free()
+func _resolve():
+	var target_atoms: Array[Atom] = []
+	for t in _targets:
+		target_atoms.append(t.atom)
+	
+	var action = PlayCardAction.new(PlayCardContext.create(state, card, target_atoms))
+	
+	if (game_loop.try_take_action(action)):
+		print("Action taken: %s" % action)
+	else:
+		print("Action failed: %s" % action)
+		return
+
+	queue_free()
 
 func _update_ui():
 	if (card == null):
 		message.text = "Could not find card"
 		return
-	message.text = "Choose target %d/%d" % [_targets.size() + 1, card.card_data.targets.size()]
+	
+	if (required_number_of_targets == 0):
+		message.text = "Click anywhere to play."
+	else:
+		message.text = "Choose target %d/%d" % [_targets.size() + 1, required_number_of_targets]
 
 func _process(_delta: float) -> void:
 	global_position = get_global_mouse_position()
@@ -62,6 +72,8 @@ func _input(event: InputEvent) -> void:
 	if (event is InputEventMouseButton and !event.is_pressed()):
 		if _hovered != null:
 			_toggle_target(_hovered)
+		elif (required_number_of_targets == 0):
+			_resolve()
 		else:
 			queue_free()
 func _exit_tree() -> void:
