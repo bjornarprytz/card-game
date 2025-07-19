@@ -69,10 +69,8 @@ func try_prompt_response(prompt_response: PromptResponse) -> bool:
 
 	_resolve_operation_tree(pending_prompt)
 	
-	if (prompt_queue.size() > 0):
-		pending_prompt = prompt_queue.pop_front()
-	else:
-		pending_prompt = null
+	pending_prompt = null
+	_pop_next_prompt()
 
 	return true
 
@@ -145,7 +143,16 @@ func _enqueue_prompt(prompt: PromptNode) -> void:
 		push_error("Cannot queue a null prompt.")
 		return
 	prompt_queue.append(prompt)
+
 	if pending_prompt == null:
+		_pop_next_prompt()
+
+func _pop_next_prompt():
+	if (pending_prompt != null):
+		push_error("Cannot pop a prompt while one is pending.")
+		return
+
+	if prompt_queue.size() > 0:
 		pending_prompt = prompt_queue.pop_front()
 		prompt_requested.emit(pending_prompt)
 

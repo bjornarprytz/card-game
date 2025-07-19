@@ -6,10 +6,9 @@ Stipulation: 3 color palette
 
 Card game TODO:
 
-- ContextExpressions:
-  - Bind to other things than variables:
-    - prompt
-    - state
+- Prompt:
+  - Bind single values and collections. Single values need some special care in order to bind to args properly
+  - Allow for lax min-requirements (e.g. Mind Rot should work when there's only one card left in hand)
 - Cost
 - Track source of effects
 - Event History

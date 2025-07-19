@@ -35,3 +35,15 @@ func _on_keyword_resolved(result: KeywordResult):
 
 func _on_prompt_requested(prompt: PromptNode) -> void:
 	print("Prompt requested: %s" % prompt)
+
+	var bindings: Dictionary[String, Variant] = {}
+
+	for key in prompt.prompt_proto.bindings.keys():
+		var binding = prompt.prompt_proto.bindings[key]
+		
+		if (binding.binding_type == "card"):
+			bindings[key] = game_state.hand.atoms.slice(0, binding.min_count)
+		elif (binding.binding_type == "int"):
+			bindings[key] = randi() % 10 + 1 ## Random int between 1 and 10
+
+	game_loop.try_prompt_response(PromptResponse.new(bindings))

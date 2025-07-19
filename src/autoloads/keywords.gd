@@ -91,7 +91,7 @@ func discard_hand(game_state: GameState) -> Array[KeywordNode]:
 func discard_card(game_state: GameState, card: Atom) -> Array[Operation]:
 	var operations: Array[Operation] = []
 
-	if card.zone != game_state.hand:
+	if card.current_zone != game_state.hand:
 		push_warning("Card %s is not in hand, cannot discard." % card.name)
 		return operations
 
@@ -107,7 +107,7 @@ func discard_cards(game_state: GameState, cards: Array[Atom]) -> Array[KeywordNo
 		if not card is Card:
 			push_error("Card %s is not a valid Card instance, skipping." % card)
 			continue
-		if card.id in unique_cards:
+		if card in unique_cards:
 			push_error("Card %s is already queued for discard, skipping duplicate." % card)
 			continue
 		unique_cards.append(card)

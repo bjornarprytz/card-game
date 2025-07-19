@@ -184,7 +184,7 @@
 					]
 				},
 				{
-					"keyword": "discard",
+					"keyword": "discard_cards",
 					"args": ["@state", "#cards_to_discard"]
 				}
 			]
