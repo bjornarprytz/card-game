@@ -52,7 +52,7 @@
 			"effects": [
 				{
 					"keyword": "deal_damage",
-					"args": ["t0", "x"]
+					"args": ["t0", "$x"]
 				}
 			]
 		},
@@ -74,7 +74,7 @@
 			"effects": [
 				{
 					"keyword": "add_armor",
-					"args": ["t0", "x"]
+					"args": ["t0", "$x"]
 				}
 			]
 		},
@@ -112,7 +112,7 @@
 			"effects": [
 				{
 					"keyword": "deal_damage",
-					"args": ["t0", "2 + x"]
+					"args": ["t0", "2 + $x"]
 				}
 			]
 		},
@@ -182,7 +182,7 @@
 				},
 				{
 					"keyword": "discard",
-					"args": ["state", "prompt.cards_to_discard"]
+					"args": ["@state", "#cards_to_discard"]
 				}
 			]
 		}

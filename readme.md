@@ -15,6 +15,7 @@ Card game TODO:
 - Event History
   - And scope
 - Triggered effects
+- Keyword variables (e.g. Delirium, Cards in hand, Spells in graveyard)
 
 ## TODO
 

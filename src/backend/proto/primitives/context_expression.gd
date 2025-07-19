@@ -10,8 +10,12 @@ extends Resource
 ##    - t0.health, t1.armor, etc.: Access properties of targets
 ##
 ## 2. VARIABLE ACCESS:
-##    - $variable_name: Access variables in the context using $ prefix
-##    - variable_name: Simple variable names without operators are also interpreted as variables
+##    - $variable_name: Access variables in the context using $ prefix (shorthand for @vars.variable_name)
+##    - @vars.x: Direct access to context.vars.x
+##    - @prompt.cards_to_discard: Direct access to context.prompt.cards_to_discard
+##    - @state.hand.atoms: Direct access to context.state.hand.atoms
+##    - #prompt_binding: Shorthand for @prompt.prompt_binding
+##    - :state_path: Shorthand for @state.state_path
 ##
 ## 3. OPERATORS:
 ##    - Arithmetic: +, -, *, /, % (modulo)
@@ -33,6 +37,9 @@ extends Resource
 ## - "t0.health > 5": Checks if target 0's health is greater than 5
 ## - "t0.armor == 0 AND t0.health < 3": Combines conditions with AND
 ## - "$damage + 2": Adds 2 to the 'damage' variable
+## - "@vars.x + 2": Direct access to variable x
+## - "@prompt.cards_to_discard.size()": Access prompt binding
+## - "@state.hand.atoms.size()": Access game state
 ## - "t0.health > 3 ? t0.health : 3": Returns target's health if > 3, otherwise returns 3
 
 var expression_string: String = ""
@@ -80,21 +87,65 @@ func evaluate(context: Context) -> Variant:
 static func from_string(raw_expression: String) -> ContextExpression:
 	if raw_expression.is_empty():
 		return null
-		
-	# Process the expression to replace shortcuts
-	var processed_expression = raw_expression
 	
+	var processed_expression = raw_expression
+
+	# Replace @context access: @vars.x, @prompt.cards_to_discard, @state.hand.atoms
+	var at_regex = RegEx.new()
+	at_regex.compile("@([a-zA-Z_][a-zA-Z0-9_]*)((?:\\.[a-zA-Z_][a-zA-Z0-9_\\.]*)*)")
+	var matches = at_regex.search_all(processed_expression)
+	for regex_match in matches:
+		var context_key = regex_match.get_string(1)
+		var path = regex_match.get_string(2)
+		processed_expression = processed_expression.replace(
+			regex_match.get_string(),
+			"context.%s%s" % [context_key, path]
+		)
+
+	# Replace $var with context.vars.var
+	var var_regex = RegEx.new()
+	var_regex.compile("\\$([a-zA-Z_][a-zA-Z0-9_]*)")
+	matches = var_regex.search_all(processed_expression)
+	for regex_match in matches:
+		var var_name = regex_match.get_string(1)
+		processed_expression = processed_expression.replace(
+			regex_match.get_string(),
+			"context.vars.%s" % var_name
+		)
+
+	# Replace #prompt_binding with context.prompt.prompt_binding
+	var prompt_regex = RegEx.new()
+	prompt_regex.compile("#([a-zA-Z_][a-zA-Z0-9_]*)")
+	matches = prompt_regex.search_all(processed_expression)
+	for regex_match in matches:
+		var prompt_name = regex_match.get_string(1)
+		processed_expression = processed_expression.replace(
+			regex_match.get_string(),
+			"context.prompt.%s" % prompt_name
+		)
+
+	# Replace :state_path with context.state.state_path
+	var state_regex = RegEx.new()
+	state_regex.compile(":([a-zA-Z_][a-zA-Z0-9_\\.]*)")
+	matches = state_regex.search_all(processed_expression)
+	for regex_match in matches:
+		var state_path = regex_match.get_string(1)
+		processed_expression = processed_expression.replace(
+			regex_match.get_string(),
+			"context.state.%s" % state_path
+		)
+
 	# Replace standalone target references (t0, t1, etc. without property accessors)
 	var standalone_target_regex = RegEx.new()
 	standalone_target_regex.compile("\\bt(\\d+)\\b")
-	var matches = standalone_target_regex.search_all(processed_expression)
+	matches = standalone_target_regex.search_all(processed_expression)
 	for regex_match in matches:
 		var target_index = regex_match.get_string(1)
 		processed_expression = processed_expression.replace(
 			regex_match.get_string(),
 			"t(%s)" % target_index
 		)
-	
+
 	# Replace target references with property accessors (t0.health, t1.armor, etc.)
 	var target_property_regex = RegEx.new()
 	target_property_regex.compile("\\bt(\\d+)\\.")
@@ -105,34 +156,23 @@ static func from_string(raw_expression: String) -> ContextExpression:
 			regex_match.get_string(),
 			"t(%s)." % target_index
 		)
-	
-	# Replace variable references with $ prefix
-	var var_regex = RegEx.new()
-	var_regex.compile("\\$([a-zA-Z_][a-zA-Z0-9_]*)")
-	matches = var_regex.search_all(processed_expression)
-	for regex_match in matches:
-		var var_name = regex_match.get_string(1)
-		processed_expression = processed_expression.replace(
-			regex_match.get_string(),
-			"v(\"%s\")" % var_name
-		)
-	
+
 	# Check if the expression is just a simple variable name (no operators or functions)
 	var simple_var_regex = RegEx.new()
 	simple_var_regex.compile("^[a-zA-Z_][a-zA-Z0-9_]*$")
 	if simple_var_regex.search(processed_expression):
 		# It's a simple variable name without $ prefix
-		processed_expression = "v(\"%s\")" % processed_expression
-	
+		processed_expression = "context.vars.%s" % processed_expression
+
 	# Replace logical operators
 	processed_expression = processed_expression.replace(" AND ", " and ")
 	processed_expression = processed_expression.replace(" OR ", " or ")
-	
+
 	# Only replace standalone = with == (not in ==, >=, <=)
 	var eq_regex = RegEx.new()
 	eq_regex.compile("(?<![=<>])=(?!=)")
 	processed_expression = eq_regex.sub(processed_expression, "==", true)
-	
+
 	# Finally, replace ternary operators (condition ? true_value : false_value) with GDScript's if expression
 	# This needs to happen last, after all other transformations
 	var ternary_regex = RegEx.new()
@@ -145,7 +185,7 @@ static func from_string(raw_expression: String) -> ContextExpression:
 		
 		# Use our custom select function to implement ternary behavior
 		processed_expression = "select(%s, %s, %s)" % [condition, true_value, false_value]
-	
+
 	return ContextExpression.new(processed_expression)
 
 # Helper functions that will be available in the expression context
