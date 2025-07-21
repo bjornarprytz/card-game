@@ -8,6 +8,7 @@ Card game TODO:
 
 - Prompt:
   - Allow for lax min-requirements (e.g. Mind Rot should work when there's only one card left in hand)
+  - Add atom conditions
 - Cost
 - Track source of effects
 - Event History

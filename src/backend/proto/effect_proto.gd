@@ -3,7 +3,7 @@ extends Resource
 
 var keyword: String
 var _args: Array[ParameterProto] = []
-var condition: ConditionProto = null
+var condition: ContextConditionProto = null
 
 func resolve_args(context: Context) -> Array[Variant]:
 	var args: Array[Variant] = []
@@ -33,7 +33,7 @@ static func parse_effect_data(data: Dictionary) -> EffectProto:
 	if data.has("condition") and data.get("condition") is String:
 		var condition_string = data.get("condition")
 		if not condition_string.is_empty():
-			effect_data.condition = ConditionProto.from_string(condition_string)
+			effect_data.condition = ContextConditionProto.from_string(condition_string)
 	
 	if not effect_data.keyword:
 		push_error("Error: EffectData keyword is missing")
