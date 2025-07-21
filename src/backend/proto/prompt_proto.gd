@@ -28,6 +28,6 @@ static func from_variant(variant: Variant) -> PromptProto:
 
 	var bindings_dict = variant.get("bindings", {})
 	for key in bindings_dict.keys():
-		prompt.add_binding(PromptBindingProto.from_variant(key, bindings_dict[key]))
+		prompt.add_binding(PromptBindingProto.from_dict(key, bindings_dict[key]))
 
 	return prompt

@@ -24,7 +24,10 @@
             "type": "spell",
             "targets": [
                 {
-                    "type": "creature"
+                    "type": "creature",
+                    "atom_conditions": [
+                        "atom != null"
+                    ]
                 }
             ],
             "effects": [
@@ -175,6 +178,7 @@
                             "bindings": {
                                 "cards_to_discard": {
                                     "type": "[card:2]",
+                                    "atom_condition": "atom != null",
                                     "description": "Select cards to discard"
                                 }
                             }

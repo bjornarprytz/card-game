@@ -45,7 +45,6 @@ func validate_response(response: PromptResponse) -> bool:
 	for binding_key in prompt_proto.bindings.keys():
 		var binding = prompt_proto.bindings[binding_key]
 		if not binding.validate_binding(response.payload[binding_key]):
-			push_error("Response validation failed for binding: %s" % binding_key)
 			return false
 	return true
 

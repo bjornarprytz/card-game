@@ -18,7 +18,14 @@ func _ready() -> void:
 	var eligible_targets = get_tree().get_nodes_in_group("Targets")
 	for t in eligible_targets:
 		if (t is Targetable):
-			t.hovered.connect(_on_hover_target)
+			var is_valid_target = true
+			for req in card.card_data.targets:
+				if !req.evaluate(t.atom):
+					is_valid_target = false
+					print("Found invalid target: %s for card %s" % [t.atom, card.name])
+					break
+			if (is_valid_target):
+				t.hovered.connect(_on_hover_target)
 
 func _on_hover_target(on: bool, t: Targetable):
 	if (on):

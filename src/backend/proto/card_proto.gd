@@ -47,5 +47,5 @@ static func from_dict(data: Dictionary) -> CardProto:
 		var target_proto = TargetProto.from_dict(target)
 		if target_proto:
 			card_data.targets.append(target_proto)
-
+	
 	return card_data

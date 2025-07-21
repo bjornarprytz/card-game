@@ -1,17 +1,23 @@
 class_name TargetProto
 extends Resource
 
-# This will express requirements on the target. For now there are no restrictions
+var atom_conditions: Array[AtomConditionProto] = []
 
-var requirements: String
 
+func evaluate(atom: Atom) -> bool:
+	for condition in atom_conditions:
+		if not condition.evaluate(atom):
+			return false
+	return true
 
 static func from_dict(data: Dictionary) -> TargetProto:
 	var target_data = TargetProto.new()
 
-	target_data.requirements = data.get("requirements", "")
+	var atom_condition_expressions = data.get("atom_conditions", [])
 
-	if not target_data.requirements:
-		print("Target requirements are missing, but that's ok for now")
+	for expr in atom_condition_expressions:
+		var condition = AtomConditionProto.from_string(expr)
+		if condition:
+			target_data.atom_conditions.append(condition)
 
 	return target_data
