@@ -11,3 +11,6 @@ func _init(play_card_context: PlayCardContext) -> void:
 
 func _get_effects() -> Array[EffectProto]:
 	return _context.card.card_data.effects
+
+func _get_costs() -> Array[CostProto]:
+	return _context.card.card_data.cost

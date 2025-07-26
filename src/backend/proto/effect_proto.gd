@@ -20,7 +20,7 @@ func evaluate_condition(context: Context) -> bool:
 	
 	return condition.evaluate(context)
 
-static func parse_effect_data(data: Dictionary) -> EffectProto:
+static func from_dict(data: Dictionary) -> EffectProto:
 	var effect_data = EffectProto.new()
 
 	effect_data.keyword = data.get("keyword", null)

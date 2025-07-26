@@ -24,7 +24,7 @@ func next_effect_block() -> EffectBlock:
 func allows_actions() -> bool:
 	return _allowed_actions.size() > 0
 
-func validate_action(game_action: GameAction) -> bool:
+func allows_action(game_action: GameAction) -> bool:
 	return game_action.action_type in _allowed_actions
 
 func is_finished() -> bool:

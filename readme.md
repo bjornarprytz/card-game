@@ -8,13 +8,12 @@ Card game TODO:
 
 - Prompt:
   - Allow for lax min-requirements (e.g. Mind Rot should work when there's only one card left in hand)
-- Cost
-  - CostProto, or some way to express costs and bind it to state changing effect
-  - Payment must be validated at some point. It should probably be a part of GameActions, because it's a natural way to limit the player's action, and wouldn't make sense as part of any other effect block (as far as I can see right now.).
-  - Maybe one solution would be for the payment to be validate once when the GameLoop receives the action. At that point the payment effects are prepended to the EffectBlock and resolved with the rest of the block. It's possible it should be done immediately, just like in magic, but that seems overly complicated/imitational for a single player setting.
+  - Top level prompts on cards etc. This is useful for cost parameter injection anywhere in an effect block. The prompts would be timed to resolve as soon as the action is queued
 - Track source of effects
+- Resolution Zone
+  - StartResolution (to resolution zone)
+  - EndResolution (to discard)
 - More dynamic keyword/effect lookup?
-  - This one
 - Event History
   - And scope
 - Triggered effects

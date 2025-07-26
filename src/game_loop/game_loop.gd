@@ -44,7 +44,15 @@ func validate_action(action: GameAction) -> bool:
 		push_warning("No current phase to validate action against.")
 		return false
 
-	return current_phase.validate_action(action)
+	if not current_phase.allows_action(action):
+		push_warning("Current phase does not allow action <%s>." % action.action_type)
+		return false
+
+	if not action.verify_costs():
+		push_warning("Action <%s> costs verification failed." % action.action_type)
+		return false
+	
+	return true
 
 func try_take_action(action: GameAction) -> bool:
 	if not validate_action(action):

@@ -15,3 +15,6 @@ static func failure() -> PaymentResult:
     var result = PaymentResult.new()
     result.is_valid = false
     return result
+
+func make_optional():
+    is_valid = true
