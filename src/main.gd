@@ -33,17 +33,19 @@ func _on_keyword_resolved(result: KeywordResult):
 			print("%s.%s: %s->%s" % [atom, change.state_key, change.value_before, change.value_after])
 
 
-func _on_prompt_requested(prompt: PromptNode) -> void:
-	print("Prompt requested: %s" % prompt)
+func _on_prompt_requested(prompt_node: PromptNode) -> void:
+	print("Prompt requested: %s" % prompt_node)
 
 	var bindings: Dictionary[String, Variant] = {}
 
-	for key in prompt.prompt_proto.bindings.keys():
-		var binding = prompt.prompt_proto.bindings[key]
+	for prompt in prompt_node.prompts:
+		var bindingArray: Array[Atom] = []
+
+		var candidates = prompt.get_candidates(prompt_node._context)
 		
-		if (binding.binding_type == "card"):
-			bindings[key] = game_state.hand.atoms.slice(0, binding.min_count)
-		elif (binding.binding_type == "int"):
-			bindings[key] = randi() % 10 + 1 ## Random int between 1 and 10
+		for i in range(prompt.min_count):
+			bindingArray.append(candidates[i])
+		
+		bindings[prompt.binding_key] = bindingArray
 
 	game_loop.try_prompt_response(PromptResponse.new(bindings))

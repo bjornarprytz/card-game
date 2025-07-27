@@ -177,7 +177,7 @@
 			"prompts": {
 				"cards_to_discard": {
 					"count": "2",
-					"conditions": "atom.atom_type == 'card'",
+					"conditions": ["atom.atom_type == 'card'"],
 					"candidates": ":hand.atoms",
 					"description": "Select cards to discard"
 				}
