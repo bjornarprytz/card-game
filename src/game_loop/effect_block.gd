@@ -3,9 +3,9 @@ extends Resource
 
 var context: Context
 
-func get_prompts() -> Array[PromptNode]:
+func get_prompt() -> PromptNode:
     push_error("EffectBlock needs to be implemented in a subclass")
-    return []
+    return null
 
 func has_next_keyword() -> bool:
     push_error("EffectBlock needs to be implemented in a subclass")
