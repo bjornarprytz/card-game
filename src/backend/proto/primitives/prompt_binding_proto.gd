@@ -3,140 +3,98 @@ extends Resource
 
 ## Must be unique within the context (effect block)
 var binding_key: String
-## Atom, number, etc
-var binding_type: String
 
 var is_collection: bool
 
 ## Fail if fewer than minimum choices are provided.
 var strict_min_count: bool = false
 
-var min_count: int = 0
+var min_count: int = 1
 var max_count: int = 1
 
 var description: String = ""
-var atom_condition: AtomConditionProto = null
+var _candidate_conditions: Array[AtomConditionProto] = []
+var _candidates_expression: ContextExpression = null
 
-func _init(binding_key_: String, type_info_: TypeInfo, description_: String, condition_: AtomConditionProto = null) -> void:
-	assert(binding_key_ != "", "Binding key cannot be empty")
-	assert(type_info_.type != "", "Binding type cannot be empty")
-	assert(type_info_.min_count >= 0, "Minimum choices must be at least 0")
-	assert(type_info_.max_count >= type_info_.min_count, "Maximum choices must be at least as large as minimum choices")
-	if (!type_info_.is_collection):
-		assert(type_info_.max_count == 1, "Maximum choices must be 1 for single value bindings")
+func _init(binding_key_: String, count_spec: CountSpec, description_: String, candidates_expression_: ContextExpression, candidate_conditions_: Array[AtomConditionProto] = []) -> void:
+    binding_key = binding_key_
+    min_count = count_spec.min_count
+    max_count = count_spec.max_count
+    is_collection = count_spec.is_collection
+    description = description_
+    _candidates_expression = candidates_expression_
+    _candidate_conditions = candidate_conditions_
 
-	binding_key = binding_key_
-	binding_type = type_info_.type
-	min_count = type_info_.min_count
-	max_count = type_info_.max_count
-	is_collection = type_info_.is_collection
+func get_candidates(context: Context) -> Array:
+    var verified_candidates: Array = []
 
-	atom_condition = condition_
-	description = description_
+    for candidate in _candidates_expression.evaluate(context):
+        var is_valid = true
+        for condition in _candidate_conditions:
+            if condition.evaluate(candidate) != true:
+                is_valid = false
+        if is_valid:
+            verified_candidates.append(candidate)
 
-func _check_type(value: Variant) -> bool:
-	match binding_type:
-		"atom":
-			if value is Atom:
-				return true
-		"card":
-			if value is Card:
-				return true
-		"creature":
-			if value is Creature:
-				return true
-		"int":
-			if typeof(value) == TYPE_INT:
-				return true
+    return verified_candidates
 
-	push_error("Value %s is not of type %s" % [value, binding_type])
-	return false
-
-func validate_binding(binding: Array) -> bool:
-	if (binding.size() < min_count or binding.size() > max_count):
-		push_error("Response size is out of bounds: %d (min: %d, max: %d)" % [binding.size(), min_count, max_count])
-		return false
-	
-	for item in binding:
-		if not _check_type(item):
-			return false
-		if atom_condition != null and not atom_condition.evaluate(item):
-			push_warning("Condition \"%s\" failed for binding: %s. Item under evaluation: %s" % [atom_condition, binding_key, item])
-			return false
-	
-	return true
-
+func validate_binding(context: Context, binding: Array) -> bool:
+    if (binding.size() < min_count or binding.size() > max_count):
+        push_error("Response size is out of bounds: %d (min: %d, max: %d)" % [binding.size(), min_count, max_count])
+        return false
+    
+    var candidates = get_candidates(context)
+    for choice in binding:
+        if not choice in candidates:
+            push_error("Choice '%s' is not in the candidates: %s" % [choice, candidates])
+            return false
+    return true
 
 static func from_dict(key: String, dict: Dictionary) -> PromptBindingProto:
-	var binding_key_ = key
-	var type_info = TypeInfo.new(str(dict["type"]))
-	
-	var description_ = dict["description"]
-	if (description_ == null):
-		push_error("Description cannot be null for PromptBindingProto")
-	
-	var condition_expression = dict.get("atom_condition", null)
-	if condition_expression != null:
-		var condition = AtomConditionProto.from_string(condition_expression)
-		return PromptBindingProto.new(binding_key_, type_info, description_, condition)
-	
-	return PromptBindingProto.new(binding_key_, type_info, description_)
+    var binding_key_ = key
+    var count_spec = CountSpec.new(str(dict.get("count", "1")))
+    
+    var description_ = dict["description"]
+    if (description_ == null):
+        push_error("Description cannot be null for PromptBindingProto")
+    
+    var candidates_expression_ = ContextExpression.from_string(dict.get("candidates", "[]"))
+
+    var candidate_conditions: Array[AtomConditionProto] = []
+    var conditions = dict.get("conditions", [])
+    for condition in conditions:
+        candidate_conditions.append(AtomConditionProto.from_string(condition))
+
+    return PromptBindingProto.new(
+        binding_key_,
+        count_spec,
+        description_,
+        candidates_expression_,
+        candidate_conditions
+    )
 
 func _to_string() -> String:
-	return "%s:%s (%d-%d)" % [binding_key, binding_type, min_count, max_count]
+    return "%s:%s (%d-%d)" % [binding_key, min_count, max_count]
 
+class CountSpec:
+    var min_count: int
+    var max_count: int
+    var is_collection: bool
 
-class TypeInfo:
-	var type: String
-	var min_count: int
-	var max_count: int
-	var is_collection: bool
-
-	func _init(type_str: String):
-		if (type_str == null || type_str.is_empty()):
-			push_error("Invalid prompt binding type syntax: %s" % type_str)
-
-		# atom? => type: atom, min: 0, max: 1
-		var optional_regex = RegEx.new()
-		optional_regex.compile("^([a-zA-Z_][a-zA-Z0-9_]*)\\?$")
-		var match_ = optional_regex.search(type_str)
-		if match_:
-			type = match_.get_string(1)
-			min_count = 0
-			max_count = 1
-			is_collection = false
-			return
-
-		var single_regex = RegEx.new()
-		single_regex.compile("^([a-zA-Z_][a-zA-Z0-9_]*)$")
-		match_ = single_regex.search(type_str)
-		if match_:
-			type = match_.get_string(1)
-			min_count = 1
-			max_count = 1
-			is_collection = false
-			return
-
-		var range_regex = RegEx.new()
-		range_regex.compile("^\\[([a-zA-Z_][a-zA-Z0-9_]*)\\:(\\d+)-(\\d+)\\]$")
-		# Actually, need to capture the numbers, so:
-		range_regex.compile("^\\[([a-zA-Z_][a-zA-Z0-9_]*)\\:(\\d+)-(\\d+)\\]$")
-		match_ = range_regex.search(type_str)
-		if match_:
-			type = match_.get_string(1)
-			min_count = int(match_.get_string(2))
-			max_count = int(match_.get_string(3))
-			is_collection = true
-			return
-
-		var exact_regex = RegEx.new()
-		exact_regex.compile("^\\[([a-zA-Z_][a-zA-Z0-9_]*)\\:(\\d+)\\]$")
-		match_ = exact_regex.search(type_str)
-		if match_:
-			type = match_.get_string(1)
-			min_count = int(match_.get_string(2))
-			max_count = int(match_.get_string(2))
-			is_collection = true
-			return
-
-		push_error("Invalid prompt binding type syntax: %s" % type_str)
+    func _init(type_str: String):
+        var parts = type_str.split("-")
+        if parts.size() == 1:
+            min_count = int(parts[0])
+            max_count = min_count
+            is_collection = false
+        elif parts.size() == 2:
+            min_count = int(parts[0])
+            max_count = int(parts[1])
+            is_collection = true
+        else:
+            push_warning("Invalid type string format: %s" % type_str)
+            min_count = 1
+            max_count = 1
+            is_collection = false
+        
+        assert(min_count >= 0 and max_count >= min_count, "Invalid count specification: (0 <= min <= max) vs (%d <= %d)" % [min_count, max_count])

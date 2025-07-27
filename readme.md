@@ -8,7 +8,7 @@ Card game TODO:
 
 - Prompt:
   - Allow for lax min-requirements (e.g. Mind Rot should work when there's only one card left in hand)
-  - Top level prompts on cards etc. This is useful for cost parameter injection anywhere in an effect block. The prompts would be timed to resolve as soon as the action is queued
+  - Move prompts to top level on cards etc. This is useful for cost parameter injection anywhere in an effect block. This should be cleaner as you'd get all the prompts out of the way at the beginning, instead of mixing it into the effect block itself.
 - Track source of effects
 - Resolution Zone
   - StartResolution (to resolution zone)

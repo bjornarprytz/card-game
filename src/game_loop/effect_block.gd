@@ -3,14 +3,18 @@ extends Resource
 
 var context: Context
 
+func get_prompts() -> Array[PromptNode]:
+    push_error("EffectBlock needs to be implemented in a subclass")
+    return []
+
 func has_next_keyword() -> bool:
-	push_error("EffectBlock needs to be implemented in a subclass")
-	return false
+    push_error("EffectBlock needs to be implemented in a subclass")
+    return false
 
 func next_keyword() -> KeywordNode:
-	push_error("EffectBlock needs to be implemented in a subclass")
-	return null
+    push_error("EffectBlock needs to be implemented in a subclass")
+    return null
 
 func _to_string() -> String:
-	push_error("EffectBlock needs to be implemented in a subclass")
-	return "<EffectBlock>"
+    push_error("EffectBlock needs to be implemented in a subclass")
+    return "<EffectBlock>"

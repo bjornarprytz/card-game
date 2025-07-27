@@ -1,5 +1,5 @@
 class_name PromptNode
-extends KeywordNode
+extends Resource
 
 var _context: Context = null
 
@@ -8,8 +8,6 @@ var prompt_proto: PromptProto
 var bound_values: Dictionary[String, Variant] = {}
 
 func _init(prompt_proto_: PromptProto) -> void:
-	keyword = "prompt"
-	args = [prompt_proto_]
 	prompt_proto = prompt_proto_
 
 static func from_args(args_: Array[Variant]) -> PromptNode:

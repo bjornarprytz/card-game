@@ -18,10 +18,10 @@ func resolve(context: Context) -> Variant:
 	push_error("Error: Variable '%s' has no value or expression" % name)
 	return null
 
-static func from_dict(data: Dictionary) -> VariableProto:
+static func from_dict(variable_name: String, data: Dictionary) -> VariableProto:
 	var variable_data = VariableProto.new()
 
-	variable_data.name = data.get("name", null)
+	variable_data.name = variable_name
 	variable_data.description = data.get("description", "MISSING DESCRIPTION")
 
 	if not variable_data.name:
