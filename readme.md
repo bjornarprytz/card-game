@@ -8,7 +8,7 @@ Card game TODO:
 
 - Prompt:
   - Allow for lax min-requirements (e.g. Mind Rot should work when there's only one card left in hand)
-  - Incorporate targets as a special prompt with nice short hands
+  - Update PlayCardUI with prompts instead of just targets
 - Track source of effects
 - Resolution Zone
   - StartResolution (to resolution zone)
@@ -17,7 +17,13 @@ Card game TODO:
 - Event History
   - And scope
 - Triggered effects
+- Static effects / Modifiers
 - Keyword variables (e.g. Delirium, Cards in hand, Spells in graveyard)
+- Non-state properties:
+  - Tags (string->bool)
+  - Facets (string->[string])
+  - Labels (string->string)
+  - Stats (string->int)
 - AtomCondition
   - Add context to the expression
 

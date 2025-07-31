@@ -1,7 +1,7 @@
 class_name CostProto
 extends Resource
 
-var is_optional: bool = false
+var optional: bool = false
 
 var keyword: String
 var _args: Array[ParameterProto] = []
@@ -15,7 +15,7 @@ func verify(context: Context) -> PaymentResult:
 		push_error("Cost verification failed for keyword '%s' with args %s" % [keyword, resolved_args])
 		return PaymentResult.failure()
 
-	if (is_optional):
+	if (optional):
 		result.make_optional()
 	
 	return result
@@ -36,7 +36,7 @@ static func from_variant(value_variant: Variant) -> CostProto:
 		ParameterProto.get_state(),
 		ParameterProto.from_variant(value_variant)
 	])
-	cost_data.is_optional = false # Default to not optional unless specified otherwise
+	cost_data.optional = false # Default to not optional unless specified otherwise
 
 	return cost_data
 
@@ -52,7 +52,7 @@ static func from_dict(data: Dictionary) -> CostProto:
 	for param in raw_args:
 		cost_data._args.append(ParameterProto.from_variant(param))
 	
-	cost_data.is_optional = data.get("optional", false)
+	cost_data.optional = data.get("optional", false)
 	
 	return cost_data
 

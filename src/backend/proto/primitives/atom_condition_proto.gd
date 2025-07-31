@@ -1,25 +1,32 @@
 class_name AtomConditionProto
 extends Resource
 
-var expression: AtomExpression = null
+var expressions: Array[AtomExpression] = []
 
 func evaluate(atom: Atom) -> bool:
-	if expression == null:
-		push_error("No expression set for AtomConditionProto")
-		return false
-	return expression.evaluate(atom)
+    if expressions.is_empty():
+        return true # No conditions means always true
+    for expression in expressions:
+        if not expression.evaluate(atom):
+            return false
+    return true
 
-# Create a condition from string expression like "t0.health > 5 AND t0.armor = 0"
-static func from_string(expression_string: String) -> AtomConditionProto:
-	if expression_string == null || expression_string.is_empty():
-		push_error("Expression string cannot be empty for AtomConditionProto")
-		return null
-		
-	var condition = AtomConditionProto.new()
-	condition.expression = AtomExpression.from_string(expression_string)
-	return condition
+static func none() -> AtomConditionProto:
+    var condition = AtomConditionProto.new()
+    return condition
+
+## Create a condition from string expressions like "t0.health > 5", and, "t0.armor = 0"
+static func from_expressions(expressions_: Array[String]) -> AtomConditionProto:
+    var condition = AtomConditionProto.new()
+    for expr in expressions_:
+        condition.expressions.append(AtomExpression.from_string(expr))
+    return condition
 
 func _to_string() -> String:
-	if expression == null:
-		return "AtomConditionProto: No expression"
-	return "%s" % expression.expression_string
+    if expressions.is_empty():
+        return "<No conditions>"
+    var expressions_str = []
+    for expression in expressions:
+        expressions_str.append(expression.to_string())
+    
+    return "atom => %s" % expressions_str.join(" AND ")
