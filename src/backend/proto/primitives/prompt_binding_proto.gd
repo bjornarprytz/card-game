@@ -81,7 +81,7 @@ static func from_target_shorthand(target: Dictionary) -> PromptBindingProto:
 	var atom_condition_expressions: Array = target.get("conditions", [])
 
 	if (target.has("type")): # Shorthand for type
-		atom_condition_expressions.append("atom.atom_type == %s" % target["type"])
+		atom_condition_expressions.append("atom.atom_type == \"%s\"" % target["type"])
 			
 	var candidate_conditions = AtomConditionProto.from_expressions(atom_condition_expressions)
 
