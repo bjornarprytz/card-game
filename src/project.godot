@@ -37,10 +37,6 @@ window/stretch/mode="viewport"
 
 project/assembly_name="card-game"
 
-[global_group]
-
-Targets="Targetable things"
-
 [gui]
 
 theme/custom="res://global_theme.tres"

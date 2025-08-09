@@ -9,75 +9,75 @@ var _prompts_by_key: Dictionary[String, PromptBindingProto] = {}
 var _bound_to_context: bool = false
 
 func _init(context: Context, prompts_: Array[PromptBindingProto]) -> void:
-    assert(context != null, "Context cannot be null")
-    _context = context
-    prompts = prompts_
-    for prompt in prompts:
-        if not prompt.binding_key in _prompts_by_key:
-            _prompts_by_key[prompt.binding_key] = prompt
-        else:
-            push_error("Duplicate binding key found: %s" % prompt.binding_key)
+	assert(context != null, "Context cannot be null")
+	_context = context
+	prompts = prompts_
+	for prompt in prompts:
+		if not prompt.binding_key in _prompts_by_key:
+			_prompts_by_key[prompt.binding_key] = prompt
+		else:
+			push_error("Duplicate binding key found: %s" % prompt.binding_key)
 
-    if (prompts.size() == 0):
-        push_error("PromptNode initialized with no prompts. This is likely a bug.")
+	if (prompts.size() == 0):
+		push_error("PromptNode initialized with no prompts. This is likely a bug.")
 
 func validate_response(response: PromptResponse) -> bool:
-    if response == null:
-        push_error("Prompt response cannot be null.")
-        return false
-    
-    for prompt in prompts:
-        var bindings = response.payload.get(prompt.binding_key, [])
-        if not prompt.validate_binding(_context, bindings):
-            push_error("Response payload for binding key %s is invalid." % prompt.binding_key)
-            return false
+	if response == null:
+		push_error("Prompt response cannot be null.")
+		return false
+	
+	for prompt in prompts:
+		var bindings = response.payload.get(prompt.binding_key, [])
+		if not prompt.validate_binding(_context, bindings):
+			push_error("Response payload for binding key %s is invalid." % prompt.binding_key)
+			return false
 
-    return true
+	return true
 
 func try_bind_response(response: PromptResponse) -> bool:
-    if not validate_response(response):
-        return false
-    
-    if _bound_to_context:
-        push_error("Prompt response is already bound to context.")
-        return false
-    
-    var bindings: Dictionary[String, Variant] = {}
+	if not validate_response(response):
+		return false
+	
+	if _bound_to_context:
+		push_error("Prompt response is already bound to context.")
+		return false
+	
+	var bindings: Dictionary[String, Variant] = {}
 
-    for binding_key in response.payload.keys():
-        var response_to_bind = response.payload[binding_key]
+	for binding_key in response.payload.keys():
+		var response_to_bind = response.payload[binding_key]
 
-        if (_prompts_by_key[binding_key].is_collection):
-            bindings[binding_key] = response_to_bind
-        else:
-            if response_to_bind.size() > 1:
-                push_error("Single value binding %s received multiple values: %s" % [binding_key, response_to_bind])
-                return false
-            bindings[binding_key] = response_to_bind[0] if response_to_bind.size() == 1 else null
+		if (_prompts_by_key[binding_key].is_collection):
+			bindings[binding_key] = response_to_bind
+		else:
+			if response_to_bind.size() > 1:
+				push_error("Single value binding %s received multiple values: %s" % [binding_key, response_to_bind])
+				return false
+			bindings[binding_key] = response_to_bind[0] if response_to_bind.size() == 1 else null
 
-    for binding_key in bindings.keys():
-        var current_binding = _context.prompt.get(binding_key, null)
+	for binding_key in bindings.keys():
+		var current_binding = _context.prompt.get(binding_key, null)
 
-        # Just set the new binding
-        if current_binding == null:
-            _context.prompt[binding_key] = bindings[binding_key]
-        else:
-            # Make sure we have an array to append to
-            if not current_binding is Array:
-                _context.prompt[binding_key] = [current_binding]
-            
-            # Merge arrays
-            if bindings[binding_key] is Array:
-                _context.prompt[binding_key].append_array(bindings[binding_key])
-            # Append single value
-            else:
-                _context.prompt[binding_key].append(bindings[binding_key])
+		# Just set the new binding
+		if current_binding == null:
+			_context.prompt[binding_key] = bindings[binding_key]
+		else:
+			# Make sure we have an array to append to
+			if not current_binding is Array:
+				_context.prompt[binding_key] = [current_binding]
+			
+			# Merge arrays
+			if bindings[binding_key] is Array:
+				_context.prompt[binding_key].append_array(bindings[binding_key])
+			# Append single value
+			else:
+				_context.prompt[binding_key].append(bindings[binding_key])
 
-    _bound_to_context = true
-    return true
+	_bound_to_context = true
+	return true
 
 func _to_string() -> String:
-    var prompts_str = []
-    for prompt in prompts:
-        prompts_str.append(prompt.to_string())
-    return "PromptNode(context: %s, prompts: [%s])" % [_context.to_string(), ", ".join(prompts_str)]
+	var prompts_str = []
+	for prompt in prompts:
+		prompts_str.append(prompt.to_string())
+	return "PromptNode(context: %s, prompts: [%s])" % [_context.to_string(), ", ".join(prompts_str)]

@@ -1,208 +1,208 @@
 {
-    "creatures": [
-        {
-            "name": "Goblin",
-            "properties": {
-                "health": 2.0,
-                "armor": 0.0,
-                "attack": 1.0
-            }
-        },
-        {
-            "name": "Orc",
-            "properties": {
-                "health": 4.0,
-                "armor": 0.0,
-                "attack": 2.0
-            }
-        }
-    ],
-    "cards": [
-        {
-            "name": "Strike",
-            "cost": 1.0,
-            "type": "spell",
-            "targets": [
-                {
-                    "type": "creature",
-                    "conditions": ["atom != null"]
-                }
-            ],
-            "effects": [
-                {
-                    "keyword": "deal_damage",
-                    "args": ["t0", 2.0]
-                }
-            ]
-        },
-        {
-            "name": "Self-Destruct",
-            "cost": 1.0,
-            "type": "spell",
-            "targets": [
-                {
-                    "type": "creature"
-                }
-            ],
-            "vars": {
-                "x": {
-                    "value": "t0.attack",
-                    "description": "The target's attack value"
-                }
-            },
-            "effects": [
-                {
-                    "keyword": "deal_damage",
-                    "args": ["t0", "$x"]
-                }
-            ]
-        },
-        {
-            "name": "Shield",
-            "cost": 1.0,
-            "type": "spell",
-            "targets": [
-                {
-                    "type": "creature"
-                }
-            ],
-            "vars": {
-                "x": {
-                    "value": "t0.health",
-                    "description": "The target's current health"
-                }
-            },
-            "effects": [
-                {
-                    "keyword": "add_armor",
-                    "args": ["t0", "$x"]
-                }
-            ]
-        },
-        {
-            "name": "Bolster",
-            "cost": 2.0,
-            "type": "spell",
-            "targets": [
-                {
-                    "type": "creature"
-                }
-            ],
-            "effects": [
-                {
-                    "keyword": "add_armor",
-                    "args": ["t0", 3.0]
-                }
-            ]
-        },
-        {
-            "name": "Precision Strike",
-            "cost": 2.0,
-            "type": "spell",
-            "targets": [
-                {
-                    "type": "creature"
-                }
-            ],
-            "vars": {
-                "x": {
-                    "value": "t0.armor > 0 ? 2 : 0",
-                    "description": "Bonus damage against armored targets"
-                }
-            },
-            "effects": [
-                {
-                    "keyword": "deal_damage",
-                    "args": ["t0", "2 + $x"]
-                }
-            ]
-        },
-        {
-            "name": "Cleave",
-            "cost": 3.0,
-            "type": "spell",
-            "targets": [
-                {
-                    "type": "creature"
-                },
-                {
-                    "type": "creature"
-                }
-            ],
-            "effects": [
-                {
-                    "keyword": "deal_damage",
-                    "args": ["t0", 3.0]
-                },
-                {
-                    "keyword": "deal_damage",
-                    "args": ["t1", 1.0]
-                }
-            ]
-        },
-        {
-            "name": "Hand Slap",
-            "cost": 1.0,
-            "extra_costs": [
-                {
-                    "keyword": "pay_discard",
-                    "args": ["@state", ":hand.atoms[0]"],
-                    "optional": true
-                }
-            ],
-            "type": "spell",
-            "targets": [
-                {
-                    "type": "creature"
-                }
-            ],
-            "vars": {
-                "hand_size": {
-                    "value": ":hand.atoms.size()",
-                    "description": "Hand size"
-                }
-            },
-            "effects": [
-                {
-                    "keyword": "deal_damage",
-                    "args": ["t0", "$hand_size"]
-                }
-            ]
-        },
-        {
-            "name": "Mind Rot",
-            "cost": 2.0,
-            "type": "spell",
-            "targets": [],
-            "prompts": {
-                "cards_to_discard": {
-                    "count": "2",
-                    "conditions": ["atom.atom_type == 'card'"],
-                    "candidates": ":hand.atoms",
-                    "description": "Select cards to discard"
-                }
-            },
-            "effects": [
-                {
-                    "keyword": "discard_cards",
-                    "args": ["@state", "#cards_to_discard"]
-                }
-            ]
-        }
-    ],
-    "initial_game_state": {
-        "deck": [
-            "Mind Rot",
-            "Strike",
-            "Hand Slap",
-            "Shield",
-            "Bolster",
-            "Cleave",
-            "Self-Destruct",
-            "Strike",
-            "Strike"
-        ],
-        "enemies": ["Goblin", "Orc", "Goblin"],
-        "starting_lives": 20.0
-    }
+	"creatures": [
+		{
+			"name": "Goblin",
+			"properties": {
+				"health": 2.0,
+				"armor": 0.0,
+				"attack": 1.0
+			}
+		},
+		{
+			"name": "Orc",
+			"properties": {
+				"health": 4.0,
+				"armor": 0.0,
+				"attack": 2.0
+			}
+		}
+	],
+	"cards": [
+		{
+			"name": "Strike",
+			"cost": 1.0,
+			"type": "spell",
+			"targets": [
+				{
+					"type": "creature",
+					"conditions": ["atom != null"]
+				}
+			],
+			"effects": [
+				{
+					"keyword": "deal_damage",
+					"args": ["t0", 2.0]
+				}
+			]
+		},
+		{
+			"name": "Self-Destruct",
+			"cost": 1.0,
+			"type": "spell",
+			"targets": [
+				{
+					"type": "creature"
+				}
+			],
+			"vars": {
+				"x": {
+					"value": "t0.attack",
+					"description": "The target's attack value"
+				}
+			},
+			"effects": [
+				{
+					"keyword": "deal_damage",
+					"args": ["t0", "$x"]
+				}
+			]
+		},
+		{
+			"name": "Shield",
+			"cost": 1.0,
+			"type": "spell",
+			"targets": [
+				{
+					"type": "creature"
+				}
+			],
+			"vars": {
+				"x": {
+					"value": "t0.health",
+					"description": "The target's current health"
+				}
+			},
+			"effects": [
+				{
+					"keyword": "add_armor",
+					"args": ["t0", "$x"]
+				}
+			]
+		},
+		{
+			"name": "Bolster",
+			"cost": 2.0,
+			"type": "spell",
+			"targets": [
+				{
+					"type": "creature"
+				}
+			],
+			"effects": [
+				{
+					"keyword": "add_armor",
+					"args": ["t0", 3.0]
+				}
+			]
+		},
+		{
+			"name": "Precision Strike",
+			"cost": 2.0,
+			"type": "spell",
+			"targets": [
+				{
+					"type": "creature"
+				}
+			],
+			"vars": {
+				"x": {
+					"value": "t0.armor > 0 ? 2 : 0",
+					"description": "Bonus damage against armored targets"
+				}
+			},
+			"effects": [
+				{
+					"keyword": "deal_damage",
+					"args": ["t0", "2 + $x"]
+				}
+			]
+		},
+		{
+			"name": "Cleave",
+			"cost": 3.0,
+			"type": "spell",
+			"targets": [
+				{
+					"type": "creature"
+				},
+				{
+					"type": "creature"
+				}
+			],
+			"effects": [
+				{
+					"keyword": "deal_damage",
+					"args": ["t0", 3.0]
+				},
+				{
+					"keyword": "deal_damage",
+					"args": ["t1", 1.0]
+				}
+			]
+		},
+		{
+			"name": "Hand Slap",
+			"cost": 1.0,
+			"extra_costs": [
+				{
+					"keyword": "pay_discard",
+					"args": ["@state", ":hand.atoms[0]"],
+					"optional": true
+				}
+			],
+			"type": "spell",
+			"targets": [
+				{
+					"type": "creature"
+				}
+			],
+			"vars": {
+				"hand_size": {
+					"value": ":hand.atoms.size()",
+					"description": "Hand size"
+				}
+			},
+			"effects": [
+				{
+					"keyword": "deal_damage",
+					"args": ["t0", "$hand_size"]
+				}
+			]
+		},
+		{
+			"name": "Mind Rot",
+			"cost": 2.0,
+			"type": "spell",
+			"targets": [],
+			"prompts": {
+				"cards_to_discard": {
+					"count": "2",
+					"conditions": ["atom.atom_type == 'card'"],
+					"candidates": ":hand.atoms",
+					"description": "Select cards to discard"
+				}
+			},
+			"effects": [
+				{
+					"keyword": "discard_cards",
+					"args": ["@state", "#cards_to_discard"]
+				}
+			]
+		}
+	],
+	"initial_game_state": {
+		"deck": [
+			"Mind Rot",
+			"Strike",
+			"Hand Slap",
+			"Shield",
+			"Bolster",
+			"Cleave",
+			"Self-Destruct",
+			"Strike",
+			"Strike"
+		],
+		"enemies": ["Goblin", "Orc", "Goblin"],
+		"starting_lives": 20.0
+	}
 }

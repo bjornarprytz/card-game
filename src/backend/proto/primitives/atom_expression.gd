@@ -44,3 +44,9 @@ static func from_string(raw_expression: String) -> AtomExpression:
 	var processed_expression = ExpressionSyntaxHelper.syntactic_sugar(raw_expression)
 	
 	return AtomExpression.new(processed_expression)
+
+
+func _to_string() -> String:
+	if expression_string.is_empty():
+		return "<Empty Atom Expression>"
+	return expression_string

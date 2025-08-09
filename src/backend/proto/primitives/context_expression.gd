@@ -169,6 +169,10 @@ static func from_string(raw_expression: String) -> ContextExpression:
 
 	return ContextExpression.new(processed_expression)
 
+func _to_string() -> String:
+	if expression_string.is_empty():
+		return "<Empty Context Expression>"
+	return expression_string
 
 # Helper functions that will be available in the expression context
 static func t(context: Context, index: int) -> Variant:

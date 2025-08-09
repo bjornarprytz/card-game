@@ -9,6 +9,12 @@ Card game TODO:
 - Prompt:
   - Allow for lax min-requirements (e.g. Mind Rot should work when there's only one card left in hand)
   - Update PlayCardUI with prompts instead of just targets
+- Keyword Refactor
+  - Maybe separate keywords into different kinds:
+    - Composite / Higher-Order
+      - Always inject state so that card don't have to explicitly get it from the state
+    - Simple
+      - Acts on one atom, state isn't injected
 - Track source of effects
 - Resolution Zone
   - StartResolution (to resolution zone)
