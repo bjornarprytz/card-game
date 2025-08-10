@@ -28,13 +28,13 @@ func _resolve_args(context: Context) -> Array[Variant]:
 	
 	return args
 
-static func from_variant(value_variant: Variant) -> CostProto:
+static func from_number(value: int) -> CostProto:
 	var cost_data = CostProto.new()
 	
 	cost_data.keyword = "pay_resources"
 	cost_data._args.append_array([
 		ParameterProto.get_state(),
-		ParameterProto.from_variant(value_variant)
+		ParameterProto.from_variant(value)
 	])
 	cost_data.optional = false # Default to not optional unless specified otherwise
 

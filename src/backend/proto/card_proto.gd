@@ -25,7 +25,7 @@ static func from_dict(data: Dictionary) -> CardProto:
 	var cost_expression = data.get("cost", 0)
 
 	if (cost_expression > 0):
-		card_data.cost.append(CostProto.from_variant(cost_expression))
+		card_data.cost.append(CostProto.from_number(cost_expression))
 
 	var extra_costs = data.get("extra_costs", [])
 

@@ -8,7 +8,8 @@ Card game TODO:
 
 - Prompt:
   - Allow for lax min-requirements (e.g. Mind Rot should work when there's only one card left in hand)
-  - Update PlayCardUI with prompts instead of just targets
+- Cost:
+  - extra_cost could be more linked to prompts. As is you need to map the specific arg to a prompt binding. Maybe it's a YAGNI, but it feels like a "pay_discard" cost could have an efficient short hand. On the other hand, maybe the need should prove itself first.
 - Keyword Refactor
   - Maybe separate keywords into different kinds:
     - Composite / Higher-Order

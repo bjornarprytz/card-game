@@ -146,7 +146,7 @@
 			"extra_costs": [
 				{
 					"keyword": "pay_discard",
-					"args": ["@state", ":hand.atoms[0]"],
+					"args": ["@state", "#payment_to_discard"],
 					"optional": true
 				}
 			],
@@ -156,6 +156,13 @@
 					"type": "creature"
 				}
 			],
+			"prompts": {
+				"payment_to_discard": {
+					"conditions": ["atom.atom_type == 'card'"],
+					"candidates": ":hand.atoms",
+					"description": "Select a card to discard for Hand Slap"
+				}
+			},
 			"vars": {
 				"hand_size": {
 					"value": ":hand.atoms.size()",
