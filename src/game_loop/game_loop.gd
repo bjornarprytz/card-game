@@ -162,6 +162,7 @@ func _enqueue_effect_block(effect_block: EffectBlock) -> void:
 	if effect_block == null:
 		push_error("Cannot enqueue a null effect block.")
 		return
+
 	var prompt = effect_block.get_prompt()
 	if prompt != null and prompt.prompts.size() > 0:
 		_enqueue_prompt(prompt)

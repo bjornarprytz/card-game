@@ -34,18 +34,4 @@ func _on_keyword_resolved(result: KeywordResult):
 
 
 func _on_prompt_requested(prompt_node: PromptNode) -> void:
-	print("Prompt requested: %s" % prompt_node)
-
-	var bindings: Dictionary[String, Variant] = {}
-
-	for prompt in prompt_node.prompts:
-		var bindingArray: Array[Atom] = []
-
-		var candidates = prompt.get_candidates(prompt_node._context)
-		
-		for i in range(prompt.min_count):
-			bindingArray.append(candidates[i])
-		
-		bindings[prompt.binding_key] = bindingArray
-
-	game_loop.try_prompt_response(PromptResponse.new(bindings))
+	print("Prompt requested by game loop: %s" % prompt_node)

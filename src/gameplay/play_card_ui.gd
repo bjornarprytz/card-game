@@ -1,58 +1,51 @@
 class_name PlayCardUI
-extends Node2D
+extends CanvasItem
 
 @export var state: GameState
 @export var game_loop: GameLoop
 @export var card: Card
 
-@onready var message: RichTextLabel = %Message
+@onready var option_button_factory: PackedScene = preload("res://gameplay/prompt_option.tscn")
 
+@onready var candidate_list: VBoxContainer = %CandidateList
+@onready var confirm: Button = %Confirm
+
+@onready var message: RichTextLabel = %Message
+@onready var requirements: RichTextLabel = %Requirements
+@onready var description: RichTextLabel = %Description
+
+var context: PlayCardContext
 var prompts: Array[PromptBindingProto] = []
 
 var current_prompt: PromptBindingProto = null
-
-var _targets: Array[Targetable] = []
-var _hovered: Targetable = null
-
-var required_number_of_targets: int
+var candidates: Array[Atom] = []
+var current_choices: Array[Atom] = []
 
 func _ready() -> void:
-	prompts.append_array(card.card_data.prompts)
+	assert(card != null, "Card cannot be null")
+	
+	context = PlayCardContext.create(state, card)
+	prompts = card.card_data.prompts.duplicate()
+	_next_prompt()
 
+func _next_prompt() -> void:
+	current_choices = []
 	if (prompts.size() > 0):
 		current_prompt = prompts.pop_front()
+		candidates = current_prompt.get_candidates(context)
+		_update_ui()
 	else:
-		push_warning("No prompts available for card: %s. This might just be OK" % card.name)
-
-	_update_ui()
+		current_prompt = null
+		push_warning("No more prompts available for card: %s" % card.name)
 	
+	_update_confirm_button_state()
 
-func _on_hover_target(on: bool, t: Targetable):
-	if (on):
-		_hovered = t
-		t.highlight(true)
-	else:
-		if (_hovered == t):
-			_hovered = null
-		t.highlight(false)
-
-func _toggle_target(target: Targetable):
-	if (target in _targets):
-		_targets.erase(target)
-	else:
-		_targets.append(target)
-
-	_update_ui()
-	
-	if (required_number_of_targets == _targets.size()):
-		_resolve()
+func _confirm_candidates() -> void:
+	context.answer_prompt(current_prompt.binding_key, current_choices)
+	_next_prompt()
 
 func _resolve():
-	var target_atoms: Array[Atom] = []
-	for t in _targets:
-		target_atoms.append(t.atom)
-	
-	var action = PlayCardAction.new(PlayCardContext.create(state, card, {"targets": target_atoms}))
+	var action = PlayCardAction.new(context)
 	
 	if (game_loop.try_take_action(action)):
 		print("Action taken: %s" % action)
@@ -63,25 +56,47 @@ func _resolve():
 	queue_free()
 
 func _update_ui():
-	if (card == null):
-		message.text = "Could not find card"
+	Utility.clear_children(candidate_list)
+	if (current_prompt == null):
+		push_warning("No current prompt to update UI for.")
 		return
-	
-	if (required_number_of_targets == 0):
-		message.text = "Click anywhere to play."
+
+	for candidate in candidates:
+		var button = option_button_factory.instantiate() as Button
+		button.text = str(candidate)
+		button.toggled.connect(_on_candidate_pressed.bind(candidate))
+		candidate_list.add_child(button)
+
+	if current_prompt.max_count == current_prompt.min_count:
+		requirements.text = "%d" % [current_prompt.max_count]
 	else:
-		message.text = "Choose target %d/%d" % [_targets.size() + 1, required_number_of_targets]
+		requirements.text = "%d-%d" % [current_prompt.min_count, current_prompt.max_count]
+	
+	description.text = current_prompt.description
 
-func _process(_delta: float) -> void:
-	global_position = get_global_mouse_position()
-
-func _input(event: InputEvent) -> void:
-	if (event is InputEventMouseButton and !event.is_pressed()):
-		if _hovered != null:
-			_toggle_target(_hovered)
-		elif (required_number_of_targets == 0):
-			_resolve()
+func _on_candidate_pressed(toggled_on: bool, candidate: Atom) -> void:
+	if toggled_on:
+		if candidate in current_choices:
+			push_warning("Candidate already selected: %s" % candidate)
 		else:
-			queue_free()
-func _exit_tree() -> void:
-	get_tree().call_group("Targets", "highlight", false)
+			current_choices.append(candidate)
+	else:
+		if candidate not in current_choices:
+			push_warning("Candidate not found in current choices: %s" % candidate)
+		else:
+			current_choices.erase(candidate)
+	_update_confirm_button_state()
+
+func _on_confirm_pressed() -> void:
+	if (current_prompt != null):
+		_confirm_candidates()
+	
+	if (current_prompt == null):
+		_resolve()
+
+func _update_confirm_button_state() -> void:
+	if current_prompt == null:
+		confirm.disabled = false
+		return
+
+	confirm.disabled = current_choices.size() < current_prompt.min_count || current_choices.size() > current_prompt.max_count

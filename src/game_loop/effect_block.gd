@@ -3,6 +3,7 @@ extends Resource
 
 var context: Context
 
+## Return unanswered prompts
 func get_prompt() -> PromptNode:
 	return null
 

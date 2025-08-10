@@ -8,15 +8,50 @@ script = ExtResource("1_gbekt")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_direction = 2
-offset_left = -59.0
-offset_top = -61.0
-offset_right = 60.0
-offset_bottom = -11.0
+offset_right = 119.0
+offset_bottom = 50.0
 theme = ExtResource("2_bto18")
 
-[node name="Message" type="RichTextLabel" parent="PanelContainer"]
+[node name="Prompt" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Description" type="RichTextLabel" parent="PanelContainer/Prompt"]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Playing"
+text = "Description"
 fit_content = true
 autowrap_mode = 0
+
+[node name="Header" type="HBoxContainer" parent="PanelContainer/Prompt"]
+layout_mode = 2
+
+[node name="Message" type="RichTextLabel" parent="PanelContainer/Prompt/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Choose:"
+fit_content = true
+autowrap_mode = 0
+
+[node name="Space" type="Control" parent="PanelContainer/Prompt/Header"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="Requirements" type="RichTextLabel" parent="PanelContainer/Prompt/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "X / Y"
+fit_content = true
+autowrap_mode = 0
+
+[node name="CandidateList" type="VBoxContainer" parent="PanelContainer/Prompt"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Confirm" type="Button" parent="PanelContainer/Prompt"]
+unique_name_in_owner = true
+layout_mode = 2
+disabled = true
+text = "Confirm
+"
+
+[connection signal="pressed" from="PanelContainer/Prompt/Confirm" to="." method="_on_confirm_pressed"]

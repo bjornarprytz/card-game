@@ -23,6 +23,7 @@ anchor_bottom = 1.0
 offset_top = -221.0
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
 
 [node name="DrawPile" type="PanelContainer" parent="CanvasLayer/Control"]
 layout_mode = 1
@@ -66,6 +67,7 @@ anchor_bottom = 0.5
 offset_top = -214.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 alignment = 1
 
 [connection signal="keyword_resolved" from="GameLoop" to="." method="_on_keyword_resolved"]

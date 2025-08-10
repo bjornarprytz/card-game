@@ -34,6 +34,10 @@ func jiggle(node: CanvasItem, magnitude: float, n_jiggles: int = 1, original_sca
 	
 	return tween
 
+func clear_children(node: CanvasItem) -> void:
+	for child in node.get_children():
+		child.queue_free()
+
 # Function to calculate relative luminance of an RGB color
 func get_luminance(color: Color) -> float:
 	return 0.2126 * color.r + 0.7152 * color.g + 0.0722 * color.b

@@ -10,7 +10,18 @@ func _init(play_card_context: PlayCardContext) -> void:
 	context = play_card_context
 
 func get_prompt() -> PromptNode:
-	return PromptNode.new(_context, _context.card.card_data.prompts)
+	var unanswered_prompts: Array[PromptBindingProto] = []
+
+	for answer_key in _context.prompt.keys():
+		for prompt in _context.card.card_data.prompts:
+			if prompt.binding_key != answer_key:
+				unanswered_prompts.append(prompt)
+
+	if unanswered_prompts.size() == 0:
+		push_warning("No unanswered prompts found for card: %s" % _context.card.name)
+		return null
+	
+	return PromptNode.new(_context, unanswered_prompts)
 
 func _get_effects() -> Array[EffectProto]:
 	return _context.card.card_data.effects
