@@ -3,10 +3,6 @@ extends Resource
 
 var context: Context
 
-## Return unanswered prompts
-func get_prompt() -> PromptNode:
-	return null
-
 func has_next_keyword() -> bool:
 	push_error("EffectBlock needs to be implemented in a subclass")
 	return false

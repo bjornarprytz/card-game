@@ -9,24 +9,42 @@ extends CanvasItem
 
 @onready var candidate_list: VBoxContainer = %CandidateList
 @onready var confirm: Button = %Confirm
+@onready var card_name: RichTextLabel = %CardName
 
 @onready var message: RichTextLabel = %Message
 @onready var requirements: RichTextLabel = %Requirements
 @onready var description: RichTextLabel = %Description
 
 var context: PlayCardContext
+var action: PlayCardAction
+var prompt_node: PromptNode
+
 var prompts: Array[PromptBindingProto] = []
 
 var current_prompt: PromptBindingProto = null
 var candidates: Array[Atom] = []
 var current_choices: Array[Atom] = []
 
+var current_bindings: Dictionary[String, Variant] = {}
+
 func _ready() -> void:
 	assert(card != null, "Card cannot be null")
+	_reset()
 	
+
+func _reset():
 	context = PlayCardContext.create(state, card)
-	prompts = card.card_data.prompts.duplicate()
+	action = PlayCardAction.new(context)
+	prompt_node = action.get_prompt()
+	prompts = prompt_node.prompts.duplicate()
+
+	current_prompt = null
+	candidates = []
+	current_choices = []
+	current_bindings = {}
+
 	_next_prompt()
+
 
 func _next_prompt() -> void:
 	current_choices = []
@@ -41,16 +59,23 @@ func _next_prompt() -> void:
 	_update_confirm_button_state()
 
 func _confirm_candidates() -> void:
-	context.answer_prompt(current_prompt.binding_key, current_choices)
-	_next_prompt()
+	if prompt_node.validate_binding(current_prompt.binding_key, current_choices):
+		current_bindings[current_prompt.binding_key] = current_choices.duplicate()
+		_next_prompt()
+	else:
+		push_error("Failed to confirm candidates for prompt: %s" % current_prompt)
 
 func _resolve():
-	var action = PlayCardAction.new(context)
-	
+	if (!prompt_node.try_bind_response(PromptResponse.new(current_bindings))):
+		print("Failed to bind prompt response.")
+		_reset()
+		return
+		
 	if (game_loop.try_take_action(action)):
 		print("Action taken: %s" % action)
 	else:
 		print("Action failed: %s" % action)
+		_reset()
 		return
 
 	queue_free()
@@ -73,6 +98,7 @@ func _update_ui():
 		requirements.text = "%d-%d" % [current_prompt.min_count, current_prompt.max_count]
 	
 	description.text = current_prompt.description
+	card_name.text = card.card_data.name
 
 func _on_candidate_pressed(toggled_on: bool, candidate: Atom) -> void:
 	if toggled_on:

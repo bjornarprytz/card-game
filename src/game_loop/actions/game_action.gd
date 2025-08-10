@@ -17,7 +17,7 @@ func verify_costs() -> bool:
 	for cost in costs:
 		var verify_result = cost.verify(context) as PaymentResult
 		if not verify_result.is_valid:
-			push_error("Cost verification failed for <%s> in action <%s>" % [cost, action_type])
+			push_warning("Cost verification failed for <%s> in action <%s>" % [cost, action_type])
 			return false
 		_verified_cost_effects.append(verify_result.operation_tree)
 

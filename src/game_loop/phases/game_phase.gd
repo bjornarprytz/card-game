@@ -25,7 +25,12 @@ func allows_actions() -> bool:
 	return _allowed_actions.size() > 0
 
 func allows_action(game_action: GameAction) -> bool:
-	return game_action.action_type in _allowed_actions
+	var result =  game_action.action_type in _allowed_actions
+	
+	if (!result):
+		push_warning("Phase does not allow action <%s>." % game_action.action_type)
+	
+	return result
 
 func is_finished() -> bool:
 	return !has_next_effect_block() and !allows_actions()

@@ -15,6 +15,13 @@ theme = ExtResource("2_bto18")
 [node name="Prompt" type="VBoxContainer" parent="PanelContainer"]
 layout_mode = 2
 
+[node name="CardName" type="RichTextLabel" parent="PanelContainer/Prompt"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Card Name"
+fit_content = true
+autowrap_mode = 0
+
 [node name="Description" type="RichTextLabel" parent="PanelContainer/Prompt"]
 unique_name_in_owner = true
 layout_mode = 2

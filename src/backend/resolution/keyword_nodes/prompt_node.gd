@@ -27,12 +27,30 @@ func validate_response(response: PromptResponse) -> bool:
 		return false
 	
 	for prompt in prompts:
-		var bindings = response.payload.get(prompt.binding_key, [])
-		if not prompt.validate_binding(_context, bindings):
-			push_error("Response payload for binding key %s is invalid." % prompt.binding_key)
+		var binding_key = prompt.binding_key
+		var bindings = response.payload.get(binding_key, [])
+
+		if not validate_binding(binding_key, bindings):
 			return false
 
 	return true
+
+func validate_binding(binding_key: String, bindings: Array) -> bool:
+	if binding_key == null:
+		push_error("Binding key cannot be null.")
+		return false
+
+	if (bindings == null):
+		push_error("Bindings cannot be null.")
+		return false
+
+	if not _prompts_by_key.has(binding_key):
+		push_error("Binding key %s is not present in context." % binding_key)
+		return false
+
+	var prompt = _prompts_by_key[binding_key]
+	
+	return prompt.validate_binding(_context, bindings)
 
 func try_bind_response(response: PromptResponse) -> bool:
 	if not validate_response(response):

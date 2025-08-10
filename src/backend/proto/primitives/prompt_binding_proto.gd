@@ -61,6 +61,9 @@ static func from_dict(key: String, dict: Dictionary) -> PromptBindingProto:
 	var candidates_expression = ContextExpression.from_string(dict.get("candidates", "[]"))
 	var candidate_conditions = AtomConditionProto.from_expressions(dict.get("conditions", []))
 
+	if dict.get("force_collection", false):
+		count_spec = count_spec.force_collection()
+
 	return PromptBindingProto.new(
 		binding_key_,
 		count_spec,
@@ -92,7 +95,7 @@ static func from_target_shorthand(target: Dictionary) -> PromptBindingProto:
 
 	return PromptBindingProto.new(
 		binding_key_,
-		count_spec_,
+		count_spec_.force_collection(),
 		"Targets",
 		candidates_expression,
 		candidate_conditions
@@ -113,6 +116,10 @@ class CountSpec:
 		is_collection = max_count > 1
 		
 		assert(min_count >= 0 and max_count >= min_count, "Invalid count specification: (0 <= min <= max) vs (%d <= %d)" % [min_count, max_count])
+
+	func force_collection() -> CountSpec:
+		is_collection = true
+		return self
 
 	static func optional():
 		return CountSpec.new(0, 1)

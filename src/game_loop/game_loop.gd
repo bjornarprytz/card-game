@@ -45,13 +45,11 @@ func validate_action(action: GameAction) -> bool:
 		return false
 
 	if not current_phase.allows_action(action):
-		push_warning("Current phase does not allow action <%s>." % action.action_type)
 		return false
 
 	if not action.verify_costs():
-		push_warning("Action <%s> costs verification failed." % action.action_type)
 		return false
-	
+
 	return true
 
 func try_take_action(action: GameAction) -> bool:
@@ -140,6 +138,7 @@ func _resolve_operation_tree(operation_tree: KeywordNode) -> KeywordResult:
 	keyword_resolved.emit(result)
 	return result
 
+## TODO: This could still be useful for events
 func _enqueue_prompt(prompt: PromptNode) -> void:
 	if prompt == null:
 		push_error("Cannot queue a null prompt.")
@@ -163,8 +162,5 @@ func _enqueue_effect_block(effect_block: EffectBlock) -> void:
 		push_error("Cannot enqueue a null effect block.")
 		return
 
-	var prompt = effect_block.get_prompt()
-	if prompt != null and prompt.prompts.size() > 0:
-		_enqueue_prompt(prompt)
 	effect_block_queue.append(effect_block)
 	effect_block_queue.append(GameStep.new("cleanup", game_state)) ## Run this after every action to update the game state
