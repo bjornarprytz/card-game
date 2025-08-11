@@ -38,6 +38,18 @@ func get_candidates(context: Context) -> Array[Atom]:
 
 	return verified_candidates
 
+func verify_context(context: Context) -> bool:
+	var current_binding = context.prompt.get(binding_key, null)
+
+	if (current_binding == null):
+		push_warning("Binding '%s' is not present in the context" % binding_key)
+		return false
+	
+	if (current_binding is not Array):
+		return validate_binding(context, [current_binding])
+
+	return validate_binding(context, current_binding)
+
 func validate_binding(context: Context, binding: Array) -> bool:
 	if (binding.size() < min_count or binding.size() > max_count):
 		push_error("Response size is out of bounds: %d (min: %d, max: %d)" % [binding.size(), min_count, max_count])

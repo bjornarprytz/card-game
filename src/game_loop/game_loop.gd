@@ -2,7 +2,6 @@ class_name GameLoop
 extends Node
 
 signal keyword_resolved(result: KeywordResult)
-signal prompt_requested(prompt: PromptNode)
 
 @export var game_state: GameState
 
@@ -12,10 +11,6 @@ var current_phase: GamePhase
 # Effect block queue and current effect block
 var effect_block_queue: Array[EffectBlock] = []
 var current_effect_block: EffectBlock = null
-
-# Prompt state
-var prompt_queue: Array[PromptNode] = []
-var pending_prompt: PromptNode = null
 
 func _ready() -> void:
 	assert(game_state != null, "The game loop needs a reference to the game state")
@@ -27,16 +22,9 @@ func _ready() -> void:
 	advance_loop()
 
 func _process(_delta: float) -> void:
-	if pending_prompt == null:
-		advance_loop()
+	advance_loop()
 
 func advance_loop():
-	# 1. If a prompt is pending, wait for player input
-	if pending_prompt != null:
-		push_warning("A prompt is pending, waiting for player response.")
-		return
-
-	# 2. Resolve the next keyword in the current effect block
 	_resolve_next_keyword()
 
 func validate_action(action: GameAction) -> bool:
@@ -47,7 +35,7 @@ func validate_action(action: GameAction) -> bool:
 	if not current_phase.allows_action(action):
 		return false
 
-	if not action.verify_costs():
+	if not action.is_valid():
 		return false
 
 	return true
@@ -56,26 +44,6 @@ func try_take_action(action: GameAction) -> bool:
 	if not validate_action(action):
 		return false
 	_enqueue_effect_block(action)
-	return true
-
-func validate_prompt_response(prompt_response: PromptResponse) -> bool:
-	if pending_prompt == null:
-		push_warning("No pending prompt to validate response against.")
-		return false
-
-	return pending_prompt.validate_response(prompt_response)
-
-func try_prompt_response(prompt_response: PromptResponse) -> bool:
-	if not validate_prompt_response(prompt_response):
-		return false
-
-	if (not pending_prompt.try_bind_response(prompt_response)):
-		push_warning("Failed to bind prompt response.")
-		return false
-	
-	pending_prompt = null
-	_pop_next_prompt()
-
 	return true
 
 func _resolve_next_keyword():
@@ -110,10 +78,6 @@ func _pop_next_effect_block() -> void:
 	current_effect_block = effect_block_queue.pop_front()
 
 func _queue_next_phase():
-	if (pending_prompt != null):
-		push_error("A prompt is pending, cannot queue another phase.")
-		return
-	
 	if current_phase != null and current_phase.allows_actions():
 		return
 	
@@ -137,25 +101,6 @@ func _resolve_operation_tree(operation_tree: KeywordNode) -> KeywordResult:
 	var result = operation_tree.resolve()
 	keyword_resolved.emit(result)
 	return result
-
-## TODO: This could still be useful for events
-func _enqueue_prompt(prompt: PromptNode) -> void:
-	if prompt == null:
-		push_error("Cannot queue a null prompt.")
-		return
-	prompt_queue.append(prompt)
-
-	if pending_prompt == null:
-		_pop_next_prompt()
-
-func _pop_next_prompt():
-	if (pending_prompt != null):
-		push_error("Cannot pop a prompt while one is pending.")
-		return
-
-	if prompt_queue.size() > 0:
-		pending_prompt = prompt_queue.pop_front()
-		prompt_requested.emit(pending_prompt)
 
 func _enqueue_effect_block(effect_block: EffectBlock) -> void:
 	if effect_block == null:

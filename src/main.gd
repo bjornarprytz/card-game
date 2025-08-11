@@ -31,7 +31,3 @@ func _on_keyword_resolved(result: KeywordResult):
 			print("Atom created: %s" % atom)
 		else:
 			print("%s.%s: %s->%s" % [atom, change.state_key, change.value_before, change.value_after])
-
-
-func _on_prompt_requested(prompt_node: PromptNode) -> void:
-	print("Prompt requested by game loop: %s" % prompt_node)
