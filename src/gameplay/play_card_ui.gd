@@ -63,7 +63,7 @@ func _confirm_candidates() -> void:
 		current_bindings[current_prompt.binding_key] = current_choices.duplicate()
 		_next_prompt()
 	else:
-		push_error("Failed to confirm candidates for prompt: %s" % current_prompt)
+		push_warning("Failed to confirm candidates for prompt: %s" % current_prompt)
 
 func _resolve():
 	if (!prompt_node.try_bind_response(PromptResponse.new(current_bindings))):
@@ -99,6 +99,19 @@ func _update_ui():
 	
 	description.text = current_prompt.description
 	card_name.text = card.card_data.name
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event.is_pressed():
+		if event.keycode == KEY_ESCAPE:
+			queue_free()
+		elif event.keycode >= KEY_1 and event.keycode <= KEY_9:
+			var index = event.keycode - KEY_1
+			if index < candidate_list.get_child_count():
+				var candidate = candidate_list.get_child(index) as Button
+				candidate.button_pressed = !candidate.button_pressed
+		elif event.keycode == KEY_ENTER:
+			_on_confirm_pressed()
+	
 
 func _on_candidate_pressed(toggled_on: bool, candidate: Atom) -> void:
 	if toggled_on:

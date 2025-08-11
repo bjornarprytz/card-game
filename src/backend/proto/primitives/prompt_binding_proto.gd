@@ -4,10 +4,11 @@ extends Resource
 ## Must be unique within the context (effect block)
 var binding_key: String
 
+## Whether the binding is for a collection of items or a single item
 var is_collection: bool
 
-## Fail if fewer than minimum choices are provided.
-var strict_min_count: bool = false
+## Allow a lower count if there are fewer candidates
+var lax_min_count: bool
 
 var min_count: int = 1
 var max_count: int = 1
@@ -21,6 +22,7 @@ func _init(binding_key_: String, count_spec: CountSpec, description_: String, ca
 	min_count = count_spec.min_count
 	max_count = count_spec.max_count
 	is_collection = count_spec.is_collection
+	lax_min_count = count_spec.lax_min_count
 	description = description_
 	_candidates_expression = candidates_expression_
 	_candidate_condition = candidate_conditions_
@@ -51,14 +53,17 @@ func verify_context(context: Context) -> bool:
 	return validate_binding(context, current_binding)
 
 func validate_binding(context: Context, binding: Array) -> bool:
-	if (binding.size() < min_count or binding.size() > max_count):
-		push_error("Response size is out of bounds: %d (min: %d, max: %d)" % [binding.size(), min_count, max_count])
+	var candidates = get_candidates(context)
+
+	var defacto_min_count = min_count if !lax_min_count else min(candidates.size(), min_count)
+
+	if (binding.size() < defacto_min_count or binding.size() > max_count):
+		push_warning("Response size is out of bounds: %d (min: %d, max: %d)" % [binding.size(), defacto_min_count, max_count])
 		return false
 	
-	var candidates = get_candidates(context)
 	for choice in binding:
 		if not choice in candidates:
-			push_error("Choice '%s' is not in the candidates: %s" % [choice, candidates])
+			push_warning("Choice '%s' is not in the candidates: %s" % [choice, candidates])
 			return false
 	return true
 
@@ -75,6 +80,9 @@ static func from_dict(key: String, dict: Dictionary) -> PromptBindingProto:
 
 	if dict.get("force_collection", false):
 		count_spec = count_spec.force_collection()
+
+	if dict.get("lax_min_count", false):
+		count_spec = count_spec.with_lax_min_count()
 
 	return PromptBindingProto.new(
 		binding_key_,
@@ -120,11 +128,12 @@ class CountSpec:
 	var min_count: int
 	var max_count: int
 	var is_collection: bool
+	var lax_min_count: bool
 
 	func _init(min_count_: int, max_count_: int):
 		min_count = min_count_
 		max_count = max_count_
-		
+		lax_min_count = false
 		is_collection = max_count > 1
 		
 		assert(min_count >= 0 and max_count >= min_count, "Invalid count specification: (0 <= min <= max) vs (%d <= %d)" % [min_count, max_count])
@@ -132,6 +141,11 @@ class CountSpec:
 	func force_collection() -> CountSpec:
 		is_collection = true
 		return self
+
+	func with_lax_min_count() -> CountSpec:
+		var new_spec = CountSpec.new(min_count, max_count)
+		new_spec.lax_min_count = true
+		return new_spec
 
 	static func optional():
 		return CountSpec.new(0, 1)

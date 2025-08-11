@@ -6,14 +6,6 @@ Stipulation: 3 color palette
 
 Card game TODO:
 
-- Prompt:
-  - Allow for lax min-requirements (e.g. Mind Rot should work when there's only one card left in hand)
-- Keyword Refactor
-  - Maybe separate keywords into different kinds:
-    - Composite / Higher-Order
-      - Always inject state so that card don't have to explicitly get it from the state
-    - Simple
-      - Acts on one atom, state isn't injected
 - Track source of effects
 - Resolution Zone
   - StartResolution (to resolution zone)
@@ -31,6 +23,12 @@ Card game TODO:
   - Stats (string->int)
 - AtomCondition
   - Add context to the expression
+- Keyword Refactor
+  - Maybe separate keywords into different kinds:
+    - Composite / Higher-Order
+      - Always inject state so that card don't have to explicitly get it from the state
+    - Simple
+      - Acts on one atom, state isn't injected
 
 ## TODO
 

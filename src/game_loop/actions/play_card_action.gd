@@ -20,11 +20,11 @@ func get_prompt() -> PromptNode:
 func is_valid() -> bool:
 	# Verify costs before proceeding
 	if not _verify_and_bind_costs():
-		push_error("Costs for action <%s> could not be verified." % action_type)
+		push_warning("Costs for action <%s> could not be verified." % action_type)
 		return false
 	
 	if not _verify_prompts():
-		push_error("Prompts for action <%s> could not be verified." % action_type)
+		push_warning("Prompts for action <%s> could not be verified." % action_type)
 		return false
 
 	return true
