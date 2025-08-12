@@ -9,12 +9,9 @@ Card game TODO:
 - Resolution Zone
   - StartResolution (to resolution zone)
   - EndResolution (to discard)
-- More dynamic keyword/effect lookup?
-- Event History
-  - And scope
-- Triggered effects
-- Static effects / Modifiers
-- Keyword variables (e.g. Delirium, Cards in hand, Spells in graveyard)
+- Context
+  - Scope
+  - Event History
 - Non-state properties:
   - Tags (string->bool)
   - Facets (string->[string])
@@ -22,7 +19,11 @@ Card game TODO:
   - Stats (string->int)
 - AtomCondition
   - Add context to the expression
+- Triggered effects
+- Static effects / Modifiers
 - Keyword Refactor
+  - Keyword variables (e.g. Delirium, Cards in hand, Spells in graveyard)
+  - More dynamic keyword/effect lookup?
   - Maybe separate keywords into different kinds:
     - Composite / Higher-Order
       - Always inject state so that card don't have to explicitly get it from the state
