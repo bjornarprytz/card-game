@@ -7,7 +7,7 @@ var _is_finished: bool = false
 
 func _init(step_name_: String, game_state: GameState) -> void:
 	assert(game_state != null, "GameState cannot be null")
-	context = Context.new(game_state)
+	context = Context.new(game_state, game_state.game_root)
 	step_name = step_name_
 
 func has_next_keyword() -> bool:

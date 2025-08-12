@@ -6,7 +6,6 @@ Stipulation: 3 color palette
 
 Card game TODO:
 
-- Track source of effects
 - Resolution Zone
   - StartResolution (to resolution zone)
   - EndResolution (to discard)

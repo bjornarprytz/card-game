@@ -106,6 +106,6 @@ func _enqueue_effect_block(effect_block: EffectBlock) -> void:
 	if effect_block == null:
 		push_error("Cannot enqueue a null effect block.")
 		return
-
+	
 	effect_block_queue.append(effect_block)
 	effect_block_queue.append(GameStep.new("cleanup", game_state)) ## Run this after every action to update the game state

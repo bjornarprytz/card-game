@@ -178,7 +178,7 @@
 		},
 		{
 			"name": "Mind Rot",
-			"cost": 0.0,
+			"cost": 2.0,
 			"type": "spell",
 			"targets": [],
 			"prompts": {

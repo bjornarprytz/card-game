@@ -1,18 +1,22 @@
 class_name GameState
 extends Node
 
+## Atom that represents the game
+@onready var game_root: GameRoot = $GameRoot
+
 @onready var player: Player = $Player
 @onready var draw_pile: Zone = $DrawPile
 @onready var discard_pile: Zone = $DiscardPile
 @onready var hand: Zone = $Hand
 @onready var battlefield: Zone = $Battlefield
 @onready var exile: Zone = $Exile
+@onready var resolution: Zone = $Resolution
 
 var _atoms: Array[Atom] = []
 
 func _ready() -> void:
 	# Ensure all zones are registered with the game state
-	for atom in [player, draw_pile, discard_pile, hand, battlefield, exile]:
+	for atom in [game_root, player, draw_pile, discard_pile, hand, battlefield, exile]:
 		register_atom(atom)
 
 func atom_count() -> int:
