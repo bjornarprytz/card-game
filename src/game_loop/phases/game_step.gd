@@ -13,7 +13,7 @@ func _init(step_name_: String, game_state: GameState) -> void:
 func has_next_keyword() -> bool:
 	return !_is_finished
 
-func next_keyword() -> KeywordNode:
+func _get_next_keyword() -> KeywordNode:
 	var keyword_node = Steps.create_operation_tree(step_name, context.state)
 	_is_finished = true
 	return keyword_node

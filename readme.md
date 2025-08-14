@@ -6,12 +6,12 @@ Stipulation: 3 color palette
 
 Card game TODO:
 
-- Resolution Zone
-  - StartResolution (to resolution zone)
-  - EndResolution (to discard)
 - Context
   - Scope
   - Event History
+- Resolution Zone
+  - StartResolution (to resolution zone)
+  - EndResolution (to discard)
 - Non-state properties:
   - Tags (string->bool)
   - Facets (string->[string])

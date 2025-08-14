@@ -37,7 +37,7 @@ func has_next_keyword() -> bool:
 
 	return _current_effect_index < effects.size()
 
-func next_keyword() -> KeywordNode:
+func _get_next_keyword() -> KeywordNode:
 	if _verified_cost_effects.size() > 0:
 		return _verified_cost_effects.pop_front()
 

@@ -12,6 +12,7 @@ extends Node
 @onready var exile: Zone = $Exile
 @onready var resolution: Zone = $Resolution
 
+var scope_provider: ScopeProvider = ScopeProvider.new()
 var _atoms: Array[Atom] = []
 
 func _ready() -> void:

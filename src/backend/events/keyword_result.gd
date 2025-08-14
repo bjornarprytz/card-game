@@ -17,12 +17,12 @@ func add_state_change(change: StateChange) -> KeywordResult:
 	return self
 
 func get_state_changes() -> Array[StateChange]:
-	var total_state_changes: Array[StateChange] = state_changes.duplicate()
+	var all_state_changes: Array[StateChange] = state_changes.duplicate()
 
 	for sub_result in sub_results:
-		total_state_changes.append_array(sub_result.get_state_changes())
+		all_state_changes.append_array(sub_result.get_state_changes())
 
-	return total_state_changes
+	return all_state_changes
 
 func _init(keyword_: String, args_: Array[Variant]) -> void:
 	keyword = keyword_

@@ -55,13 +55,9 @@ func _resolve_next_keyword():
 		push_error("Current effect block has no next keyword to resolve.")
 		return
 	
-	var keyword_node = current_effect_block.next_keyword()
+	var keyword_result = current_effect_block.resolve_next_keyword()
 
-	if keyword_node == null:
-		push_error("Keyword node is null, cannot resolve.")
-		return
-
-	_resolve_operation_tree(keyword_node)
+	keyword_resolved.emit(keyword_result)
 
 	if (!current_effect_block.has_next_keyword()):
 		print("Resolved: %s" % current_effect_block)
@@ -76,6 +72,7 @@ func _pop_next_effect_block() -> void:
 		return
 	
 	current_effect_block = effect_block_queue.pop_front()
+	game_state.scope_provider.new_block()
 
 func _queue_next_phase():
 	if current_phase != null and current_phase.allows_actions():
@@ -95,12 +92,8 @@ func _start_next_turn():
 		push_error("Cannot start next turn, current turn or phase is not finished.")
 		return
 	current_turn = GameTurn.new(game_state)
+	game_state.scope_provider.new_turn()
 	_queue_next_phase()
-
-func _resolve_operation_tree(operation_tree: KeywordNode) -> KeywordResult:
-	var result = operation_tree.resolve()
-	keyword_resolved.emit(result)
-	return result
 
 func _enqueue_effect_block(effect_block: EffectBlock) -> void:
 	if effect_block == null:
