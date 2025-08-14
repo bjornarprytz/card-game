@@ -44,6 +44,8 @@ func new_turn() -> void:
 
 	turn.open()
 
+	print(">>%s" % turn)
+
 func new_block() -> void:
 	if (block != null):
 		block.close()
@@ -52,3 +54,5 @@ func new_block() -> void:
 	_block_count += 1
 
 	block.open()
+
+	print(">>>>%s" % block)

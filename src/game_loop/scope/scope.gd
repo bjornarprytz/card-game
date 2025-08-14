@@ -22,14 +22,12 @@ func _init(scope_name_: String) -> void:
 func open() -> void:
 	if (_lifecycle == ScopeLifecycle.LATENT):
 		_lifecycle = ScopeLifecycle.OPEN
-		push_warning("%s opened" % scope_name)
 	else:
 		push_error("%s is already open" % scope_name)
 
 func close() -> void:
 	if (_lifecycle == ScopeLifecycle.OPEN):
 		_lifecycle = ScopeLifecycle.CLOSED
-		push_warning("%s closed" % scope_name)
 	else:
 		push_error("%s is not open" % scope_name)
 

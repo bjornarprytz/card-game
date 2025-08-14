@@ -6,9 +6,12 @@ Stipulation: 3 color palette
 
 Card game TODO:
 
-- Context
-  - Scope
-  - Event History
+- Scope
+  - Close block scope when the block is done
+  - Create accessor shorthands for VariableProto
+    - Try to figure out a nice syntax/API for aggregations ()
+    - "|block.damage.total"
+  - Static effects / Modifiers
 - Resolution Zone
   - StartResolution (to resolution zone)
   - EndResolution (to discard)
@@ -20,7 +23,6 @@ Card game TODO:
 - AtomCondition
   - Add context to the expression
 - Triggered effects
-- Static effects / Modifiers
 - Keyword Refactor
   - Keyword variables (e.g. Delirium, Cards in hand, Spells in graveyard)
   - More dynamic keyword/effect lookup?
