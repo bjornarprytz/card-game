@@ -83,6 +83,21 @@ func get_property_base(key: String, default_value: Variant = null) -> Variant:
 
     return default_value
 
+func get_property_modifier(key: String, default_value: Variant = null) -> Variant:
+    key = _clean_key(key)
+    
+    if (!_modifiers.has(key)):
+        return default_value
+    
+    var base_value = get_property_base(key, default_value)
+    var resolved_value = get_property(key, default_value)
+    
+    
+    if (!resolved_value is int):
+        return resolved_value
+    
+    return resolved_value - base_value
+
 func _init_properties(properties: Dictionary[String, Variant]) -> void:
     if !_properties.is_empty():
         push_error("Properties already initialized. Cannot reinitialize.")
