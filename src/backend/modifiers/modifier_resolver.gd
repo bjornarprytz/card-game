@@ -11,32 +11,43 @@ var _replacement_modifiers: Array[Modifier] = []
 func add_modifier(modifier: Modifier) -> void:
     assert(modifier.property_name == property_name, "Modifier property name mismatch")
 
+    var modifier_group: Array[Modifier]
     match modifier.type:
         Modifier.ModifierType.ADDITIVE:
-            _additive_modifiers.append(modifier)
+            modifier_group = _additive_modifiers
         Modifier.ModifierType.MULTIPLICATIVE:
-            _multiplicative_modifiers.append(modifier)
+            modifier_group = _multiplicative_modifiers
         Modifier.ModifierType.DIVISION:
-            _division_modifiers.append(modifier)
+            modifier_group = _division_modifiers
         Modifier.ModifierType.REPLACEMENT:
-            _replacement_modifiers.append(modifier)
+            modifier_group = _replacement_modifiers
         _:
             push_error("Could not add modifier: %s" % modifier)
+
+    if modifier in modifier_group:
+        push_error("Modifier %s is already added" % modifier)
+    modifier_group.append(modifier)
 
 func remove_modifier(modifier: Modifier) -> void:
     assert(modifier.property_name == property_name, "Modifier property name mismatch")
 
+    var modifier_group: Array[Modifier]
     match modifier.type:
         Modifier.ModifierType.ADDITIVE:
-            _additive_modifiers.erase(modifier)
+            modifier_group = _additive_modifiers
         Modifier.ModifierType.MULTIPLICATIVE:
-            _multiplicative_modifiers.erase(modifier)
+            modifier_group = _multiplicative_modifiers
         Modifier.ModifierType.DIVISION:
-            _division_modifiers.erase(modifier)
+            modifier_group = _division_modifiers
         Modifier.ModifierType.REPLACEMENT:
-            _replacement_modifiers.erase(modifier)
+            modifier_group = _replacement_modifiers
         _:
             push_error("Could not remove modifier: %s" % modifier)
+
+    if modifier in modifier_group:
+        modifier_group.erase(modifier)
+    else:
+        push_error("Could not find modifier to remove: %s" % modifier)
 
 func compute_value(base_value: Variant) -> Variant:
     if (_replacement_modifiers.size() > 0):

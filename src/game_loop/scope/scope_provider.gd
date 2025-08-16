@@ -25,10 +25,10 @@ func _init() -> void:
 
 func add_result(result: KeywordResult) -> void:
 	if (block != null):
-		block.results.append(result)
+		block.add_result(result)
 	if (turn != null):
-		turn.results.append(result)
-	global.results.append(result)
+		turn.add_result(result)
+	global.add_result(result)
 
 func new_turn() -> void:
 	if (block != null):
