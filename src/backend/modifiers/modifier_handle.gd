@@ -1,8 +1,13 @@
 class_name ModifierHandle
 extends Resource
 
+## The affected atom(s)
 var targets: Array[Atom]
+
+## The source atom.
 var source: Atom
+
+## The scope in which the modifier applies.
 var scope: Scope
 
 var modifier: Modifier

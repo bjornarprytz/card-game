@@ -6,15 +6,24 @@ Stipulation: 3 color palette
 
 Card game TODO:
 
+- Resolution Protocol
+  - Preamble:
+    - Pay costs
+    - Move card to resolution zone (stack)
+  - Cleanup:
+    - Move card to destination (usually discard_pile)
 - Scope
-  - Close block scope when the block is done
   - Create accessor shorthands for VariableProto
     - Try to figure out a nice syntax/API for aggregations ()
     - "%block.damage.total"
   - Static effects / Modifiers
-- Resolution Zone
-  - StartResolution (to resolution zone)
-  - EndResolution (to discard)
+    - ModifierProto
+      - Scope
+      - Value
+      - PropertyName
+      - Modifier Type
+      - Target(s) (affected atoms)
+      - Duration / End Condition (in addition to scope)
 - AtomCondition
   - Add context to the expression
 - Triggered effects
