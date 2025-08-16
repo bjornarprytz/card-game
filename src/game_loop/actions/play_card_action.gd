@@ -48,7 +48,7 @@ func _get_next_keyword() -> KeywordNode:
 	var effect_proto = _context.card.card_data.effects[_current_effect_index]
 	_current_effect_index += 1
 
-	return _create_keyword_node(effect_proto)
+	return effect_proto.create_operation_tree(context)
 
 func _verify_prompts() -> bool:
 	for prompt in _context.card.card_data.prompts:

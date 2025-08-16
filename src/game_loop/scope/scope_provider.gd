@@ -1,6 +1,7 @@
 class_name ScopeProvider
 extends Resource
 
+
 var _turn_count: int = 0
 var _block_count: int = 0
 

@@ -5,7 +5,16 @@ var keyword: String
 var _args: Array[ParameterProto] = []
 var condition: ContextConditionProto = null
 
-func resolve_args(context: Context) -> Array[Variant]:
+func create_operation_tree(context: Context) -> KeywordNode:
+	# Evaluate the condition of the effect
+	if not _evaluate_condition(context):
+		return KeywordNode.noop(keyword)
+	
+	# Resolve arguments for the effect
+	var args = _resolve_args(context)
+	return Keywords.create_operation_tree(keyword, args)
+
+func _resolve_args(context: Context) -> Array[Variant]:
 	var args: Array[Variant] = []
 
 	for arg in _args:
@@ -13,7 +22,7 @@ func resolve_args(context: Context) -> Array[Variant]:
 	
 	return args
 
-func evaluate_condition(context: Context) -> bool:
+func _evaluate_condition(context: Context) -> bool:
 	# If no condition is specified, the effect should always run
 	if condition == null:
 		return true
