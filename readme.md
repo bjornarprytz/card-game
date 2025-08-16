@@ -10,16 +10,11 @@ Card game TODO:
   - Close block scope when the block is done
   - Create accessor shorthands for VariableProto
     - Try to figure out a nice syntax/API for aggregations ()
-    - "|block.damage.total"
+    - "%block.damage.total"
   - Static effects / Modifiers
 - Resolution Zone
   - StartResolution (to resolution zone)
   - EndResolution (to discard)
-- Non-state properties:
-  - Tags (string->bool)
-  - Facets (string->[string])
-  - Labels (string->string)
-  - Stats (string->int)
 - AtomCondition
   - Add context to the expression
 - Triggered effects
