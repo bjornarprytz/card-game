@@ -67,11 +67,15 @@ func add_modifier(modifier: Modifier) -> void:
 		_modifiers[modifier.property_name] = ModifierResolver.new()
 	_modifiers[modifier.property_name].add_modifier(modifier)
 
+	_on_state_changed(modifier.property_name, modifier)
+
 func remove_modifier(modifier: Modifier) -> void:
 	if not _modifiers.has(modifier.property_name):
 		push_error("Unable to remove modifier: %s" % modifier)
 		return
 	_modifiers[modifier.property_name].remove_modifier(modifier)
+
+	_on_state_changed(modifier.property_name, null)
 
 func get_property(key: String, default_value: Variant = null) -> Variant:
 	var base_value = get_property_base(key, default_value)
@@ -99,7 +103,7 @@ func get_property_modifier(key: String, default_value: Variant = null) -> Varian
 	var resolved_value = get_property(key, default_value)
 	
 	
-	if (!resolved_value is int):
+	if (!Utility.is_number(resolved_value)):
 		return resolved_value
 	
 	return resolved_value - base_value

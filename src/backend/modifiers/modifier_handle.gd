@@ -10,8 +10,37 @@ var source: Atom
 ## The scope in which the modifier applies.
 var scope: Scope
 
+## The expression used to determine the targets of the modifier.
+var get_targets: ContextExpression
+
 var modifier: Modifier
 
+func refresh_targets(game_state: GameState) -> void:
+    var context = Context.new(game_state, source)
+
+    var updated_targets = get_targets.evaluate(context)
+
+    if (updated_targets is Atom):
+        updated_targets = [updated_targets]
+    
+    if (updated_targets is not Array):
+        push_error("ModifierHandle: get_targets did not return an Array or Atom")
+        return
+
+    for target in updated_targets:
+        if (target in targets):
+            # Still relevant
+            targets.erase(target)
+            continue
+        # New target
+        target.add_modifier(modifier)
+
+    for target in targets:
+        # Outdated target
+        target.remove_modifier(modifier)
+
+    targets = updated_targets.duplicate()
+    
 func apply():
     for target in targets:
         target.add_modifier(modifier)

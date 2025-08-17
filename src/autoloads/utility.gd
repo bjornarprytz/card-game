@@ -34,6 +34,9 @@ func jiggle(node: CanvasItem, magnitude: float, n_jiggles: int = 1, original_sca
 	
 	return tween
 
+func is_number(value: Variant) -> bool:
+	return value is int or value is float
+
 func clear_children(node: CanvasItem) -> void:
 	for child in node.get_children():
 		child.queue_free()
