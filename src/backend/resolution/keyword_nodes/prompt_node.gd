@@ -19,7 +19,7 @@ func _init(context: Context, prompts_: Array[PromptBindingProto]) -> void:
 			push_error("Duplicate binding key found: %s" % prompt.binding_key)
 
 	if (prompts.size() == 0):
-		push_error("PromptNode initialized with no prompts. This is likely a bug.")
+		push_warning("PromptNode initialized with no prompts. This is likely a bug.")
 
 func validate_response(response: PromptResponse) -> bool:
 	if response == null:

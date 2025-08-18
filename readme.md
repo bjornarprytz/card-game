@@ -12,18 +12,13 @@ Card game TODO:
     - Move card to resolution zone (stack)
   - Cleanup:
     - Move card to destination (usually discard_pile)
+  - Static effects / Modifiers
+    - ModifierProto
+      - Duration / End Condition
 - Scope
   - Create accessor shorthands for VariableProto
     - Try to figure out a nice syntax/API for aggregations ()
-    - "%block.damage.total"
-  - Static effects / Modifiers
-    - ModifierProto
-      - Scope
-      - Value
-      - PropertyName
-      - Modifier Type
-      - Target(s) (affected atoms)
-      - Duration / End Condition (in addition to scope)
+    - "|block.damage.total"
 - AtomCondition
   - Add context to the expression
 - Triggered effects
