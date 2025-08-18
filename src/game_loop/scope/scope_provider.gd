@@ -57,3 +57,12 @@ func new_block() -> void:
 	block.open()
 
 	print(">>>>%s" % block)
+
+func refresh_modifiers(game_state: GameState) -> void:
+	if (block != null):
+		block.refresh_modifiers(game_state)
+	
+	if (turn != null):
+		turn.refresh_modifiers(game_state)
+
+	global.refresh_modifiers(game_state)

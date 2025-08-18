@@ -54,7 +54,7 @@ static func from_dict(data: Dictionary) -> ModifierProto:
 	var modifier = ModifierProto.new()
 
 	var property_name_ = data.get("modify", null)
-	if (property_name_ == null):
+	if (property_name_ == null || property_name_ == ""):
 		push_error("Error: ModifierProto property_name is missing")
 		return null
 

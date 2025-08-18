@@ -64,7 +64,7 @@ func set_state(key: String, value: Variant) -> bool:
 
 func add_modifier(modifier: Modifier) -> void:
 	if not _modifiers.has(modifier.property_name):
-		_modifiers[modifier.property_name] = ModifierResolver.new()
+		_modifiers[modifier.property_name] = ModifierResolver.new(modifier.property_name)
 	_modifiers[modifier.property_name].add_modifier(modifier)
 
 	_on_state_changed(modifier.property_name, modifier)
