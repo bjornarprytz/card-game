@@ -35,7 +35,7 @@ func validate_action(action: GameAction) -> bool:
 	if not current_phase.allows_action(action):
 		return false
 
-	if not action.is_valid():
+	if not action.try_verify_and_prepare():
 		return false
 
 	return true

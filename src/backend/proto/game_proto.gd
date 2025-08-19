@@ -4,6 +4,8 @@ extends Resource
 var cards: Dictionary[String, CardProto] = {}
 var creatures: Dictionary[String, CreatureProto] = {}
 
+var vars: Dictionary[String, VariableProto] = {}
+
 var initial_game_state: InitialGameState = null
 
 static func from_dict(dict: Dictionary) -> GameProto:
@@ -16,6 +18,10 @@ static func from_dict(dict: Dictionary) -> GameProto:
 	for creature_data in dict["creatures"]:
 		var creature = CreatureProto.from_dict(creature_data)
 		game_proto.creatures[creature.name] = creature
+
+	var variable_keyword_dict: Dictionary = dict.get("variable_keywords", {})
+	for variable_name in variable_keyword_dict.keys():
+		game_proto.vars[variable_name] = VariableProto.from_dict(variable_name, variable_keyword_dict[variable_name])
 	
 	if dict.has("initial_game_state"):
 		var initial_state_data = dict["initial_game_state"]

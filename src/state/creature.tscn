@@ -31,4 +31,4 @@ offset_top = 129.0
 offset_right = 126.0
 offset_bottom = 169.0
 fit_content = true
-autowrap_mode = 0
+autowrap_mode = 2

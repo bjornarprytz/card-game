@@ -97,6 +97,11 @@ func draw_cards(game_state: GameState, count: int) -> Array[Operation]:
 		
 	return operations
 
+func move_atom(card: Atom, zone: Zone) -> Array[Operation]:
+	var operations: Array[Operation] = []
+	operations.append(ChangeZone.new(card, zone))
+	return operations
+
 func discard_hand(game_state: GameState) -> Array[KeywordNode]:
 	var sub_nodes: Array[KeywordNode] = []
 

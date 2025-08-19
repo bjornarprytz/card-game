@@ -6,7 +6,7 @@ var context: Context
 func _init(context_: Context) -> void:
 	context = context_
 
-func is_valid() -> bool:
+func try_verify_and_prepare() -> bool:
 	push_error("EffectBlock needs to be implemented in a subclass")
 	return false
 

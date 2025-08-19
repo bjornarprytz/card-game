@@ -3,10 +3,12 @@ extends GameAction
 
 var _context: PlayCardContext
 
-var _costs_verified: bool = false
+var _action_verified: bool = false
 var _verified_cost_effects: Array[KeywordNode] = []
-
 var _current_effect_index: int = 0
+
+var preamble: Array[KeywordNode] = []
+var cleanup: Array[KeywordNode] = []
 
 func _init(play_card_context: PlayCardContext) -> void:
 	assert(play_card_context != null, "PlayCardContext cannot be null")
@@ -17,7 +19,9 @@ func _init(play_card_context: PlayCardContext) -> void:
 func get_prompt() -> PromptNode:
 	return PromptNode.new(_context, _context.card.card_data.prompts)
 
-func is_valid() -> bool:
+func try_verify_and_prepare() -> bool:
+	if _action_verified:
+		return true
 	# Verify costs before proceeding
 	if not _verify_and_bind_costs():
 		push_warning("Costs for action <%s> could not be verified." % action_type)
@@ -27,10 +31,20 @@ func is_valid() -> bool:
 		push_warning("Prompts for action <%s> could not be verified." % action_type)
 		return false
 
+	preamble.append_array(_verified_cost_effects)
+	preamble.append(
+		Keywords.create_operation_tree("move_atom", [_context.card, _context.state.resolution])
+	)
+
+	cleanup.append(
+		Keywords.create_operation_tree("move_atom", [_context.card, _context.state.discard_pile])
+	)
+
+	_action_verified = true
 	return true
 
 func has_next_keyword() -> bool:
-	if _verified_cost_effects.size() > 0:
+	if preamble.size() > 0 || cleanup.size() > 0:
 		return true
 
 	var effects = _context.card.card_data.effects
@@ -38,17 +52,19 @@ func has_next_keyword() -> bool:
 	return _current_effect_index < effects.size()
 
 func _get_next_keyword() -> KeywordNode:
-	if _verified_cost_effects.size() > 0:
-		return _verified_cost_effects.pop_front()
+	assert(has_next_keyword(), "No next keyword available in action <%s>" % action_type)
 
-	if not has_next_keyword():
-		push_error("No more keywords to resolve in action <%s>" % action_type)
-		return null
+	if preamble.size() > 0:
+		return preamble.pop_front()
 
-	var effect_proto = _context.card.card_data.effects[_current_effect_index]
-	_current_effect_index += 1
+	var effects = _context.card.card_data.effects
 
-	return effect_proto.create_operation_tree(context)
+	if _current_effect_index < effects.size():
+		var effect_proto = effects[_current_effect_index]
+		_current_effect_index += 1
+		return effect_proto.create_operation_tree(context)
+
+	return cleanup.pop_front()
 
 func _verify_prompts() -> bool:
 	for prompt in _context.card.card_data.prompts:
@@ -58,9 +74,6 @@ func _verify_prompts() -> bool:
 	return true
 
 func _verify_and_bind_costs() -> bool:
-	if (_costs_verified):
-		return true
-	
 	# Verify if the costs can be paid
 	for cost in _context.card.card_data.cost:
 		var verify_result = cost.verify(context) as PaymentResult
@@ -69,8 +82,7 @@ func _verify_and_bind_costs() -> bool:
 			_verified_cost_effects.clear()
 			return false
 		_verified_cost_effects.append(verify_result.operation_tree)
-
-	_costs_verified = true
+	
 	return true
 
 func _to_string() -> String:

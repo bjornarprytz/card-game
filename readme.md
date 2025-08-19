@@ -6,15 +6,9 @@ Stipulation: 3 color palette
 
 Card game TODO:
 
-- Resolution Protocol
-  - Preamble:
-    - Pay costs
-    - Move card to resolution zone (stack)
-  - Cleanup:
-    - Move card to destination (usually discard_pile)
-  - Static effects / Modifiers
-    - ModifierProto
-      - Duration / End Condition
+- Static effects / Modifiers
+  - ModifierProto
+    - Duration / End Condition
 - Scope
   - Create accessor shorthands for VariableProto
     - Try to figure out a nice syntax/API for aggregations ()
@@ -23,13 +17,14 @@ Card game TODO:
   - Add context to the expression
 - Triggered effects
 - Keyword Refactor
-  - Keyword variables (e.g. Delirium, Cards in hand, Spells in graveyard)
+  - Complex Keyword variables (e.g. Delirium, Spells in graveyard)
   - More dynamic keyword/effect lookup?
   - Maybe separate keywords into different kinds:
     - Composite / Higher-Order
       - Always inject state so that card don't have to explicitly get it from the state
     - Simple
       - Acts on one atom, state isn't injected
+- Activated abilities
 
 ## TODO
 

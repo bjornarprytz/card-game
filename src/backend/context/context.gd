@@ -12,3 +12,4 @@ func _init(state_: GameState, source_: Atom) -> void:
 	state = state_
 	source = source_
 	scopes = state.scope_provider
+	vars.merge(CardGameAPI.get_variables())

@@ -17,7 +17,7 @@ var _atoms: Array[Atom] = []
 
 func _ready() -> void:
 	# Ensure all zones are registered with the game state
-	for atom in [root, player, draw_pile, discard_pile, hand, battlefield, exile]:
+	for atom in [root, player, draw_pile, discard_pile, hand, battlefield, exile, resolution]:
 		register_atom(atom)
 
 func atom_count() -> int:

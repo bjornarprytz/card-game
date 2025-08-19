@@ -17,6 +17,24 @@
 			}
 		}
 	],
+	"variable_keywords": {
+		"hand_size": {
+			"value": ":hand.atoms.size()",
+			"description": "The number of cards in hand"
+		},
+		"discard_pile_size": {
+			"value": ":discard_pile.atoms.size()",
+			"description": "The number of cards in the discard pile"
+		},
+		"draw_pile_size": {
+			"value": ":draw_pile.atoms.size()",
+			"description": "The number of cards in the draw pile"
+		},
+		"resource_count": {
+			"value": ":player.resources",
+			"description": "The number of resources the player has"
+		}
+	},
 	"cards": [
 		{
 			"name": "Strike",
@@ -24,8 +42,7 @@
 			"type": "spell",
 			"targets": [
 				{
-					"type": "creature",
-					"conditions": ["atom != null"]
+					"type": "creature"
 				}
 			],
 			"effects": [
@@ -161,12 +178,6 @@
 					"conditions": ["atom.atom_type == 'card'"],
 					"candidates": ":hand.atoms",
 					"description": "Select a card to discard for Hand Slap"
-				}
-			},
-			"vars": {
-				"hand_size": {
-					"value": ":hand.atoms.size()",
-					"description": "Hand size"
 				}
 			},
 			"effects": [

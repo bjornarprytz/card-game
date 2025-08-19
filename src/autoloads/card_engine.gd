@@ -17,6 +17,9 @@ func get_creature(creature_name: String) -> CreatureProto:
 		return null
 	return gameData.creatures[creature_name]
 
+func get_variables() -> Dictionary[String, VariableProto]:
+	return gameData.vars
+
 func get_initial_game_state() -> InitialGameState:
 	if gameData.initial_game_state == null:
 		push_error("Initial game state not found in game data")
