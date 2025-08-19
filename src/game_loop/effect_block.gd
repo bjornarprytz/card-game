@@ -14,7 +14,7 @@ func has_next_keyword() -> bool:
 	push_error("EffectBlock needs to be implemented in a subclass")
 	return false
 
-func resolve_next_keyword() -> KeywordResult:
+func resolve_next_keyword() -> Event:
 	if not has_next_keyword():
 		push_error("No next keyword to resolve.")
 		return null
@@ -22,7 +22,9 @@ func resolve_next_keyword() -> KeywordResult:
 	var keyword_node = _get_next_keyword()
 	var result = keyword_node.resolve()
 
-	return result
+	var event = Event.new(result, context)
+
+	return event
 
 func _get_next_keyword() -> KeywordNode:
 	push_error("EffectBlock needs to be implemented in a subclass")

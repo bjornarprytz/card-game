@@ -1,7 +1,7 @@
 class_name GameLoop
 extends Node
 
-signal keyword_resolved(result: KeywordResult)
+signal keyword_resolved(event: Event, effects: Array[TriggerContext])
 
 @export var game_state: GameState
 
@@ -55,11 +55,11 @@ func _resolve_next_keyword():
 		push_error("Current effect block has no next keyword to resolve.")
 		return
 	
-	var keyword_result = current_effect_block.resolve_next_keyword()
+	var event = current_effect_block.resolve_next_keyword()
 	game_state.scope_provider.refresh(game_state)
-	game_state.scope_provider.add_result(keyword_result)
+	var triggered_effects = game_state.scope_provider.add_event(event)
 
-	keyword_resolved.emit(keyword_result)
+	keyword_resolved.emit(event, triggered_effects)
 
 	if (!current_effect_block.has_next_keyword()):
 		print("Resolved: %s" % current_effect_block)

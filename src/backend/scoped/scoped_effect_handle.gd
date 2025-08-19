@@ -6,3 +6,9 @@ var source: Atom
 
 ## The scope in which the handle applies.
 var scope: Scope
+
+## The number of turns the effect has been alive. Only relevant for global effects.
+var turns_alive: int = 0
+
+func turn_tick() -> void:
+    turns_alive += 1

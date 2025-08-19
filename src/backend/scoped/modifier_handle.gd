@@ -4,7 +4,7 @@ extends ScopedEffectHandle
 ## The affected atom(s)
 var targets: Array[Atom]
 
-## The expression used to determine the targets of the modifier.
+## The expression used to determine the atoms affected by the modifier.
 var get_targets: ContextExpression
 
 var modifier: Modifier

@@ -11,11 +11,24 @@ var scope_name: String
 
 var _lifecycle: ScopeLifecycle = ScopeLifecycle.LATENT
 
-var results: Array[KeywordResult] = []
+var events: Array[Event] = []
 var modifiers: Array[ModifierHandle] = []
+var triggers: Array[TriggerHandle] = []
 
-func add_result(new_result: KeywordResult) -> void:
-	results.append(new_result)
+func add_event(new_event: Event) -> Array[TriggerContext]:
+	events.append(new_event)
+
+	var triggered_effects: Array[TriggerContext] = []
+
+	for trigger in triggers:
+		var context = trigger.check(new_event)
+		if context != null:
+			triggered_effects.append(context)
+
+	return triggered_effects
+
+func add_trigger(new_trigger: TriggerHandle) -> void:
+	triggers.append(new_trigger)
 
 func add_modifier(new_modifier: ModifierHandle) -> void:
 	if (_lifecycle == ScopeLifecycle.CLOSED):
@@ -29,6 +42,17 @@ func refresh_modifiers(game_state: GameState) -> void:
 
 func _init(scope_name_: String) -> void:
 	scope_name = scope_name_
+
+func turn_tick() -> void:
+	if _lifecycle != ScopeLifecycle.OPEN:
+		push_error("%s is not open" % scope_name)
+		return
+	
+	for modifier in modifiers:
+		modifier.turn_tick()
+	for trigger in triggers:
+		trigger.turn_tick()
+
 
 func open() -> void:
 	if (_lifecycle == ScopeLifecycle.LATENT):
@@ -47,6 +71,9 @@ func close() -> void:
 
 	for modifier in modifiers:
 		modifier.remove()
+
+	for trigger in triggers:
+		trigger.remove()
 
 func _to_string() -> String:
 	return scope_name

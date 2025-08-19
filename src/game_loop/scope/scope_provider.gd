@@ -51,10 +51,14 @@ func new_block() -> void:
 
 	print(">>>>%s" % block)
 
-func add_result(result: KeywordResult) -> void:
+func add_event(event: Event) -> Array[TriggerContext]:
+	var triggered_effects: Array[TriggerContext] = []
+
 	for scope in [block, turn, global]:
 		if scope != null:
-			scope.add_result(result)
+			triggered_effects.append_array(scope.add_event(event))
+
+	return triggered_effects
 
 func refresh(game_state: GameState) -> void:
 	for scope in [block, turn, global]:
