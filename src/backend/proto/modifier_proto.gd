@@ -73,7 +73,13 @@ static func from_dict(data: Dictionary) -> ModifierProto:
 			return null
 
 	modifier.value_modification = ParameterProto.from_variant(data.get("value_modification", null))
-	modifier.get_targets = ContextExpression.from_string(data.get("get_targets", null))
-	modifier.source = ContextExpression.from_string(data.get("source", null))
+
+	var target_shorthand = data.get("target", null)
+	if (target_shorthand != null):
+		modifier.source = ContextExpression.from_string(target_shorthand)
+		modifier.get_targets = ContextExpression.from_string("@source")
+	else:
+		modifier.source = ContextExpression.from_string(data.get("source", null))
+		modifier.get_targets = ContextExpression.from_string(data.get("get_targets", null))
 
 	return modifier

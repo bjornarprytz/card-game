@@ -1,14 +1,8 @@
 class_name ModifierHandle
-extends Resource
+extends ScopedEffectHandle
 
 ## The affected atom(s)
 var targets: Array[Atom]
-
-## The source atom.
-var source: Atom
-
-## The scope in which the modifier applies.
-var scope: Scope
 
 ## The expression used to determine the targets of the modifier.
 var get_targets: ContextExpression

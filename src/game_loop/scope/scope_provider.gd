@@ -24,13 +24,6 @@ func _init() -> void:
 	global = Scope.new("global")
 	global.open()
 
-func add_result(result: KeywordResult) -> void:
-	if (block != null):
-		block.add_result(result)
-	if (turn != null):
-		turn.add_result(result)
-	global.add_result(result)
-
 func new_turn() -> void:
 	if (block != null):
 		block.close()
@@ -58,11 +51,12 @@ func new_block() -> void:
 
 	print(">>>>%s" % block)
 
-func refresh_modifiers(game_state: GameState) -> void:
-	if (block != null):
-		block.refresh_modifiers(game_state)
-	
-	if (turn != null):
-		turn.refresh_modifiers(game_state)
+func add_result(result: KeywordResult) -> void:
+	for scope in [block, turn, global]:
+		if scope != null:
+			scope.add_result(result)
 
-	global.refresh_modifiers(game_state)
+func refresh(game_state: GameState) -> void:
+	for scope in [block, turn, global]:
+		if scope != null:
+			scope.refresh_modifiers(game_state)

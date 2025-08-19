@@ -212,12 +212,15 @@
 			"name": "Strengthen",
 			"cost": 1.0,
 			"type": "spell",
+			"targets": [
+				{
+					"type": "creature"
+				}
+			],
 			"effects": [
 				{
-					"source": ":root",
+					"target": "t0",
 					"modify": "attack",
-					"scope": "global",
-					"get_targets": ":battlefield.atoms",
 					"value_modification": 1.0
 				}
 			]

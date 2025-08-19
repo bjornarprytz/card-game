@@ -9,13 +9,13 @@ Card game TODO:
 - Static effects / Modifiers
   - ModifierProto
     - Duration / End Condition
+- Triggered effects
+- AtomCondition
+  - Add context to the expression
 - Scope
   - Create accessor shorthands for VariableProto
     - Try to figure out a nice syntax/API for aggregations ()
     - "|block.damage.total"
-- AtomCondition
-  - Add context to the expression
-- Triggered effects
 - Keyword Refactor
   - Complex Keyword variables (e.g. Delirium, Spells in graveyard)
   - More dynamic keyword/effect lookup?
@@ -25,6 +25,10 @@ Card game TODO:
     - Simple
       - Acts on one atom, state isn't injected
 - Activated abilities
+- Operation Refactor
+  - Create some special operations / results for
+    - Creating atoms
+    - Adding modifiers
 
 ## TODO
 

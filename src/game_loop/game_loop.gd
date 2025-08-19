@@ -56,7 +56,8 @@ func _resolve_next_keyword():
 		return
 	
 	var keyword_result = current_effect_block.resolve_next_keyword()
-	game_state.scope_provider.refresh_modifiers(game_state)
+	game_state.scope_provider.refresh(game_state)
+	game_state.scope_provider.add_result(keyword_result)
 
 	keyword_resolved.emit(keyword_result)
 

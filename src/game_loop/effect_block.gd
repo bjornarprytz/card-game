@@ -22,8 +22,6 @@ func resolve_next_keyword() -> KeywordResult:
 	var keyword_node = _get_next_keyword()
 	var result = keyword_node.resolve()
 
-	context.scopes.add_result(result)
-
 	return result
 
 func _get_next_keyword() -> KeywordNode:
