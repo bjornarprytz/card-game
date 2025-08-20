@@ -10,6 +10,9 @@ var is_collection: bool
 ## Allow a lower count if there are fewer candidates
 var lax_min_count: bool
 
+## Allow the source atom to be a candidate
+var include_source_atom: bool
+
 var min_count: int = 1
 var max_count: int = 1
 
@@ -17,12 +20,13 @@ var description: String = ""
 var _candidate_condition: AtomConditionProto = null
 var _candidates_expression: ContextExpression = null
 
-func _init(binding_key_: String, count_spec: CountSpec, description_: String, candidates_expression_: ContextExpression, candidate_conditions_: AtomConditionProto) -> void:
+func _init(binding_key_: String, count_spec: CountSpec, include_source_atom_: bool, description_: String, candidates_expression_: ContextExpression, candidate_conditions_: AtomConditionProto) -> void:
 	binding_key = binding_key_
 	min_count = count_spec.min_count
 	max_count = count_spec.max_count
 	is_collection = count_spec.is_collection
 	lax_min_count = count_spec.lax_min_count
+	include_source_atom = include_source_atom_
 	description = description_
 	_candidates_expression = candidates_expression_
 	_candidate_condition = candidate_conditions_
@@ -34,7 +38,10 @@ func get_candidates(context: Context) -> Array[Atom]:
 		if not candidate is Atom:
 			push_warning("Candidate '%s' is not an Atom" % str(candidate))
 			continue
-		
+
+		if !include_source_atom and candidate == context.source:
+			continue
+
 		if _candidate_condition.evaluate(candidate):
 			verified_candidates.append(candidate)
 
@@ -78,6 +85,8 @@ static func from_dict(key: String, dict: Dictionary) -> PromptBindingProto:
 	var candidates_expression = ContextExpression.from_string(dict.get("candidates", "[]"))
 	var candidate_conditions = AtomConditionProto.from_expressions(dict.get("conditions", []))
 
+	var include_source_atom_ = dict.get("include_source_atom", false)
+	
 	if dict.get("force_collection", false):
 		count_spec = count_spec.force_collection()
 
@@ -87,6 +96,7 @@ static func from_dict(key: String, dict: Dictionary) -> PromptBindingProto:
 	return PromptBindingProto.new(
 		binding_key_,
 		count_spec,
+		include_source_atom_,
 		description_,
 		candidates_expression,
 		candidate_conditions
@@ -113,9 +123,12 @@ static func from_target_shorthand(target: Dictionary) -> PromptBindingProto:
 		zone_expression = ":%s.atoms" % target["zone"]
 	var candidates_expression = ContextExpression.from_string(zone_expression)
 
+	var include_source_atom_ = target.get("include_source_atom", false)
+
 	return PromptBindingProto.new(
 		binding_key_,
 		count_spec_.force_collection(),
+		include_source_atom_,
 		"Targets",
 		candidates_expression,
 		candidate_conditions

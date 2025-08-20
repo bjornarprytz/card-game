@@ -191,11 +191,11 @@
 			"name": "Mind Rot",
 			"cost": 2.0,
 			"type": "spell",
-			"targets": [],
 			"prompts": {
 				"cards_to_discard": {
 					"count": "2",
 					"lax_min_count": true,
+					"include_source_atom": false,
 					"conditions": ["atom.atom_type == 'card'"],
 					"candidates": ":hand.atoms",
 					"description": "Select cards to discard"

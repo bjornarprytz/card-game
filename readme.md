@@ -6,13 +6,10 @@ Stipulation: 3 color palette
 
 Card game TODO:
 
-- Bug: PromptNode is possibly created too early.
-  - Target candidates include the played card (check mind rot)
-  - If possible, the preamble should be resolved first
+- Triggered effects
 - Static effects / Modifiers
   - ModifierProto
     - Duration / End Condition
-- Triggered effects
 - AtomCondition
   - Add context to the expression
 - Scope
@@ -32,6 +29,7 @@ Card game TODO:
   - Create some special operations / results for
     - Creating atoms
     - Adding modifiers
+- Check TODOs
 
 ## TODO
 
