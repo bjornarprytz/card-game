@@ -1,11 +1,5 @@
 class_name ModifierProto
-extends EffectProto ## TODO: Is it alright to inherit here?
-
-enum ScopeLevel {
-	BLOCK,
-	TURN,
-	GLOBAL
-}
+extends StaticEffectProto
 
 func _init() -> void:
 	keyword = "add_modifier"
@@ -15,12 +9,6 @@ var modifier_type: Modifier.ModifierType
 var property_name: String
 
 var value_modification: ParameterProto
-
-## The lifetime of the modifier
-var scope: ScopeLevel
-
-## The atom from which the modifier originates
-var source: ContextExpression
 
 ## The atom(s) affected by the modifier.
 var get_targets: ContextExpression
@@ -59,6 +47,7 @@ static func from_dict(data: Dictionary) -> ModifierProto:
 		return null
 
 	modifier.property_name = property_name_
+	modifier.value_modification = ParameterProto.from_variant(data.get("value_modification", null))
 
 	var scope_level_ = data.get("scope", "GLOBAL")
 	match scope_level_.to_upper():
@@ -71,8 +60,6 @@ static func from_dict(data: Dictionary) -> ModifierProto:
 		_:
 			push_error("Error: Invalid scope level for ModifierProto")
 			return null
-
-	modifier.value_modification = ParameterProto.from_variant(data.get("value_modification", null))
 
 	var target_shorthand = data.get("target", null)
 	if (target_shorthand != null):

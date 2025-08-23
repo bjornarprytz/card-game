@@ -6,5 +6,5 @@ var result: KeywordResult
 
 
 func _init(result_: KeywordResult, context_: Context) -> void:
-    result = result_
-    inner_context = context_
+	result = result_
+	inner_context = context_

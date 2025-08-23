@@ -222,6 +222,18 @@
 					"target": "t0",
 					"modify": "attack",
 					"value_modification": 1.0
+				},
+				{
+					"target": "t0",
+					"add_trigger": {
+						"conditions": ["@event.result.keyword == 'deal_damage'"],
+						"effects": [
+							{
+								"keyword": "add_armor",
+								"args": ["@event.result.args[0]", 1.0]
+							}
+						]
+					}
 				}
 			]
 		}

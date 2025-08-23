@@ -1,25 +1,32 @@
 class_name ContextConditionProto
 extends Resource
 
-var expression: ContextExpression = null
+var expressions: Array[ContextExpression] = []
 
 func evaluate(context: Context) -> bool:
-    # If no condition is specified, it's always true
-    if expression == null:
-        return true
-    
-    var result = expression.evaluate(context)
-    if result == null:
-        # If there was an error in evaluation, default to false
-        return false
-    
-    return result
+	for expr in expressions:
+		var result = expr.evaluate(context)
+		if result == null || !result:
+			# If there was an error in evaluation, default to false
+			return false
+
+	return true
 
 # Create a condition from string expression like "t0.health > 5 AND t0.armor = 0"
-static func from_string(expression_string: String) -> ContextConditionProto:
-    if expression_string.is_empty():
-        return null
-        
-    var condition = ContextConditionProto.new()
-    condition.expression = ContextExpression.from_string(expression_string)
-    return condition
+static func from_strings(expressions_: Array) -> ContextConditionProto:
+	var condition = ContextConditionProto.new()
+	if expressions_.is_empty():
+		return condition # Empty condition will always evaluate to true
+
+	for expr_string in expressions_:
+		if !(expr_string is String):
+			push_error("Error: Invalid context expression %s" % expr_string)
+			return null
+
+		var expr = ContextExpression.from_string(expr_string)
+		if expr == null:
+			push_error("Error: Invalid context expression %s" % expr_string)
+			return null
+		condition.expressions.append(expr)
+
+	return condition

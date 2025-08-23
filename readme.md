@@ -29,6 +29,8 @@ Card game TODO:
   - Create some special operations / results for
     - Creating atoms
     - Adding modifiers
+- Template effect blocks
+  - Use targets and vars to inject context
 - Check TODOs
 
 ## TODO

@@ -3,10 +3,10 @@ extends Resource
 
 var keyword: String
 var _args: Array[ParameterProto] = []
-var condition: ContextConditionProto = null
+var effect_condition: ContextConditionProto = null
 
 func create_operation_tree(context: Context) -> KeywordNode:
-	# Evaluate the condition of the effect
+	# Evaluate the effect_condition of the effect
 	if not _evaluate_condition(context):
 		return KeywordNode.noop(keyword)
 	
@@ -23,15 +23,18 @@ func _resolve_args(context: Context) -> Array[Variant]:
 	return args
 
 func _evaluate_condition(context: Context) -> bool:
-	# If no condition is specified, the effect should always run
-	if condition == null:
+	# If no effect_condition is specified, the effect should always run
+	if effect_condition == null:
 		return true
 	
-	return condition.evaluate(context)
+	return effect_condition.evaluate(context)
 
 static func from_dict(data: Dictionary) -> EffectProto:
 	if (data.has("modify")):
 		return ModifierProto.from_dict(data)
+	
+	if (data.has("add_trigger")):
+		return TriggerProto.from_dict(data)
 
 	var effect_data = EffectProto.new()
 
@@ -41,12 +44,11 @@ static func from_dict(data: Dictionary) -> EffectProto:
 	for param in raw_args:
 		effect_data._args.append(ParameterProto.from_variant(param))
 
-	# Parse condition if it exists
-	if data.has("condition") and data.get("condition") is String:
-		var condition_string = data.get("condition")
-		if not condition_string.is_empty():
-			effect_data.condition = ContextConditionProto.from_string(condition_string)
-	
+	# Parse effect_condition if it exists
+	var condition_strings = data.get("conditions", [])
+	if not condition_strings.is_empty():
+		effect_data.effect_condition = ContextConditionProto.from_strings(condition_strings)
+
 	if not effect_data.keyword:
 		push_error("Error: EffectData keyword is missing")
 		return null

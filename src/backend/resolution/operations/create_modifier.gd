@@ -13,11 +13,7 @@ func _init(modifier_: Modifier, get_targets_: ContextExpression, source_: Atom, 
 	scope = scope_
 
 func execute() -> Array[StateChange]:
-	var handle = ModifierHandle.new()
-	handle.modifier = modifier
-	handle.get_targets = get_targets
-	handle.source = source
-	handle.scope = scope
+	var handle = ModifierHandle.new(modifier, get_targets, scope, source)
 
 	scope.add_modifier(handle)
 	

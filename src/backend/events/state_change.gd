@@ -6,6 +6,7 @@ var was_noop: bool
 var atom_id: int
 var atom_created: bool
 var modifier_added: bool
+var trigger_added: bool
 
 var state_key: String
 var value_before: Variant
@@ -21,6 +22,12 @@ static func modifier(atom: Atom) -> StateChange:
 	var change = StateChange.new()
 	change.atom_id = atom.id
 	change.modifier_added = true
+	return change
+
+static func trigger(atom: Atom) -> StateChange:
+	var change = StateChange.new()
+	change.atom_id = atom.id
+	change.trigger_added = true
 	return change
 
 static func changed(atom: Atom, state_key_: String, value_before_: Variant) -> StateChange:

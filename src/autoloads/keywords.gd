@@ -22,6 +22,11 @@ func add_modifier(modifier: Modifier, get_targets: ContextExpression, source: At
 		CreateModifier.new(modifier, get_targets, source, scope)
 	]
 
+func add_trigger(trigger: Trigger, source: Atom, scope: Scope) -> Array[Operation]:
+	return [
+		CreateTrigger.new(trigger, source, scope)
+	]
+
 func fight(c1: Creature, c2: Creature) -> Array[KeywordNode]:
 	var sub_nodes: Array[KeywordNode] = []
 	

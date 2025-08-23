@@ -9,6 +9,11 @@ var get_targets: ContextExpression
 
 var modifier: Modifier
 
+func _init(modifier_: Modifier, get_targets_: ContextExpression, scope_: Scope, source_: Atom) -> void:
+	super._init(scope_, source_)
+	modifier = modifier_
+	get_targets = get_targets_
+
 func refresh_targets(game_state: GameState) -> void:
 	var context = Context.new(game_state, source)
 
