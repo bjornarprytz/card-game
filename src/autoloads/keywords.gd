@@ -17,14 +17,14 @@ func create_operation_tree(keyword: String, args: Array[Variant]) -> KeywordNode
 
 	return KeywordNode.create(keyword, args, tree)
 
-func add_modifier(modifier: Modifier, get_targets: ContextExpression, source: Atom, scope: Scope) -> Array[Operation]:
+func add_modifier(modifier: Modifier, get_targets: ContextExpression, host: Atom, scope: Scope) -> Array[Operation]:
 	return [
-		CreateModifier.new(modifier, get_targets, source, scope)
+		CreateModifier.new(modifier, get_targets, host, scope)
 	]
 
-func add_trigger(trigger: Trigger, source: Atom, scope: Scope) -> Array[Operation]:
+func add_trigger(trigger: Trigger, host: Atom, scope: Scope) -> Array[Operation]:
 	return [
-		CreateTrigger.new(trigger, source, scope)
+		CreateTrigger.new(trigger, host, scope)
 	]
 
 func fight(c1: Creature, c2: Creature) -> Array[KeywordNode]:

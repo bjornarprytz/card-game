@@ -4,17 +4,17 @@ extends Operation
 var scope: Scope
 var modifier: Modifier
 var get_targets: ContextExpression
-var source: Atom
+var host: Atom
 
-func _init(modifier_: Modifier, get_targets_: ContextExpression, source_: Atom, scope_: Scope) -> void:
+func _init(modifier_: Modifier, get_targets_: ContextExpression, host_: Atom, scope_: Scope) -> void:
 	modifier = modifier_
 	get_targets = get_targets_
-	source = source_
+	host = host_
 	scope = scope_
 
 func execute() -> Array[StateChange]:
-	var handle = ModifierHandle.new(modifier, get_targets, scope, source)
+	var handle = ModifierHandle.new(modifier, get_targets, scope, host)
 
 	scope.add_modifier(handle)
 	
-	return [StateChange.modifier(source)]
+	return [StateChange.modifier(host)]

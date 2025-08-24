@@ -6,10 +6,13 @@ Stipulation: 3 color palette
 
 Card game TODO:
 
-- Triggered effects
 - Static effects / Modifiers
   - ModifierProto
     - Duration / End Condition
+  - Declaration is messy
+    - It's kind of hacked in. Maybe I should introduce "type" in the effect. It's mostly because triggers and effects need more complex objects than the normal keyword effects
+    - The mess is also present in StateChange result with just boolean flags. It needs to be expanded a bit
+
 - AtomCondition
   - Add context to the expression
 - Scope
@@ -25,10 +28,6 @@ Card game TODO:
     - Simple
       - Acts on one atom, state isn't injected
 - Activated abilities
-- Operation Refactor
-  - Create some special operations / results for
-    - Creating atoms
-    - Adding modifiers
 - Template effect blocks
   - Use targets and vars to inject context
 - Check TODOs

@@ -4,10 +4,13 @@ extends StaticEffectProto
 func _init() -> void:
 	keyword = "add_modifier"
 
+## The type of modifier to apply.
 var modifier_type: Modifier.ModifierType
 
+## The name of the property to modify on the atom(s).
 var property_name: String
 
+## The modification to be applied to the property. Usually resolves to a numeric value.
 var value_modification: ParameterProto
 
 ## The atom(s) affected by the modifier.
@@ -19,22 +22,8 @@ func _resolve_args(context: Context) -> Array:
 	var modifier = Modifier.new(property_name, value_modification.get_value(context), modifier_type)
 	args.append(modifier)
 	args.append(get_targets)
-	var source_atom = source.evaluate(context)
-	assert(source_atom is Atom, "Source must be an Atom")
-	args.append(source_atom)
-
-	var modifier_scope: Scope
-	match scope:
-		ScopeLevel.BLOCK:
-			modifier_scope = context.scopes.block
-		ScopeLevel.TURN:
-			modifier_scope = context.scopes.turn
-		ScopeLevel.GLOBAL:
-			modifier_scope = context.scopes.global
-		_:
-			push_error("Invalid scope level for ModifierProto")
-			return []
-	args.append(modifier_scope)
+	args.append(_get_host(context))
+	args.append(_get_scope(context))
 
 	return args
 
@@ -49,24 +38,14 @@ static func from_dict(data: Dictionary) -> ModifierProto:
 	modifier.property_name = property_name_
 	modifier.value_modification = ParameterProto.from_variant(data.get("value_modification", null))
 
-	var scope_level_ = data.get("scope", "GLOBAL")
-	match scope_level_.to_upper():
-		"BLOCK":
-			modifier.scope = ScopeLevel.BLOCK
-		"TURN":
-			modifier.scope = ScopeLevel.TURN
-		"GLOBAL":
-			modifier.scope = ScopeLevel.GLOBAL
-		_:
-			push_error("Error: Invalid scope level for ModifierProto")
-			return null
+	modifier.scope = StaticEffectProto.parse_scope_level(data.get("scope", "GLOBAL"))
 
 	var target_shorthand = data.get("target", null)
 	if (target_shorthand != null):
-		modifier.source = ContextExpression.from_string(target_shorthand)
-		modifier.get_targets = ContextExpression.from_string("@source")
+		modifier.host = ContextExpression.from_string(target_shorthand)
+		modifier.get_targets = ContextExpression.from_string("@host")
 	else:
-		modifier.source = ContextExpression.from_string(data.get("source", null))
+		modifier.host = ContextExpression.from_string(data.get("host", null))
 		modifier.get_targets = ContextExpression.from_string(data.get("get_targets", null))
 
 	return modifier

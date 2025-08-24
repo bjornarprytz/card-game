@@ -1,7 +1,10 @@
 class_name Context
 extends Resource
 
+## Custom variables. This is merged with the global variables.
 var vars: Dictionary[String, VariableProto] = {}
+
+## The prompt bindings
 var prompt: Dictionary[String, Variant] = {}
 
 var state: GameState

@@ -6,8 +6,6 @@ var _context: TriggerContext
 var _effect_index: int = 0
 
 func _init(context_: TriggerContext) -> void:
-	assert(context_.prompt.is_empty(), "Trigger blocks shouldn't have prompts. At least I'd need to think about it first.")
-
 	super._init(context_)
 	_context = context_
 

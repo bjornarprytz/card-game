@@ -9,26 +9,26 @@ var get_targets: ContextExpression
 
 var modifier: Modifier
 
-func _init(modifier_: Modifier, get_targets_: ContextExpression, scope_: Scope, source_: Atom) -> void:
-	super._init(scope_, source_)
+func _init(modifier_: Modifier, get_targets_: ContextExpression, scope_: Scope, host_: Atom) -> void:
+	super._init(scope_, host_)
 	modifier = modifier_
 	get_targets = get_targets_
 
 func refresh_targets(game_state: GameState) -> void:
-	var context = Context.new(game_state, source)
+	var context = ModifierContext.new(game_state, host, host)
 
 	var updated_targets = get_targets.evaluate(context)
 
+	# Make sure it's an array
 	if (updated_targets is Atom):
 		updated_targets = [updated_targets]
-	
-	if (updated_targets is not Array):
+	elif (updated_targets is not Array):
 		push_error("ModifierHandle: get_targets did not return an Array or Atom")
 		return
 
 	for target in updated_targets:
 		if (target in targets):
-			# Still relevant
+			# Still a target
 			targets.erase(target)
 			continue
 		# New target
