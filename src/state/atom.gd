@@ -117,7 +117,8 @@ func _init_properties(properties: Dictionary[String, Variant]) -> void:
 
 func _update_ui():
 	# Override this method in subclasses to update the UI
-	push_warning("Update UI method not implemented in %s" % self.name)
+	#push_warning("Update UI method not implemented in %s" % self.name)
+	pass
 
 func _on_state_changed(key: String, value: Variant) -> void:
 	state_changed.emit(key, value)

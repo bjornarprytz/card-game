@@ -54,7 +54,6 @@ func _next_prompt() -> void:
 		_update_ui()
 	else:
 		current_prompt = null
-		push_warning("No more prompts available for card: %s" % card.name)
 	
 	_update_confirm_button_state()
 

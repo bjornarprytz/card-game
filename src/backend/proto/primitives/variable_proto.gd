@@ -46,3 +46,10 @@ static func from_dict(variable_name: String, data: Dictionary) -> VariableProto:
         return null
 
     return variable_data
+
+func _to_string() -> String:
+    if value != null:
+        return str(value)
+    if value_expression != null:
+        return value_expression.to_string()
+    return "[Error: Variable '%s' has no value or expression]" % name
