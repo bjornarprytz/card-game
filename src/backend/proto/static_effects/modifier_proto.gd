@@ -1,5 +1,5 @@
 class_name ModifierProto
-extends StaticEffectProto
+extends PassiveEffectProto
 
 func _init() -> void:
 	keyword = "add_modifier"
@@ -38,7 +38,7 @@ static func from_dict(data: Dictionary) -> ModifierProto:
 	modifier.property_name = property_name_
 	modifier.value_modification = ParameterProto.from_variant(data.get("value_modification", null))
 
-	modifier.scope = StaticEffectProto.parse_scope_level(data.get("scope", "GLOBAL"))
+	modifier.scope = PassiveEffectProto.parse_scope_level(data.get("scope", "GLOBAL"))
 
 	var target_shorthand = data.get("target", null)
 	if (target_shorthand != null):

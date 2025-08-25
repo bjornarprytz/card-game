@@ -17,7 +17,7 @@ func _resolve_internal() -> KeywordResult:
 	var result = KeywordResult.new(keyword, args)
 	
 	for operation in operations:
-		for state_change in operation.execute():
-			result.add_state_change(state_change)
+		for mutation in operation.execute():
+			result.add_mutation(mutation)
 
 	return result

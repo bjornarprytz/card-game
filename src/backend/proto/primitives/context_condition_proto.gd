@@ -30,3 +30,9 @@ static func from_strings(expressions_: Array) -> ContextConditionProto:
 		condition.expressions.append(expr)
 
 	return condition
+
+func _to_string() -> String:
+	var expr_strings = []
+	for expr in expressions:
+		expr_strings.append(str(expr))
+	return " AND ".join(expr_strings)

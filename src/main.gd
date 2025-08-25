@@ -25,11 +25,5 @@ func _ready() -> void:
 	draw_pile_count.text = "%d" % game_state.draw_pile.atoms.size()
 
 func _on_keyword_resolved(event: Event):
-	for change in event.result.get_state_changes():
-		var atom = game_state.get_atom(change.atom_id)
-		if (change.atom_created):
-			print("Atom created: %s" % atom)
-		elif (change.modifier_added):
-			print("Modifier added: %s" % atom)
-		else:
-			print("%s.%s: %s->%s" % [atom, change.state_key, change.value_before, change.value_after])
+	for change in event.result.get_mutations():
+		print(change)

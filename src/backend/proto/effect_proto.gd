@@ -57,3 +57,9 @@ static func from_dict(data: Dictionary) -> EffectProto:
 		push_warning("Warning: EffectData has no args")
 	
 	return effect_data
+
+func _to_string() -> String:
+	var args_strings = []
+	for arg in _args:
+		args_strings.append(str(arg))
+	return "%s?%s(%s)" % [effect_condition, keyword, ", ".join(args_strings)]

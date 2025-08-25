@@ -12,14 +12,14 @@ func _init(game_state_: GameState, atom_name_: String, atom_type_: String, zone_
 	atom_type = atom_type_
 	zone = zone_
 
-func execute() -> Array[StateChange]:
+func execute() -> Array[Mutation]:
 	var atom = Create.atom(atom_name, atom_type)
 
 	game_state.register_atom(atom)
 
-	var state_changes: Array[StateChange] = [StateChange.created(atom)]
+	var mutations: Array[Mutation] = [Mutation.created(atom)]
 
-	for state_change in ChangeZone.new(atom, zone).execute():
-		state_changes.append(state_change)
+	for mutation in ChangeZone.new(atom, zone).execute():
+		mutations.append(mutation)
 
-	return state_changes
+	return mutations

@@ -4,7 +4,7 @@ extends Resource
 var keyword: String
 var args: Array[Variant] = []
 
-var state_changes: Array[StateChange] = []
+var mutations: Array[Mutation] = []
 
 var sub_results: Array[KeywordResult] = []
 
@@ -12,17 +12,17 @@ func add_sub_result(result: KeywordResult) -> KeywordResult:
 	sub_results.append(result)
 	return self
 
-func add_state_change(change: StateChange) -> KeywordResult:
-	state_changes.append(change)
+func add_mutation(change: Mutation) -> KeywordResult:
+	mutations.append(change)
 	return self
 
-func get_state_changes() -> Array[StateChange]:
-	var all_state_changes: Array[StateChange] = state_changes.duplicate()
+func get_mutations() -> Array[Mutation]:
+	var all_mutations: Array[Mutation] = mutations.duplicate()
 
 	for sub_result in sub_results:
-		all_state_changes.append_array(sub_result.get_state_changes())
+		all_mutations.append_array(sub_result.get_mutations())
 
-	return all_state_changes
+	return all_mutations
 
 func _init(keyword_: String, args_: Array[Variant]) -> void:
 	keyword = keyword_

@@ -16,7 +16,7 @@ func _init(atom_: Atom, key_: String, value_: Variant, default_zero_: Variant) -
 	value = value_
 	default_zero = default_zero_
 
-func execute() -> Array[StateChange]:
+func execute() -> Array[Mutation]:
 	if not atom:
 		push_error("Operation cannot be executed: atom is null")
 		return []
@@ -25,4 +25,4 @@ func execute() -> Array[StateChange]:
 
 	atom.set_state(key, value)
 
-	return [StateChange.changed(atom, key, value_before)]
+	return [Mutation.changed(atom, key, value_before)]

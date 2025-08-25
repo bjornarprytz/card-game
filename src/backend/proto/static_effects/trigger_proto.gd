@@ -1,5 +1,5 @@
 class_name TriggerProto
-extends StaticEffectProto
+extends PassiveEffectProto
 
 var trigger_condition: ContextConditionProto
 var effects: Array[EffectProto] = []
@@ -34,7 +34,7 @@ static func from_dict(data: Dictionary) -> TriggerProto:
 		if effect:
 			trigger.effects.append(effect)
 
-	trigger.scope = StaticEffectProto.parse_scope_level(trigger_data.get("scope", "GLOBAL"))
+	trigger.scope = PassiveEffectProto.parse_scope_level(trigger_data.get("scope", "GLOBAL"))
 
 	var target_shorthand = data.get("target", null)
 	if (target_shorthand != null):

@@ -8,7 +8,7 @@ func _init(from_: Zone, to_: Zone) -> void:
 	_from = from_
 	_to = to_
 
-func execute() -> Array[StateChange]:
+func execute() -> Array[Mutation]:
 	if _from == null or _to == null:
 		push_error("TransferAtom: _from or _to is null")
 		return []

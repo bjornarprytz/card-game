@@ -12,9 +12,9 @@ func _init(modifier_: Modifier, get_targets_: ContextExpression, host_: Atom, sc
 	host = host_
 	scope = scope_
 
-func execute() -> Array[StateChange]:
+func execute() -> Array[Mutation]:
 	var handle = ModifierHandle.new(modifier, get_targets, scope, host)
 
 	scope.add_modifier(handle)
 	
-	return [StateChange.modifier(host)]
+	return [Mutation.modifier_added(host, modifier)]
