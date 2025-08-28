@@ -1,8 +1,10 @@
 class_name Trigger
-extends Resource
+extends StaticEffect
 
 var condition: ContextConditionProto = null
 var effects: Array[EffectProto] = []
+
+var trigger_limit: int = 0
 
 func _init(condition_: ContextConditionProto, effects_: Array[EffectProto]) -> void:
 	condition = condition_

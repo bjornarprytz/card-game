@@ -14,4 +14,4 @@ func execute() -> Array[Mutation]:
     var handle = TriggerHandle.new(trigger, scope, host)
     scope.add_trigger(handle)
 
-    return [Mutation.trigger_added(host, trigger)]
+    return [Mutation.static_effect_added(host, trigger)]

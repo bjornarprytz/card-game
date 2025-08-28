@@ -1,6 +1,7 @@
 class_name ScopeProvider
 extends Resource
 
+var _game_state: GameState
 
 var _turn_count: int = 0
 var _block_count: int = 0
@@ -20,7 +21,8 @@ var block: Scope:
 	get:
 		return block
 
-func _init() -> void:
+func _init(game_state: GameState) -> void:
+	_game_state = game_state
 	global = Scope.new("global")
 	global.open()
 
@@ -51,16 +53,16 @@ func new_block() -> void:
 
 	print(">>>>%s" % block)
 
-func add_event(event: Event) -> Array[TriggerContext]:
-	var triggered_effects: Array[TriggerContext] = []
+func process_event(event: Event) -> Array[EffectBlock]:
+	var effect_blocks: Array[EffectBlock] = []
 
-	for scope in [block, turn, global]:
+	for scope in [block, turn, global] as Array[Scope]:
 		if scope != null:
-			triggered_effects.append_array(scope.add_event(event))
+			effect_blocks.append_array(scope.process_event(event))
 
-	return triggered_effects
+	return effect_blocks
 
-func refresh(game_state: GameState) -> void:
-	for scope in [block, turn, global]:
+func refresh() -> void:
+	for scope in [block, turn, global] as Array[Scope]:
 		if scope != null:
-			scope.refresh_modifiers(game_state)
+			scope.refresh(_game_state)

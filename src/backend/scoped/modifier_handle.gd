@@ -1,5 +1,5 @@
 class_name ModifierHandle
-extends ScopedEffectHandle
+extends StaticEffectHandle
 
 ## The affected atom(s)
 var targets: Array[Atom]
@@ -10,7 +10,7 @@ var get_targets: ContextExpression
 var modifier: Modifier
 
 func _init(modifier_: Modifier, get_targets_: ContextExpression, scope_: Scope, host_: Atom) -> void:
-	super._init(scope_, host_)
+	super._init(scope_, host_, modifier_)
 	modifier = modifier_
 	get_targets = get_targets_
 

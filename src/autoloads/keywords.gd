@@ -27,6 +27,11 @@ func add_trigger(trigger: Trigger, host: Atom, scope: Scope) -> Array[Operation]
 		CreateTrigger.new(trigger, host, scope)
 	]
 
+func remove_static_effect(effect_handle: StaticEffectHandle) -> Array[Operation]:
+	return [
+		RemoveStaticEffect.new(effect_handle)
+	]
+
 func fight(c1: Creature, c2: Creature) -> Array[KeywordNode]:
 	var sub_nodes: Array[KeywordNode] = []
 	

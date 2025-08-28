@@ -1,4 +1,4 @@
-class_name PassiveEffectProto
+class_name StaticEffectProto
 extends EffectProto
 
 enum ScopeLevel {
@@ -7,11 +7,14 @@ enum ScopeLevel {
     GLOBAL
 }
 
-## The lifetime of the modifier
+## The lifetime of the effect
 var scope: ScopeLevel
 
-## The atom from which the modifier originates
+## The atom from which the effect originates
 var host: ContextExpression
+
+## The duration of the effect in turns (0 means infinite, only relevant for global effects)
+var turn_duration: int = 0
 
 func _get_scope(context: Context) -> Scope:
     match scope:

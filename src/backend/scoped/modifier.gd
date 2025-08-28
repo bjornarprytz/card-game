@@ -1,5 +1,5 @@
 class_name Modifier
-extends Resource
+extends StaticEffect
 
 enum ModifierType {
 	ADDITIVE,

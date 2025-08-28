@@ -3,8 +3,6 @@ extends Node
 
 signal keyword_resolved(event: Event)
 
-signal triggered_effects(effects: Array[TriggerContext])
-
 @export var game_state: GameState
 
 var current_turn: GameTurn
@@ -13,7 +11,6 @@ var current_phase: GamePhase
 # Effect block queue and current effect block
 var effect_block_queue: Array[EffectBlock] = []
 var current_effect_block: EffectBlock = null
-var triggered_effects_from_current_effect: Array[TriggerContext] = []
 
 func _ready() -> void:
 	assert(game_state != null, "The game loop needs a reference to the game state")
@@ -59,10 +56,13 @@ func _resolve_next_keyword():
 		return
 	
 	var event = current_effect_block.resolve_next_keyword()
-	game_state.scope_provider.refresh(game_state)
+	game_state.scope_provider.refresh()
 	
-	var triggers = game_state.scope_provider.add_event(event)
-	triggered_effects_from_current_effect.append_array(triggers)
+	var triggered_effects = game_state.scope_provider.process_event(event)
+	
+	for effect in triggered_effects:
+		_enqueue_effect_block(effect)
+
 	keyword_resolved.emit(event)
 
 	if (!current_effect_block.has_next_keyword()):
@@ -76,9 +76,6 @@ func _pop_next_effect_block() -> void:
 	if effect_block_queue.is_empty():
 		_queue_next_phase()
 		return
-
-	# Emit the triggered effects
-	_flush_triggers()
 
 	current_effect_block = effect_block_queue.pop_front()
 	game_state.scope_provider.new_block()
@@ -103,12 +100,6 @@ func _start_next_turn():
 	current_turn = GameTurn.new(game_state)
 	game_state.scope_provider.new_turn()
 	_queue_next_phase()
-
-func _flush_triggers() -> void:
-	for trigger in triggered_effects_from_current_effect:
-		_enqueue_effect_block(TriggerBlock.new(trigger))
-	triggered_effects.emit(triggered_effects_from_current_effect)
-	triggered_effects_from_current_effect.clear()
 
 func _enqueue_effect_block(effect_block: EffectBlock) -> void:
 	if effect_block == null:

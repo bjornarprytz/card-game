@@ -17,4 +17,4 @@ func execute() -> Array[Mutation]:
 
 	scope.add_modifier(handle)
 	
-	return [Mutation.modifier_added(host, modifier)]
+	return [Mutation.static_effect_added(host, modifier)]

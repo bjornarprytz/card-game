@@ -1,8 +1,10 @@
 class_name TriggerProto
-extends PassiveEffectProto
+extends StaticEffectProto
 
 var trigger_condition: ContextConditionProto
 var effects: Array[EffectProto] = []
+
+var trigger_limit: int = 0
 
 func _init() -> void:
 	keyword = "add_trigger"
@@ -34,7 +36,7 @@ static func from_dict(data: Dictionary) -> TriggerProto:
 		if effect:
 			trigger.effects.append(effect)
 
-	trigger.scope = PassiveEffectProto.parse_scope_level(trigger_data.get("scope", "GLOBAL"))
+	trigger.scope = StaticEffectProto.parse_scope_level(trigger_data.get("scope", "GLOBAL"))
 
 	var target_shorthand = data.get("target", null)
 	if (target_shorthand != null):
@@ -42,5 +44,7 @@ static func from_dict(data: Dictionary) -> TriggerProto:
 	else:
 		trigger.host = ContextExpression.from_string(data.get("host", null))
 
+	trigger.turn_duration = trigger_data.get("turn_duration", 0)
+	trigger.trigger_limit = trigger_data.get("trigger_limit", 0)
 
 	return trigger
