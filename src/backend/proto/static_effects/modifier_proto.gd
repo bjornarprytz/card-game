@@ -1,9 +1,6 @@
 class_name ModifierProto
 extends StaticEffectProto
 
-func _init() -> void:
-	keyword = "add_modifier"
-
 ## The type of modifier to apply.
 var modifier_type: Modifier.ModifierType
 
@@ -16,16 +13,12 @@ var value_modification: ParameterProto
 ## The atom(s) affected by the modifier.
 var get_targets: ContextExpression
 
-func _resolve_args(context: Context) -> Array:
-	var args = []
+func _create_handle(context: Context) -> StaticEffectHandle:
+	var trigger = Modifier.new(property_name, value_modification.get_value(context), modifier_type)
+	var resolved_host = _get_host(context)
+	var resolved_scope = _get_scope(context)
 
-	var modifier = Modifier.new(property_name, value_modification.get_value(context), modifier_type)
-	args.append(modifier)
-	args.append(get_targets)
-	args.append(_get_host(context))
-	args.append(_get_scope(context))
-
-	return args
+	return ModifierHandle.new(trigger, get_targets, resolved_scope, resolved_host)
 
 static func from_dict(data: Dictionary) -> ModifierProto:
 	var modifier = ModifierProto.new()

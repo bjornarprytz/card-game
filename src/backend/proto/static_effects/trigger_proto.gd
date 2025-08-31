@@ -6,19 +6,12 @@ var effects: Array[EffectProto] = []
 
 var trigger_limit: int = 0
 
-func _init() -> void:
-	keyword = "add_trigger"
+func _create_handle(context: Context) -> StaticEffectHandle:
+	var trigger = Trigger.new(trigger_condition, effects, trigger_limit)
+	var resolved_host = _get_host(context)
+	var resolved_scope = _get_scope(context)
 
-func _resolve_args(context: Context) -> Array:
-	var args = []
-
-	var trigger = Trigger.new(trigger_condition, effects)
-	args.append(trigger)
-
-	args.append(_get_host(context))
-	args.append(_get_scope(context))
-
-	return args
+	return TriggerHandle.new(trigger, resolved_scope, resolved_host)
 
 static func from_dict(data: Dictionary) -> TriggerProto:
 	var trigger = TriggerProto.new()

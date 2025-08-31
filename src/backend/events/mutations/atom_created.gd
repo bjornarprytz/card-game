@@ -1,7 +1,6 @@
 class_name AtomCreated
 extends Mutation
 
-
 func _init(atom_: Atom = null) -> void:
 	atom = atom_
 

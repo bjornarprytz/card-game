@@ -14,7 +14,7 @@ func _init(modifier_: Modifier, get_targets_: ContextExpression, scope_: Scope, 
 	modifier = modifier_
 	get_targets = get_targets_
 
-func refresh_targets(game_state: GameState) -> void:
+func _update_internal(game_state: GameState) -> void:
 	var context = ModifierContext.new(game_state, host, host)
 
 	var updated_targets = get_targets.evaluate(context)
@@ -40,11 +40,9 @@ func refresh_targets(game_state: GameState) -> void:
 	
 	targets.clear()
 	targets.append_array(updated_targets)
-	
-func apply():
-	for target in targets:
-		target.add_modifier(modifier)
 
-func remove():
+func _cleanup_internal() -> Array[EffectBlock]:
 	for target in targets:
 		target.remove_modifier(modifier)
+
+	return []

@@ -6,9 +6,6 @@ Stipulation: 3 color palette
 
 Card game TODO:
 
-- Static effects / Modifiers
-  - Duration / End Condition
-  - Execute end condition in cleanup
 - AtomCondition
   - Add context to the expression
 - Game Data
@@ -26,9 +23,9 @@ Card game TODO:
       - Always inject state so that card don't have to explicitly get it from the state
     - Simple
       - Acts on one atom, state isn't injected
-- Activated abilities
 - Template effect blocks
   - Use targets and vars to inject context
+- Activated abilities
 - Check TODOs
 
 ## TODO

@@ -1,4 +1,4 @@
-class_name RemoveStaticEffect
+class_name CreateStaticEffect
 extends Operation
 
 var effect_handle: StaticEffectHandle
@@ -6,8 +6,9 @@ var effect_handle: StaticEffectHandle
 func _init(effect_handle_: StaticEffectHandle) -> void:
     effect_handle = effect_handle_
 
-
 func execute() -> Array[Mutation]:
-    effect_handle.scope.remove_static_effect(effect_handle)
+    var scope = effect_handle.scope
 
-    return [Mutation.static_effect_removed(effect_handle)]
+    scope.add_static_effect(effect_handle)
+
+    return [Mutation.static_effect_added(effect_handle)]

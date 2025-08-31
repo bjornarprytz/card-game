@@ -26,12 +26,12 @@ func _init(game_state: GameState) -> void:
 	global = Scope.new("global")
 	global.open()
 
-func new_turn() -> void:
+func new_turn() -> Array[EffectBlock]:
 	if (block != null):
 		block.close()
 		push_warning("New turn before block scope was closed (%s)" % block)
 		block = null
-	
+
 	if (turn != null):
 		turn.close()
 
@@ -41,6 +41,8 @@ func new_turn() -> void:
 	turn.open()
 
 	print(">>%s" % turn)
+
+	return global.turn_tick()
 
 func new_block() -> void:
 	if (block != null):
@@ -66,3 +68,12 @@ func refresh() -> void:
 	for scope in [block, turn, global] as Array[Scope]:
 		if scope != null:
 			scope.refresh(_game_state)
+
+func get_static_effects_queued_for_cleanup() -> Array[StaticEffectHandle]:
+	var effects: Array[StaticEffectHandle] = []
+
+	for scope in [block, turn, global] as Array[Scope]:
+		if scope != null:
+			effects.append_array(scope.get_static_effects_queued_for_cleanup())
+
+	return effects

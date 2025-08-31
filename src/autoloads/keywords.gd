@@ -17,19 +17,14 @@ func create_operation_tree(keyword: String, args: Array[Variant]) -> KeywordNode
 
 	return KeywordNode.create(keyword, args, tree)
 
-func add_modifier(modifier: Modifier, get_targets: ContextExpression, host: Atom, scope: Scope) -> Array[Operation]:
+func add_static_effect(handle: StaticEffectHandle) -> Array[Operation]:
 	return [
-		CreateModifier.new(modifier, get_targets, host, scope)
+		CreateStaticEffect.new(handle)
 	]
 
-func add_trigger(trigger: Trigger, host: Atom, scope: Scope) -> Array[Operation]:
+func remove_static_effect(handle: StaticEffectHandle) -> Array[Operation]:
 	return [
-		CreateTrigger.new(trigger, host, scope)
-	]
-
-func remove_static_effect(effect_handle: StaticEffectHandle) -> Array[Operation]:
-	return [
-		RemoveStaticEffect.new(effect_handle)
+		RemoveStaticEffect.new(handle)
 	]
 
 func fight(c1: Creature, c2: Creature) -> Array[KeywordNode]:

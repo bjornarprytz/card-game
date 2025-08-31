@@ -226,6 +226,7 @@
 				{
 					"target": "t0",
 					"add_trigger": {
+						"trigger_limit": 1,
 						"conditions": ["@event.result.keyword == 'deal_damage'"],
 						"effects": [
 							{

@@ -13,3 +13,6 @@ func _init(atom_: Atom, state_key_: String, value_before_: Variant, value_after_
 
 func _to_string() -> String:
 	return "%s.%s:%s->%s" % [atom, state_key, value_before, value_after]
+
+func is_noop() -> bool:
+	return value_before == value_after

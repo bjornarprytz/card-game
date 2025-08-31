@@ -12,6 +12,7 @@ func _init(trigger_: Trigger, host_: Atom, scope_: Scope) -> void:
 
 func execute() -> Array[Mutation]:
     var handle = TriggerHandle.new(trigger, scope, host)
-    scope.add_trigger(handle)
+    
+    scope.add_static_effect(handle)
 
-    return [Mutation.static_effect_added(host, trigger)]
+    return [Mutation.static_effect_added(handle)]

@@ -44,9 +44,11 @@ func end(game_state: GameState) -> Array[Operation]:
 	operations.append(Keywords.discard_hand(game_state))
 	return operations
 
-func cleanup(_game_state: GameState) -> Array[Operation]:
+func cleanup(game_state: GameState) -> Array[Operation]:
 	var operations: Array[Operation] = [NoopOperation.new()]
 
-	## TODO: Clean up triggers that have met their end conditions (turns/triggers)
+	for effect_handle in game_state.scope_provider.get_static_effects_queued_for_cleanup():
+		operations.append(RemoveStaticEffect.new(effect_handle))
+		print("Cleaning up: %s" % effect_handle)
 
 	return operations
