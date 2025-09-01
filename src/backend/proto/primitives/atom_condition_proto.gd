@@ -3,11 +3,11 @@ extends Resource
 
 var expressions: Array[AtomExpression] = []
 
-func evaluate(atom: Atom) -> bool:
+func evaluate(context: Context, atom: Atom) -> bool:
 	if expressions.is_empty():
 		return true # No conditions means always true
 	for expression in expressions:
-		if not expression.evaluate(atom):
+		if not expression.evaluate(context, atom):
 			return false
 	return true
 

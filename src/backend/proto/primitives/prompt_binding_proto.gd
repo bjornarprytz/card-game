@@ -42,7 +42,7 @@ func get_candidates(context: Context) -> Array[Atom]:
 		if !include_source_atom and candidate == context.source:
 			continue
 
-		if _candidate_condition.evaluate(candidate):
+		if _candidate_condition.evaluate(context, candidate):
 			verified_candidates.append(candidate)
 
 	return verified_candidates

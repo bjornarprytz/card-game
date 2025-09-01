@@ -17,7 +17,7 @@ func _init(expr_string: String = ""):
 func parse() -> bool:
 	if expression_string.is_empty():
 		return false
-	var error = _expression.parse(expression_string, ["atom"])
+	var error = _expression.parse(expression_string, ["context", "atom"])
 	if error != OK:
 		push_error("Error parsing atom expression: %s\nError: %s" % [expression_string, _expression.get_error_text()])
 		return false
@@ -25,12 +25,12 @@ func parse() -> bool:
 	return true
 
 # Evaluate the expression with the given atom
-func evaluate(atom: Atom) -> Variant:
+func evaluate(context: Context, atom: Atom) -> Variant:
 	if expression_string.is_empty():
 		return null
 	if not _is_parsed and not parse():
 		return null
-	var result = _expression.execute([atom])
+	var result = _expression.execute([context, atom])
 	if _expression.has_execute_failed():
 		push_error("Error executing atom expression: %s\nError: %s" % [expression_string, _expression.get_error_text()])
 		return null
@@ -40,9 +40,13 @@ func evaluate(atom: Atom) -> Variant:
 static func from_string(raw_expression: String) -> AtomExpression:
 	if raw_expression.is_empty():
 		return null
-
-	var processed_expression = ExpressionSyntaxHelper.syntactic_sugar(raw_expression)
 	
+	var processed_expression = raw_expression
+
+	processed_expression = ExpressionSyntaxHelper.context_shorthands(processed_expression)
+
+	processed_expression = ExpressionSyntaxHelper.syntactic_sugar(processed_expression)
+
 	return AtomExpression.new(processed_expression)
 
 

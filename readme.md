@@ -6,13 +6,7 @@ Stipulation: 3 color palette
 
 Card game TODO:
 
-- AtomCondition
-  - Add context to the expression
 - Game Data
-  - Scope
-    - Create accessor shorthands for VariableProto
-      - Try to figure out a nice syntax/API for aggregations ()
-      - "|block.damage.total"
   - Declaration of modifiers and triggers
     - It's kind of hacked into EffectProto. Maybe I should introduce "type" in the effect. It's mostly because triggers and effects need more complex objects than the normal keyword effects
 - Keyword Refactor
