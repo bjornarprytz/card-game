@@ -9,7 +9,7 @@ var _args: Array[ParameterProto] = []
 func verify(context: Context) -> PaymentResult:
 	var resolved_args = _resolve_args(context)
 	
-	var result = Payments.verify(keyword, resolved_args)
+	var result = context.keyword_provider.verify_payment(keyword, resolved_args)
 
 	if (result == null):
 		push_error("Cost verification failed for keyword '%s' with args %s" % [keyword, resolved_args])
@@ -33,7 +33,6 @@ static func from_number(value: int) -> CostProto:
 	
 	cost_data.keyword = "pay_resources"
 	cost_data._args.append_array([
-		ParameterProto.get_state(),
 		ParameterProto.from_variant(value)
 	])
 	cost_data.optional = false # Default to not optional unless specified otherwise

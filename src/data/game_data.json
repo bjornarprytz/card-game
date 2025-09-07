@@ -163,7 +163,7 @@
 			"extra_costs": [
 				{
 					"keyword": "pay_discard",
-					"args": ["@state", "#payment_to_discard"],
+					"args": ["#payment_to_discard"],
 					"optional": true
 				}
 			],

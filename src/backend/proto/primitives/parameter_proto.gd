@@ -15,11 +15,6 @@ func get_value(context: Context) -> Variant:
 	push_error("Error: No immediate value or context expression found")
 	return null
 
-static func get_state() -> ParameterProto:
-	var parameter = ParameterProto.new()
-	parameter._expression = ContextExpression.from_string("@state")
-	return parameter
-
 static func from_variant(param: Variant) -> ParameterProto:
 	var parameter = ParameterProto.new()
 

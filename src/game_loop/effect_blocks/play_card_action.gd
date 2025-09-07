@@ -33,11 +33,11 @@ func try_verify_and_prepare() -> bool:
 
 	preamble.append_array(_verified_cost_effects)
 	preamble.append(
-		Keywords.create_operation_tree("move_atom", [_context.card, _context.state.resolution])
+		_context.keyword_provider.create_operation_tree(MoveAtomDefinition.KEYWORD, [_context.card, _context.state.resolution])
 	)
 
 	cleanup.append(
-		Keywords.create_operation_tree("move_atom", [_context.card, _context.state.discard_pile])
+		_context.keyword_provider.create_operation_tree(MoveAtomDefinition.KEYWORD, [_context.card, _context.state.discard_pile])
 	)
 
 	_action_verified = true
