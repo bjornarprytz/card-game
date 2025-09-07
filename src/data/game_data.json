@@ -204,7 +204,7 @@
 			"effects": [
 				{
 					"keyword": "discard_cards",
-					"args": ["@state", "#cards_to_discard"]
+					"args": ["#cards_to_discard"]
 				}
 			]
 		},

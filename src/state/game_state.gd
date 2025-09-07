@@ -13,6 +13,7 @@ extends Node
 @onready var resolution: Zone = $Resolution
 
 var scope_provider: ScopeProvider = ScopeProvider.new(self)
+var keyword_provider: KeywordProvider = KeywordProvider.new(self)
 var _atoms: Array[Atom] = []
 
 func _ready() -> void:

@@ -12,7 +12,8 @@ func create_operation_tree(context: Context) -> KeywordNode:
 	
 	# Resolve arguments for the effect
 	var args = _resolve_args(context)
-	return Keywords.create_operation_tree(keyword, args)
+
+	return context.keyword_provider.create_operation_tree(keyword, args)
 
 func _resolve_args(context: Context) -> Array[Variant]:
 	var args: Array[Variant] = []

@@ -106,3 +106,32 @@ func to_dictionary(o: Variant) -> Dictionary:
 				
 	
 	return dict
+
+
+func scan_directory_for_scripts(dir_path: String) -> Array[Script]:
+	var scripts: Array[Script] = []
+	var dir = DirAccess.open(dir_path)
+	if dir == null:
+		push_error("Failed to open directory: %s. Error: %s" % [dir_path, DirAccess.get_open_error()])
+		return scripts
+	
+	dir.list_dir_begin()
+	var file_name = dir.get_next()
+	while file_name != "":
+		if dir.current_is_dir():
+			# Skip directories
+			file_name = dir.get_next()
+			continue
+		
+		if file_name.ends_with(".gd"):
+			var full_path := "%s/%s" % [dir_path, file_name]
+			var script = load(full_path)
+			if script is Script:
+				scripts.append(script)
+			else:
+				push_warning("File %s is not a valid script." % full_path)
+		
+		file_name = dir.get_next()
+	
+	dir.list_dir_end()
+	return scripts
