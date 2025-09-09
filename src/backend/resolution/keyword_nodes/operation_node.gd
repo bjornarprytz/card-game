@@ -9,6 +9,7 @@ func _init(keyword_: String, args_: Array[Variant], operations_: Array[Operation
 	operations = operations_
 
 	if operations_.is_empty():
+		## TODO: Consider whether this is necessary. A noop should be valid, or?
 		push_error("OperationNode must have at least one operation")
 	else:
 		operations = operations_.duplicate()

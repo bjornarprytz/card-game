@@ -36,7 +36,7 @@ func create_operation_tree(args: Array) -> KeywordNode:
 		push_error("%s requires exactly %d arguments, got %d" % [keyword, arg_count, args.size()])
 		return null
 	
-	push_warning("Possibly do more argument validation here?")
+	push_warning("TODO: more argument validation here?")
 
 	var tree = self.callv(keyword, args)
 

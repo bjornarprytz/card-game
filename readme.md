@@ -11,15 +11,10 @@ Card game TODO:
     - It's kind of hacked into EffectProto. Maybe I should introduce "type" in the effect. It's mostly because triggers and effects need more complex objects than the normal keyword effects
 - Keyword Refactor
   - Complex Keyword variables (e.g. Delirium, Spells in graveyard)
-  - More dynamic keyword/effect lookup?
-  - Maybe separate keywords into different kinds:
-    - Composite / Higher-Order
-      - Always inject state so that card don't have to explicitly get it from the state
-    - Simple
-      - Acts on one atom, state isn't injected
 - Template effect blocks
   - Use targets and vars to inject context
 - Activated abilities
+- Intrinsic Modifiers (Perpetually attached to the atom, but may only be active under certain conditions)
 - Check TODOs
 
 ## TODO

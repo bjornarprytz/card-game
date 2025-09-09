@@ -88,9 +88,12 @@ static func from_string(raw_expression: String) -> ContextExpression:
 	if raw_expression == null || raw_expression.is_empty():
 		return null
 	
+	var simple_expression = SimpleExpression.try_parse(raw_expression)
+	if simple_expression != null:
+		return simple_expression
+	
 	var processed_expression = raw_expression
 
-	
 	processed_expression = ExpressionSyntaxHelper.context_shorthands(processed_expression)
 
 	# Apply reusable syntax helpers

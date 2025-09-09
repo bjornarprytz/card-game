@@ -123,6 +123,10 @@
 			],
 			"vars": {
 				"x": {
+					"value": "2 + $bonus_damage",
+					"description": "Base damage plus bonus damage"
+				},
+				"bonus_damage": {
 					"value": "t0.armor > 0 ? 2 : 0",
 					"description": "Bonus damage against armored targets"
 				}
@@ -130,7 +134,7 @@
 			"effects": [
 				{
 					"keyword": "deal_damage",
-					"args": ["t0", "2 + $x"]
+					"args": ["t0", "$x"]
 				}
 			]
 		},
