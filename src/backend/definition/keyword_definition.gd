@@ -30,14 +30,20 @@ func _get_keyword() -> String:
 	push_error("_get_keyword not implemented in %s" % self.name)
 	return "NOT_IMPLEMENTED"
 
-
 func create_operation_tree(args: Array) -> KeywordNode:
-	if (args.size() != arg_count):
-		push_error("%s requires exactly %d arguments, got %d" % [keyword, arg_count, args.size()])
+	if (!_validate_args(args)):
 		return null
 	
-	push_warning("TODO: more argument validation here?")
 
 	var tree = self.callv(keyword, args)
 
 	return KeywordNode.create(keyword, args, tree)
+
+func _validate_args(args: Array) -> bool:
+	if (args.size() != arg_count):
+		push_error("%s requires exactly %d arguments, got %d" % [keyword, arg_count, args.size()])
+		return false
+
+	push_warning("TODO: more argument validation here?")
+	
+	return true

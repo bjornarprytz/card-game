@@ -11,6 +11,8 @@ Card game TODO:
     - It's kind of hacked into EffectProto. Maybe I should introduce "type" in the effect. It's mostly because triggers and effects need more complex objects than the normal keyword effects
 - Keyword Refactor
   - Complex Keyword variables (e.g. Delirium, Spells in graveyard)
+  - Add rules text template
+  - Add more robust argument validation
 - Template effect blocks
   - Use targets and vars to inject context
 - Activated abilities
