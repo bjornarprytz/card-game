@@ -30,10 +30,6 @@ func create_operation_tree(keyword: String, args: Array) -> KeywordNode:
 		return null
 
 	var definition = _definitions[keyword]
-
-	if (definition.arg_count != args.size()):
-		push_error("Keyword '%s' called with incorrect number of arguments in %s" % [keyword, self.name])
-		return null
 	
 	return definition.create_operation_tree(args)
 
@@ -43,10 +39,6 @@ func verify_payment(keyword: String, args: Array) -> PaymentResult:
 		return null
 
 	var definition = _payment_definitions[keyword]
-
-	if (definition.arg_count != args.size()):
-		push_error("Payment keyword '%s' called with incorrect number of arguments in %s" % [keyword, self.name])
-		return null
 	
 	return definition.verify_payment(args)
 

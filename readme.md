@@ -13,6 +13,11 @@ Card game TODO:
   - Complex Keyword variables (e.g. Delirium, Spells in graveyard)
   - Add rules text template
   - Add more robust argument validation
+  - Add steps (state based keywords (e.g. Cleanup))
+  - Remove static
+    - Keywords
+    - Steps
+    - Payment
 - Template effect blocks
   - Use targets and vars to inject context
 - Activated abilities
