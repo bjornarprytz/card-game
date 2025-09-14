@@ -78,7 +78,7 @@ func evaluate(context: Context) -> Variant:
 	_helper.set_context(context)
 	var result = _expression.execute([context], _helper)
 	if _expression.has_execute_failed():
-		push_error("Error executing expression: %s\nError: %s" % [expression_string, _expression.get_error_text()])
+		push_warning("Error executing expression: %s\nError: %s" % [expression_string, _expression.get_error_text()])
 		return null
 		
 	return result
@@ -111,24 +111,24 @@ static func t(context: Context, index: int) -> Variant:
 	var chosen_targets = p(context, "targets")
 
 	if (chosen_targets is not Array):
-		push_error("Expected context.prompt.targets to be an array, got: %s" % typeof(chosen_targets))
+		push_warning("Expected context.prompt.targets to be an array, got: %s" % typeof(chosen_targets))
 		return null
 
 	if index >= 0 and index < chosen_targets.size():
 		return chosen_targets[index]
-	push_error("Target index out of bounds: %d" % index)
+	push_warning("Target index out of bounds: %d" % index)
 	return null
 
 static func v(context: Context, var_name: String) -> Variant:
 	if context.vars.has(var_name):
 		return context.vars[var_name].resolve(context)
-	push_error("Variable not found: %s" % var_name)
+	push_warning("Variable not found: %s" % var_name)
 	return null
 
 static func p(context: Context, binding_key: String) -> Variant:
 	if context.prompt.has(binding_key):
 		return context.prompt[binding_key]
-	push_error("Prompt binding not found: %s" % binding_key)
+	push_warning("Prompt binding not found: %s" % binding_key)
 	return null
 	
 # Helper function to implement ternary operator behavior

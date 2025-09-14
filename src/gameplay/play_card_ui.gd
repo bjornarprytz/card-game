@@ -1,6 +1,8 @@
 class_name PlayCardUI
 extends CanvasItem
 
+signal context_updated(new_context: PlayCardContext)
+
 @export var state: GameState
 @export var game_loop: GameLoop
 @export var card: Card
@@ -44,6 +46,7 @@ func _reset():
 	current_bindings = {}
 
 	_next_prompt()
+	context_updated.emit(context)
 
 
 func _next_prompt() -> void:

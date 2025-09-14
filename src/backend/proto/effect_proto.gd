@@ -15,6 +15,9 @@ func create_operation_tree(context: Context) -> KeywordNode:
 
 	return context.keyword_provider.create_operation_tree(keyword, args)
 
+func get_args() -> Array[ParameterProto]:
+	return _args.duplicate()
+
 func _resolve_args(context: Context) -> Array[Variant]:
 	var args: Array[Variant] = []
 

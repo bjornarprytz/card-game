@@ -15,6 +15,13 @@ func get_value(context: Context) -> Variant:
 	push_error("Error: No immediate value or context expression found")
 	return null
 
+func get_display_value_PLACEHOLDER(context: Context) -> String:
+	# TODO: Possibly return more structured data
+	var val = get_value(context)
+	if val == null:
+		return _expression.to_string()
+	return str(val)
+
 static func from_variant(param: Variant) -> ParameterProto:
 	var parameter = ParameterProto.new()
 
