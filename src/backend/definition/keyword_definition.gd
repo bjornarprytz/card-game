@@ -17,8 +17,13 @@ class Metadata:
 
 var _metadata: Metadata
 var _reminder_text: String
+var _dependencies: KeywordDependencies
+var _game_state: GameState:
+	get:
+		return _dependencies.game_state
 
-func _init():
+func _init(dependencies: KeywordDependencies):
+	_dependencies = dependencies
 	var method_list = self.get_method_list()
 	for method in method_list:
 		if method.name == keyword:
@@ -90,6 +95,12 @@ func _validate_args(args: Array) -> bool:
 		return false
 	
 	return true
+
+func _kw_node(sub_keyword: String, args: Array = []) -> KeywordNode:
+	return _dependencies.keyword_provider.create_operation_tree(sub_keyword, args)
+
+func _op_node(operations: Array[Operation], args: Array = []) -> KeywordNode:
+	return KeywordNode.create(keyword, args, operations)
 
 func _to_string() -> String:
 	return "def(%s)" % keyword

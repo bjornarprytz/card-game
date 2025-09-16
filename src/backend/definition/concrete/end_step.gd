@@ -1,12 +1,12 @@
 class_name EndStepDefinition
-extends StepDefinition
+extends KeywordDefinition
 
 static var KEYWORD: String = &"end_step"
 
 func _get_keyword() -> String:
     return KEYWORD
 
-func end_step() -> Array[Operation]:
-    var operations: Array[Operation] = []
-    operations.append(Keywords.discard_hand(_game_state))
+func end_step() -> Array[KeywordNode]:
+    var operations: Array[KeywordNode] = []
+    operations.append(_kw_node(DiscardHandDefinition.KEYWORD))
     return operations

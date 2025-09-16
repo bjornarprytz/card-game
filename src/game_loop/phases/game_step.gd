@@ -14,7 +14,7 @@ func has_next_keyword() -> bool:
 	return !_is_finished
 
 func _get_next_keyword() -> KeywordNode:
-	var keyword_node = Steps.create_operation_tree(step_name, context.state)
+	var keyword_node = context.state.keyword_provider.create_operation_tree(step_name, [])
 	_is_finished = true
 	return keyword_node
 

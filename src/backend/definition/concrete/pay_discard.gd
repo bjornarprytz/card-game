@@ -14,5 +14,5 @@ func pay_discard(card: Atom) -> PaymentResult:
 		return PaymentResult.failure()
 
 	return PaymentResult.success(
-		_keyword_provider.create_operation_tree(DiscardCardDefinition.KEYWORD, [card])
+		_kw_node(DiscardCardDefinition.KEYWORD, [card])
 	)

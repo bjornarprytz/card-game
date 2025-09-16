@@ -1,19 +1,24 @@
 class_name SetupStepDefinition
-extends StepDefinition
+extends KeywordDefinition
 
 static var KEYWORD: String = &"setup_step"
 
 func _get_keyword() -> String:
-	return KEYWORD
+    return KEYWORD
 
-func setup_step(initial_conditions: InitialGameState) -> Array[Operation]:
-	var operations: Array[Operation] = []
-	operations.append(SetState.new(_game_state.player, "lives", initial_conditions.starting_lives, 0))
+func setup_step(initial_conditions: InitialGameState) -> Array[KeywordNode]:
+    var operations: Array[KeywordNode] = []
+    operations.append(
+        _op_node(
+            [SetState.new(_game_state.player, "lives", initial_conditions.starting_lives, 0)],
+            [initial_conditions]
+        )
+    )
 
-	for card_name in initial_conditions.deck:
-		operations.append_array(Keywords.create_card(_game_state, card_name, _game_state.draw_pile))
-	
-	for creature_name in initial_conditions.enemies:
-		operations.append_array(Keywords.create_creature(_game_state, creature_name, _game_state.battlefield))
+    for card_name in initial_conditions.deck:
+        operations.append(_kw_node(CreateCardDefinition.KEYWORD, [card_name, _game_state.draw_pile]))
 
-	return operations
+    for creature_name in initial_conditions.enemies:
+        operations.append(_kw_node(CreateCreatureDefinition.KEYWORD, [creature_name, _game_state.battlefield]))
+
+    return operations

@@ -4,11 +4,11 @@ extends KeywordDefinition
 static var KEYWORD: String = &"attack"
 
 func _get_keyword() -> String:
-	return KEYWORD
+    return KEYWORD
 
 func attack(source: Creature, target: Creature) -> Array[KeywordNode]:
-	var sub_nodes: Array[KeywordNode] = []
+    var sub_nodes: Array[KeywordNode] = []
 
-	sub_nodes.append(_keyword_provider.create_operation_tree(DealDamageDefinition.KEYWORD, [target, source.attack]))
+    sub_nodes.append(_kw_node(DealDamageDefinition.KEYWORD, [target, source.attack]))
 
-	return sub_nodes
+    return sub_nodes

@@ -5,9 +5,9 @@ var _remaining_phases: Array[GamePhase] = []
 
 func _init(game_state: GameState) -> void:
     _remaining_phases = [
-        GamePhase.new(["upkeep"], game_state),
+        GamePhase.new([UpkeepStepDefinition.KEYWORD], game_state),
         GamePhase.new([], game_state, ["play_card", "end_turn"]),
-        GamePhase.new(["end"], game_state),
+        GamePhase.new([EndStepDefinition.KEYWORD], game_state),
     ]
 
 func is_finished() -> bool:
