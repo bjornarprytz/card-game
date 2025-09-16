@@ -15,15 +15,10 @@ class Metadata:
 
 		return true
 
-var _game_state: GameState
-var _keyword_provider: KeywordProvider
-
 var _metadata: Metadata
 var _reminder_text: String
 
-func _init(game_state: GameState, keyword_provider: KeywordProvider):
-	_game_state = game_state
-	_keyword_provider = keyword_provider
+func _init():
 	var method_list = self.get_method_list()
 	for method in method_list:
 		if method.name == keyword:
